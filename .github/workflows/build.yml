@@ -1,0 +1,44 @@
+name: Build Lean Project
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install elan
+      run: |
+        curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+        echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+    - name: Verify Lean version
+      run: lean --version
+
+    - name: Download Mathlib cache
+      run: lake exe cache get
+
+    - name: Build project
+      run: lake build ProjetCollatz
+
+    - name: Check zero axioms
+      run: |
+        AXIOMS=$(grep -rn '^axiom' ProjetCollatz/*.lean | wc -l)
+        echo "Axioms found: $AXIOMS"
+        [ "$AXIOMS" -eq 0 ] || exit 1
+
+    - name: Check zero sorry (as tactic)
+      run: |
+        SORRY=$(grep -rn '  sorry$\|:= sorry\|by sorry' ProjetCollatz/*.lean | wc -l)
+        echo "Sorry as tactic: $SORRY"
+        [ "$SORRY" -eq 0 ] || exit 1
+
+    - name: Verify main theorem exists
+      run: grep -q "theorem no_nontrivial_cycle_phase59" ProjetCollatz/Phase59ContinuedFractions.lean

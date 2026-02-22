@@ -99,6 +99,18 @@ grep -rn "^axiom" ProjetCollatz/*.lean           # Expected: 0 lines
 grep -c "sorry" ProjetCollatz/*.lean | grep -v :0 # Check all sorry are in comments
 ```
 
+### Axiom Transparency
+
+```
+#print axioms no_nontrivial_cycle_phase59
+-- 'ProjetCollatz.no_nontrivial_cycle_phase59' depends on axioms:
+--   [propext, Classical.choice, Quot.sound]
+```
+
+These are the three standard Lean 4 / Mathlib axioms. No custom axioms are used.
+The three hypotheses (Baker, Barina, CF) appear as explicit structure parameters,
+not as axioms in the Lean environment.
+
 ## What This Does NOT Prove
 
 - This does **NOT** prove the full Collatz conjecture
@@ -107,6 +119,11 @@ grep -c "sorry" ProjetCollatz/*.lean | grep -v :0 # Check all sorry are in comme
 - The hypotheses are encoded as Lean structures (explicit parameters), not axioms
 
 ## File Structure
+
+> **Note on naming**: Files are named `PhaseNN_*.lean` following the incremental
+> development history of the NEXUS Collatz project. The phase numbers reflect
+> the order in which results were formalized, not their logical importance.
+> The table below maps each file to its mathematical content.
 
 ### Core Porte 2 (Cycle Elimination)
 | File | Content |
