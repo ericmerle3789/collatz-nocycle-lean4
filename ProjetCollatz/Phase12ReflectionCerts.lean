@@ -406,7 +406,7 @@ def computeThreshold (vals : List ℕ) : ℕ :=
   let m := vals.length
   let pow3m := pow3 m
   let pow2s := pow2 (listSum vals)
-  if h : pow3m < pow2s then
+  if _h : pow3m < pow2s then
     delta / (pow2s - pow3m) + 1
   else
     0  -- ratio condition fails, no valid threshold

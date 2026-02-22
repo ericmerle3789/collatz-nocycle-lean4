@@ -24,8 +24,8 @@ echo "Axioms: $AXIOMS"
 SORRY=$(grep -rn '  sorry$\|:= sorry\|by sorry' ProjetCollatz/*.lean 2>/dev/null | wc -l | tr -d ' ')
 echo "Sorry (as tactic): $SORRY"
 
-# Theorem count
-THEOREMS=$(grep -c 'theorem\|lemma' ProjetCollatz/*.lean 2>/dev/null | awk -F: '{s+=$2} END {print s}')
+# Theorem count (strict: only declarations, not comments)
+THEOREMS=$(grep -rcE '^(private |protected )?(theorem|lemma) ' ProjetCollatz/*.lean 2>/dev/null | awk -F: '{s+=$2} END {print s}')
 echo "Theorems + Lemmas: $THEOREMS"
 
 # File count

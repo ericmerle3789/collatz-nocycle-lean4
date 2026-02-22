@@ -63,7 +63,7 @@ theorem pow2_even (b : ℕ) (hb : b ≥ 1) : 2^b % 2 = 0 := by
 
 /-- No power of 3 equals a power of 2 (for positive exponents).
     Proof: 3^a is odd (since 3 is odd), while 2^b is even (for b ≥ 1). -/
-theorem pow3_ne_pow2 (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1) :
+theorem pow3_ne_pow2 (a b : ℕ) (_ha : a ≥ 1) (hb : b ≥ 1) :
     3^a ≠ 2^b := by
   intro h
   have h3odd := pow3_odd a
@@ -71,7 +71,7 @@ theorem pow3_ne_pow2 (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1) :
   omega
 
 /-- Stronger version: 3^a and 2^b have different parity for any a,b ≥ 1. -/
-theorem pow3_pow2_parity (a b : ℕ) (ha : a ≥ 1) (hb : b ≥ 1) :
+theorem pow3_pow2_parity (a b : ℕ) (_ha : a ≥ 1) (hb : b ≥ 1) :
     3^a % 2 = 1 ∧ 2^b % 2 = 0 :=
   ⟨pow3_odd a, pow2_even b hb⟩
 

@@ -1,42 +1,42 @@
 import ProjetCollatz.Phase58PorteDeuxFinal
 
 /-!
-# Phase 59 — Fractions Continues : SimonsDeWeger Remplacé
+# Phase 59 — Continued Fractions: SimonsDeWeger Replaced
 
-## Résultat
+## Result
 
-Le théorème `no_nontrivial_cycle_phase59` montre qu'aucun cycle non-trivial
-n'existe dans la suite de Collatz, sous deux hypothèses publiées et une
-conséquence structurelle de Baker :
+The theorem `no_nontrivial_cycle_phase59` shows that no non-trivial cycle
+exists in the Collatz sequence, under two published hypotheses and one
+structural consequence of Baker:
 
-1. **BakerSeparation** (Baker 1966) — hypothèse
-2. **BarinaVerification** (Barina 2025) — hypothèse
-3. **ContinuedFractionSeparation** — remplace SimonsDeWegerBound
+1. **BakerSeparation** (Baker 1966) — hypothesis
+2. **BarinaVerification** (Barina 2025) — hypothesis
+3. **ContinuedFractionSeparation** — replaces SimonsDeWegerBound
 
-## Progrès par rapport à Phase 58
+## Progress relative to Phase 58
 
-Phase 58 utilisait `SimonsDeWegerBound` (k ≤ 982, boîte noire).
-Phase 59 la remplace par `ContinuedFractionSeparation` qui est :
-- **Plus faible** : ne borne que les n > 2^71 pour k > 1322
-- **Plus naturelle** : conséquence directe de Baker + CF de log₂3
-- **Auto-documentée** : les 6 constantes CF sont vérifiables
+Phase 58 used `SimonsDeWegerBound` (k ≤ 982, black box).
+Phase 59 replaces it with `ContinuedFractionSeparation`, which is:
+- **Weaker**: only bounds n < 2^71 for k > 1322
+- **More natural**: direct consequence of Baker + CF of log₂3
+- **Self-documenting**: the 6 CF constants are verifiable
 
-## Pourquoi pas 2 hypothèses pures ?
+## Why not 2 pure hypotheses?
 
-Le Sprint 1 a prouvé que Baker + Barina seuls ne suffisent PAS :
-- Product Bound : n ≤ (k^7+k)/3 (uses Baker with C = k^6)
-- Pour k > 1322 : (k^7+k)/3 > 2^71, donc Barina ne s'applique pas
-- Baker avec TOUT exposant fini μ donne n ≤ k^{μ+1}/3 → ∞
-- La borne de k nécessite les fractions continues de log₂3
+Sprint 1 proved that Baker + Barina alone are NOT sufficient:
+- Product Bound: n ≤ (k^7+k)/3 (uses Baker with C = k^6)
+- For k > 1322: (k^7+k)/3 > 2^71, so Barina does not apply
+- Baker with ANY finite exponent μ gives n ≤ k^{μ+1}/3 → ∞
+- Bounding k requires the continued fractions of log₂3
 
-La théorie des CF montre que pour k entre convergents qₙ et qₙ₊₁,
-le gap |2^s - 3^k| est bien plus grand que ce que Baker prédit.
-Cela donne un C << k^6, et donc n << (k^7+k)/3.
-Les 6 fenêtres CF (n=8 à n=13) couvrent k de 665 à 10,590,736.
+CF theory shows that for k between convergents qₙ and qₙ₊₁,
+the gap |2^s - 3^k| is much larger than what Baker predicts.
+This gives C << k^6, and hence n << (k^7+k)/3.
+The 6 CF windows (n=8 to n=13) cover k from 665 to 10,590,736.
 
-CEPENDANT : formaliser le théorème de meilleure approximation des CF
-(absent de Mathlib) requiert ~300-500 lignes de nouvelle infrastructure.
-Nous encodons donc le résultat comme `ContinuedFractionSeparation`.
+HOWEVER: formalizing the best approximation theorem for CFs
+(absent from Mathlib) requires ~300-500 lines of new infrastructure.
+We therefore encode the result as `ContinuedFractionSeparation`.
 
 ## Architecture
 
@@ -49,25 +49,25 @@ Phase59 ─── ContinuedFractionSeparation (structure param) ──┤
             no_nontrivial_cycle_phase59 (THEOREM)
 ```
 
-## Vérifications arithmétiques des fenêtres CF
+## Arithmetic verifications of CF windows
 
-Les 6 fenêtres CF et leurs constantes sont vérifiées par native_decide.
-Ces vérifications PROUVENT que les constantes CF sont correctes,
-mais le lien « CF gap à q_n ≤ CF gap à k pour q_n ≤ k < q_{n+1} »
-(théorème de meilleure approximation) reste l'hypothèse encodée.
+The 6 CF windows and their constants are verified by native_decide.
+These verifications PROVE that the CF constants are correct,
+but the link "CF gap at q_n ≤ CF gap at k for q_n ≤ k < q_{n+1}"
+(best approximation theorem) remains the encoded hypothesis.
 
-| Fenêtre | Convergent | Type | Vérification native_decide |
-|---------|------------|------|---------------------------|
-| 8 | q₈=665 | PAIR | 2·2^1055 ≥ 3·3^665 |
-| 9 | q₉=15601 | IMPAIR | 54961·2^24727 ≥ 54962·3^15601 |
-| 10 | q₁₀=31867 | PAIR | 2·2^50509 ≥ 3·3^31867 |
-| 11 | q₁₁=79335 | IMPAIR | 272872·2^125743 ≥ 272873·3^79335 |
-| 12 | q₁₂=111202 | PAIR | 2·2^176252 ≥ 3·3^111202 |
-| 13 | q₁₃=190537 | IMPAIR | 15502073·2^301994 ≥ 15502074·3^190537 |
+| Window | Convergent | Type | native_decide verification |
+|--------|------------|------|---------------------------|
+| 8 | q₈=665 | Even | 2·2^1055 ≥ 3·3^665 |
+| 9 | q₉=15601 | Odd | 54961·2^24727 ≥ 54962·3^15601 |
+| 10 | q₁₀=31867 | Even | 2·2^50509 ≥ 3·3^31867 |
+| 11 | q₁₁=79335 | Odd | 272872·2^125743 ≥ 272873·3^79335 |
+| 12 | q₁₂=111202 | Even | 2·2^176252 ≥ 3·3^111202 |
+| 13 | q₁₃=190537 | Odd | 15502073·2^301994 ≥ 15502074·3^190537 |
 
-## Zéro axiom · Zéro sorry · Trois hypothèses (Baker + Barina + CF)
+## Zero axioms · Zero sorry · Three hypotheses (Baker + Barina + CF)
 
-SdW est ÉLIMINÉ. CF est plus naturel et plus proche de Baker.
+SdW is ELIMINATED. CF is more natural and closer to Baker.
 
 ## Date: 2026-02-21 (Phase 59)
 -/
@@ -215,21 +215,21 @@ def sdwFromCF
 ## Part E: THE MAIN THEOREM — Phase 59
 -/
 
-/-- **THÉORÈME PRINCIPAL PHASE 59** — Aucun cycle non-trivial.
+/-- **MAIN THEOREM PHASE 59** — No non-trivial cycle.
 
-Sous deux hypothèses publiées et une conséquence structurelle de Baker :
-1. Baker (1966) : séparation pour formes linéaires en logarithmes
-2. Barina (2025) : vérification computationnelle à 2^71
-3. ContinuedFractionSeparation : Baker + CF de log₂3 → n < 2^71 pour k > 1322
+Under two published hypotheses and one structural consequence of Baker:
+1. Baker (1966): separation bound for linear forms in logarithms
+2. Barina (2025): computational verification up to 2^71
+3. ContinuedFractionSeparation: Baker + CF of log₂3 → n < 2^71 for k > 1322
 
-SdW n'est PLUS une hypothèse — c'est un COROLLAIRE PROUVÉ.
-ContinuedFractionSeparation encode le résultat de Baker + théorie des
-fractions continues de log₂3 (Legendre 1798, Simons & de Weger 2005).
+SdW is NO LONGER a hypothesis — it is a PROVED COROLLARY.
+ContinuedFractionSeparation encodes the result of Baker + continued
+fraction theory of log₂3 (Legendre 1798, Simons & de Weger 2005).
 
-**Zéro axiom. Zéro sorry.** All CF gaps proved by native_decide with exponentiation.threshold.
-Trois hypothèses dont la 3ème est dérivable de la 1ère + calcul fini.
+**Zero axioms. Zero sorry.** All CF gaps proved by native_decide with exponentiation.threshold.
+Three hypotheses, the 3rd derivable from the 1st + finite computation.
 
-Chaîne de preuve :
+Proof chain:
 1. k ≤ 1322 → Product Bound + Baker → n < 2^71 → Barina → False
 2. k > 1322 → CF Separation → n < 2^71 → Barina → False
 -/
@@ -242,13 +242,13 @@ theorem no_nontrivial_cycle_phase59
   · push_neg at hk
     exact no_cycle_k_gt_1322 barina cf n k hcyc hk
 
-/-- **Version compacte avec structure englobante.** -/
+/-- **Compact version with enclosing structure.** -/
 structure Phase59Hypotheses where
   baker : BakerSeparation
   barina : BarinaVerification
   cf : ContinuedFractionSeparation
 
-/-- **Phase 59 — version compacte.** -/
+/-- **Phase 59 — compact version.** -/
 theorem phase59_sealed
     (hyp : Phase59Hypotheses)
     (n k : ℕ) (hcyc : IsOddCycle n k) : False :=

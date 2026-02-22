@@ -2,21 +2,21 @@ import ProjetCollatz.Phase56Bloc18Complete
 import ProjetCollatz.Phase50Bridge
 
 /-!
-# Phase 58 — Porte 2 Fermée : Aucun Cycle Non-Trivial
+# Phase 58 — Door 2 Closed: No Non-Trivial Cycle
 
-## Résultat
+## Result
 
-Sous deux hypothèses publiées (Baker 1966, Barina 2025),
-aucun cycle non-trivial n'existe dans la suite de Collatz.
+Under two published hypotheses (Baker 1966, Barina 2025),
+no non-trivial cycle exists in the Collatz sequence.
 
-## Hypothèses (2 structures, chacune 1 champ)
+## Hypotheses (2 structures, each 1 field)
 
-- **BakerSeparation** : Borne de Baker pour formes linéaires en logarithmes
+- **BakerSeparation**: Baker's bound for linear forms in logarithms
   (Baker 1966, Mathematika 13; Matveev 2000; Rhin 1987).
-- **BarinaVerification** : Vérification computationnelle à 2^71
+- **BarinaVerification**: Computational verification up to 2^71
   (Barina 2025, J. Supercomputing 81).
 
-## Chaîne de preuve
+## Proof chain
 
 1. IsOddCycle n k → cycle_has_min → IsCycleMin m k (Phase 56, proved)
 2. IsCycleMin m k → m ≤ (k⁷+k)/3 (Product Bound + Baker, Phase 56, proved)
@@ -33,12 +33,12 @@ We build `ExternalCycleHypothesesDerived` (Phase 56) from Baker + Barina,
 deriving B2 (Hercher k ≥ 92) and B_k (k ≤ 982) as THEOREMS.
 Then `no_nontrivial_cycle_derived` (Phase 56) gives the final result.
 
-## Dépendances
+## Dependencies
 
 Phase50Bridge, Phase51ExternalHypotheses, Phase56Bloc18Complete
 (NO imports from Phase57)
 
-## Zéro axiom · Zéro sorry · Deux hypothèses (structure params)
+## Zero axioms · Zero sorry · Two hypotheses (structure params)
 
 ## Date: 2026-02-21 (Phase 58)
 -/
@@ -51,32 +51,32 @@ noncomputable section
 ## Part A: Publication-Ready Hypothesis Structures
 -/
 
-/-- **Hypothèse B1 : Borne de Baker pour les formes linéaires en logarithmes.**
+/-- **Hypothesis B1: Baker's bound for linear forms in logarithms.**
 
-Baker (1966), Mathematika 13. Version effective de Matveev (2000).
-Affinement de Rhin (1987) : μ(log₂3) ≤ 5.125.
+Baker (1966), Mathematika 13. Effective version by Matveev (2000).
+Refinement by Rhin (1987): μ(log₂3) ≤ 5.125.
 
-Pour s ≥ 1, k ≥ 2 avec 2^s > 3^k : (2^s - 3^k) · k^6 ≥ 3^k.
-Note : k ≥ 2 (pas k ≥ 1) car (2²-3¹)·1⁶ = 1 < 3 est un contre-exemple.
-Pour les cycles, k ≥ 2 est garanti par cycle_k_ge_two (Phase 50).
+For s ≥ 1, k ≥ 2 with 2^s > 3^k: (2^s - 3^k) · k^6 ≥ 3^k.
+Note: k ≥ 2 (not k ≥ 1) because (2²-3¹)·1⁶ = 1 < 3 is a counterexample.
+For cycles, k ≥ 2 is guaranteed by cycle_k_ge_two (Phase 50).
 
-Formaliser Baker en Lean nécessiterait la théorie transcendante
-complète (~10000 lignes). C'est le standard de la littérature Collatz
-(Steiner 1977, Simons-de Weger 2005, Hercher 2023) de l'admettre
-comme hypothèse externe. -/
+Formalizing Baker in Lean would require the complete transcendence
+theory (~10000 lines). It is the standard in the Collatz literature
+(Steiner 1977, Simons-de Weger 2005, Hercher 2023) to admit it
+as an external hypothesis. -/
 structure BakerSeparation where
   separation : ∀ (s k : ℕ), s ≥ 1 → k ≥ 2 → 2^s > 3^k →
     (2^s - 3^k) * k^6 ≥ 3^k
 
-/-- **Hypothèse B3 : Vérification computationnelle de Barina.**
+/-- **Hypothesis B3: Barina's computational verification.**
 
 Barina (2025), "Improved verification limit for the convergence of
 the Collatz conjecture", J. Supercomputing 81, 810.
 DOI: 10.1007/s11227-025-07337-0.
-Tous les entiers de 1 à 2^71 convergent vers 1 sous Collatz.
+All integers from 1 to 2^71 converge to 1 under Collatz.
 
-Reproduire cette vérification dans le kernel Lean est physiquement
-impossible (2^71 ≈ 2.36 × 10²¹ nombres à vérifier). -/
+Reproducing this verification in the Lean kernel is physically
+impossible (2^71 ≈ 2.36 × 10²¹ numbers to check). -/
 structure BarinaVerification where
   convergence : ∀ (n : ℕ), n > 0 → n < 2^71 → reaches_one n
 
@@ -106,7 +106,7 @@ This is sufficient because the downstream proof only uses:
 private def mkExternalHyp (baker : BakerSeparation) (barina : BarinaVerification) :
     ExternalCycleHypotheses where
   baker_separation := baker.separation
-  hercher_no_small_cycle := fun _ k hcyc => hcyc.2.2.1  -- k ≥ 1 from IsOddCycle
+  hercher_no_small_cycle := fun _ _ hcyc => hcyc.2.2.1  -- k ≥ 1 from IsOddCycle
   barina_convergence := barina.convergence
 
 /-!
@@ -283,7 +283,7 @@ Hercher (2023, k ≥ 92) is DERIVED and NOT a hypothesis.
 B4 (n < 2^71) is DERIVED from Product Bound + Baker + Simons-de Weger.
 -/
 
-/-- **Hypothèse SdW : Simons-de Weger cycle length bound.**
+/-- **Hypothesis SdW: Simons-de Weger cycle length bound.**
 
 Simons & de Weger (2005), Acta Arithmetica 117.1, pp. 51-70.
 No non-trivial Collatz cycle has more than 982 odd steps.
@@ -309,7 +309,7 @@ def buildDerived
     (sdw : SimonsDeWegerBound) :
     ExternalCycleHypothesesDerived where
   baker_separation := baker.separation
-  hercher_no_small_cycle := fun _ k hcyc => hcyc.2.2.1  -- k ≥ 1 from IsOddCycle
+  hercher_no_small_cycle := fun _ _ hcyc => hcyc.2.2.1  -- k ≥ 1 from IsOddCycle
   barina_convergence := barina.convergence
   cycle_k_upper_bound := sdw.cycle_length_bound
 
@@ -317,18 +317,18 @@ def buildDerived
 ## Part G: THE MAIN THEOREMS
 -/
 
-/-- **THÉORÈME PRINCIPAL — Porte 2 Fermée.**
+/-- **MAIN THEOREM — Door 2 Closed.**
 
-Sous trois hypothèses publiées et vérifiées par les pairs :
-1. Baker (1966) : borne de séparation pour formes linéaires en logarithmes
-2. Barina (2025) : vérification computationnelle à 2^71
-3. Simons-de Weger (2005) : tout cycle non-trivial a k ≤ 982 pas impairs
+Under three published, peer-reviewed hypotheses:
+1. Baker (1966): separation bound for linear forms in logarithms
+2. Barina (2025): computational verification up to 2^71
+3. Simons-de Weger (2005): every non-trivial cycle has k ≤ 982 odd steps
 
-Aucun cycle non-trivial n'existe dans la suite de Collatz.
+No non-trivial cycle exists in the Collatz sequence.
 
-**Zéro axiom. Zéro sorry. Trois hypothèses explicites (résultats publiés).**
+**Zero axioms. Zero sorry. Three explicit hypotheses (published results).**
 
-Chaîne de preuve :
+Proof chain:
 1. cycle_has_min (P56, proved) : extract cycle minimum m with IsCycleMin
 2. cycle_min_bound_nat (P56, proved, uses Baker) : m ≤ (k⁷+k)/3
 3. Simons-de Weger : k ≤ 982
@@ -342,7 +342,7 @@ theorem no_nontrivial_cycle_final
     (n k : ℕ) (hcyc : IsOddCycle n k) : False :=
   no_nontrivial_cycle_derived (buildDerived baker barina sdw) n k hcyc
 
-/-- **Pas de point périodique** — version dépliée. -/
+/-- **No periodic point** — unfolded version. -/
 theorem no_periodic_point_final
     (baker : BakerSeparation) (barina : BarinaVerification)
     (sdw : SimonsDeWegerBound)
@@ -350,13 +350,13 @@ theorem no_periodic_point_final
     False :=
   no_nontrivial_cycle_final baker barina sdw n k ⟨hn, hodd, hk, hcyc⟩
 
-/-- **Version compacte avec structure englobante.** -/
+/-- **Compact version with enclosing structure.** -/
 structure PorteDeuxHypotheses where
   baker : BakerSeparation
   barina : BarinaVerification
   sdw : SimonsDeWegerBound
 
-/-- **Porte 2 — version compacte.** -/
+/-- **Door 2 — compact version.** -/
 theorem porte_deux_sealed
     (hyp : PorteDeuxHypotheses)
     (n k : ℕ) (hcyc : IsOddCycle n k) : False :=
