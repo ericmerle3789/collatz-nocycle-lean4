@@ -334,7 +334,7 @@ only the logical bridge (best approximation ↔ per-window coverage) is missing.
 |-|----------|----------|
 | SdW | Hypothesis | **Derived theorem** |
 | 3rd hyp | k ≤ 982 | n < 2^71 for k > 1322 |
-| Evidence | none | 7 native_decide (all formerly-sorry now proved) |
+| Evidence | none | 12 native_decide (6 CF gaps + 6 n-bounds) |
 | Derivation | SdW → ExternalDerived → False | CF → n<2^71 → Barina → False |
 
 **Door 2 (Anti-Cycle): SEALED — 0 axiom, 0 sorry (GOLD), 2+1 hypotheses (SdW derived).**
