@@ -13,7 +13,7 @@
 |---|-----------|----------|---------|
 | 1 | Couverture universelle k | OK | k <= 1322: Baker+ProductBound gives n < 2^71. k > 1322: CF hypothesis gives n < 2^71. ALL k covered. |
 | 2 | Hypotheses <-> publies | OK (FIXED) | Baker: k>=2 (fixed from k>=1, which was unsatisfiable at s=2,k=1). Barina: 2^71 matches 2025 paper. CF: encoded from Baker+CF theory. |
-| 3 | native_decide | OK | 7 CF gap proofs (cf_gap_8..13, cf_nbound_8..13) use native_decide. Largest: 3^190537 (~90K digits). set_option exponentiation.threshold documented. Requires ~16GB RAM. |
+| 3 | native_decide | OK | 14 native_decide proofs on critical path: 12 in Phase59 (6 cf_gap_8..13 + 6 cf_nbound_8..13), 1 in Phase58 (product_bound_fits_barina_1322), 1 in Phase56 (k982_bound). Largest: 3^190537 (~90K digits). set_option exponentiation.threshold documented. Requires ~16GB RAM. |
 | 4 | Logique classique | OK | Classical logic used via Mathlib (open Classical). Standard for Lean/Mathlib formalization. Documented. |
 | 5 | Bridge | OK | cycle_prevents_reaching_one fully proved in Phase50Bridge.lean. No sorry. Uses standard reaches_one definition. |
 | 6 | Product Bound | OK | product_bound (2^S * n^k <= (3n+1)^k) fully proved by induction in Phase56. bernoulli_upper_nat proved by induction. cycle_min_bound_nat proved. |
@@ -106,7 +106,7 @@ precede the `theorem` declaration.
 | Phase56Bloc18Complete.lean | ~400 | 15 | **Product Bound chain** |
 | Phase58PorteDeuxFinal.lean | ~350 | 12 | **Hyp structures + k<=1322** |
 | Phase59ContinuedFractions.lean | ~340 | 20 | **MAIN THEOREM + CF** |
-| **TOTAL** | **~9100** | **~502** | |
+| **TOTAL** | **~9100** | **393 thm/lem + 121 examples** | |
 
 ---
 
@@ -145,7 +145,7 @@ formellement verifie en Lean 4 avec :
 - **0 axiome** dans l'environnement global
 - **0 sorry** dans le code
 - **3 hypotheses** explicites (Baker, Barina, CF) en parametres de structure
-- **502 theoremes/lemmes** verifies par le compilateur
+- **393 theoremes/lemmes + 121 examples** verifies par le compilateur
 - **36 fichiers** dans la fermeture transitive
 - **3 corrections** effectuees pendant l'audit (Baker k>=2, Barina titre, docstrings)
 

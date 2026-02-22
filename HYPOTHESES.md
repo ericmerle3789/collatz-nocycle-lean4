@@ -16,7 +16,7 @@ structure BakerSeparation where
     (2^s - 3^k) * k^6 ≥ 3^k
 ```
 
-**File**: `ProjetCollatz/Phase58PorteDeuxFinal.lean:65`
+**File**: `ProjetCollatz/Phase58PorteDeuxFinal.lean:67`
 
 ### Published Source
 
@@ -51,7 +51,7 @@ structure BarinaVerification where
   convergence : ∀ (n : ℕ), n > 0 → n < 2^71 → reaches_one n
 ```
 
-**File**: `ProjetCollatz/Phase58PorteDeuxFinal.lean:76`
+**File**: `ProjetCollatz/Phase58PorteDeuxFinal.lean:80`
 
 ### Published Source
 

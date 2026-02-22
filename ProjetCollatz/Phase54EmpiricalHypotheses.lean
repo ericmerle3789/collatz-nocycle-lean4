@@ -20,13 +20,17 @@ in every theorem signature.
 | Field | Source | Status |
 |-------|--------|--------|
 | `salmon_visits_abyss` | Empirical (verified n ∈ [2, 100000]) | Unproved |
-| `barina_verified` | Barina 2020 (published, J. Supercomputing) | Published |
+| `barina_verified` | Barina 2025 (published, J. Supercomputing 81) | Published |
 
 Note: `evt_bounded_tail` and `geometric_k_distribution` from the old
 `EmpiricalAxioms.lean` were NEVER used in any proof, so they are not
 included here.
 
 ## Date: 2026-02-21 (Phase 54)
+
+**Note**: `SalmonVisitsAbyss` is NOT used in the Porte 2 (anti-cycle) proof.
+This file is included as transitive infrastructure via Phase9ErgodicDescent.
+Only `barina_verified` is relevant to the anti-cycle theorem chain.
 -/
 
 namespace ProjetCollatz
