@@ -162,7 +162,10 @@ to not exist: they require a perfect balance that generically doesn't hold.
 ### Literature comparison (Steiner 1977, Eliahou 1993, Simons-de Weger 2005):
 - Steiner: cycle length > 10^7 (using Baker's theorem on linear forms in logs)
 - Eliahou: no cycle of length 1 (i.e., no fixed point besides 1)
-- Simons-de Weger: no non-trivial cycle with k ≤ 68 steps and min > 2^40
+- Simons-de Weger (2005): no non-trivial m-cycles for m ≤ 68,
+  where m = number of local minima in the cycle (NOT the number of odd steps k).
+  Hercher (2023) extends this to m ≤ 90.
+  Note: m ≤ k always holds (each local minimum requires at least one odd step).
 -/
 
 /-- For a cycle of length k, we need 3^k < 2^S where S = aSumSeq n k.

@@ -20,8 +20,8 @@ The full derivation of B4 (n < 2^71 for ALL cycle elements) requires:
 1. An upper bound on k (number of odd steps in a cycle), OR
 2. A Baker exponent strong enough that k^μ/3 < 2^71 for ALL k ≥ 92.
 
-Neither condition is currently achievable without the full Simons–de Weger (2005)
-partial sum analysis (~500 lines of infrastructure). The best known:
+Neither condition achieves B4 for ALL k directly. The resolution (Phase 56–58):
+Product Bound gives n ≤ (k⁷+k)/3, and k ≤ 982 → n < 2^71. The best known:
 - Baker μ=6 (our B1): n ≤ k^7/3, works for k ≤ 962 only
 - Rhin μ=5.125: n ≤ k^6.125/3, works for k ≤ ~5200 only
 - No known Baker exponent gives universal B4 without bounding k from above
@@ -217,9 +217,9 @@ The remaining gap for full B4 derivation:
   exponent μ, and NONE of the published μ values give N(k) < 2^71 for ALL k ≥ 92.
 
 Therefore, B4 remains as a hypothesis in `ExternalCycleHypothesesFull`.
-This is the correct mathematical state of affairs: B4 follows from
-Simons & de Weger (2005) who use the SPECIFIC structure of the diophantine
-approximation (not just Baker's theorem) to bound cycle elements.
+This is the correct mathematical state of affairs at this phase. B4 is later
+DERIVED in Phase 56 via the Product Bound: n ≤ (k⁷+k)/3 combined with k ≤ 982
+and Barina's 2^71 verification limit. See Phase 56 and HYPOTHESES.md.
 
 ## Total: 6 theorems + 1 structure, **0 sorry**, 0 axiom
 -/

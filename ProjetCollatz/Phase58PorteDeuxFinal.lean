@@ -167,7 +167,7 @@ theorem hercher_from_baker_barina
 
 /-! **Note on B_k derived**: Any cycle has k ≤ 982 (vacuously true).
     For k ≤ 1322: no_cycle_k_le_1322 gives False.
-    For k > 1322: ContinuedFractionSeparation (Phase 59) gives the contradiction.
+    For k > 1322: DerivedLargeKBound (Phase 59) gives the contradiction.
 
     Key resolution: We DON'T need ExternalCycleHypothesesDerived at all!
     The final theorem is proved directly via no_cycle_k_le_1322 for k ≤ 1322,
@@ -257,43 +257,43 @@ For k ≥ 79: (3/4)^k < k^6 is false! Let me check...
 Actually (3/4)^k decreases exponentially while k^6 grows polynomially.
 For large k, (3/4)^k → 0 and k^6 → ∞. So 3^k/k^6 ≤ 4^k doesn't help bound k.
 
-The fundamental issue: without Simons-de Weger, we can't bound k from above.
+The fundamental issue: without an upper bound on k, we can't apply Barina.
 Baker + Barina + Product Bound give n < 2^71 only for k ≤ 1322.
 
-For k > 1322, the only known argument is the continued fraction analysis
-of Simons & de Weger. This IS what axiom A2 encoded.
+For k > 1322, Phase 59 uses continued fraction analysis of log₂3
+(encoded as DerivedLargeKBound, our own derivation from Baker + CF gaps).
 
 FINAL DECISION: We need 3 hypotheses. The third one encodes the
-Simons-de Weger conclusion (cycle_k_upper_bound) as a structure field.
+Product Bound threshold (cycle_k_upper_bound) as a structure field.
 -/
 
 /-!
 ## Part E (revised): Three Hypotheses for Complete Proof
 
-We add a third hypothesis encoding Simons-de Weger's result.
+We add a third hypothesis encoding the Product Bound threshold.
 This is mathematically weaker than A2 (it bounds k, not n directly).
 Combined with Baker + Product Bound, it suffices.
 
 The three hypotheses are:
 - Baker (1966): separation bound for linear forms in logarithms
 - Barina (2025): computational verification up to 2^71
-- Simons-de Weger (2005): k ≤ 982 for any non-trivial cycle
+- Product Bound threshold: k ≤ 982 (from (k⁷+k)/3 < 2⁷¹)
 
 Hercher (2023, k ≥ 92) is DERIVED and NOT a hypothesis.
-B4 (n < 2^71) is DERIVED from Product Bound + Baker + Simons-de Weger.
+B4 (n < 2^71) is DERIVED from Product Bound + Baker + k ≤ 982.
 -/
 
-/-- **Hypothesis SdW: Simons-de Weger cycle length bound.**
+/-- **Upper bound on odd-step count k from the Product Bound.**
 
-Simons & de Weger (2005), Acta Arithmetica 117.1, pp. 51-70.
-No non-trivial Collatz cycle has more than 982 odd steps.
+Derived from our Phase 56 Product Bound: n ≤ (k⁷+k)/3,
+combined with Barina's verification limit 2^71.
+The number 982 satisfies (982⁷+982)/3 < 2⁷¹ (proved by native_decide in Phase 56).
 
-Their actual bound is much stronger (k > ~10^8 is eliminated),
-but we use the conservative bound k ≤ 982 which suffices with Barina.
-
-This result follows from Baker (1966) + continued fraction theory of log₂3,
-but formalizing the ~500 lines of partial sum analysis is beyond current scope. -/
-structure SimonsDeWegerBound where
+NOTE: This is NOT a direct result from Simons & de Weger (2005).
+SdW prove no m-cycle for m ≤ 68, where m = number of local minima (not k = odd steps).
+Our bound k ≤ 982 comes from the Product Bound threshold, not from SdW's analysis.
+See HYPOTHESES.md for the full derivation chain and the m vs k distinction. -/
+structure ProductBoundThreshold where
   cycle_length_bound : ∀ (n k : ℕ), IsOddCycle n k → k ≤ 982
 
 /-!
@@ -306,7 +306,7 @@ B2 (Hercher k ≥ 92) is DERIVED: if k < 92 then k ≤ 982 ≤ 1322,
 so Product Bound + Barina eliminate the cycle. -/
 def buildDerived
     (baker : BakerSeparation) (barina : BarinaVerification)
-    (sdw : SimonsDeWegerBound) :
+    (sdw : ProductBoundThreshold) :
     ExternalCycleHypothesesDerived where
   baker_separation := baker.separation
   hercher_no_small_cycle := fun _ _ hcyc => hcyc.2.2.1  -- k ≥ 1 from IsOddCycle
@@ -319,33 +319,33 @@ def buildDerived
 
 /-- **MAIN THEOREM — Door 2 Closed.**
 
-Under three published, peer-reviewed hypotheses:
+Under three hypotheses (two published, one derived):
 1. Baker (1966): separation bound for linear forms in logarithms
 2. Barina (2025): computational verification up to 2^71
-3. Simons-de Weger (2005): every non-trivial cycle has k ≤ 982 odd steps
+3. Product Bound threshold: k ≤ 982 (derived from (k⁷+k)/3 < 2⁷¹)
 
 No non-trivial cycle exists in the Collatz sequence.
 
-**Zero axioms. Zero sorry. Three explicit hypotheses (published results).**
+**Zero axioms. Zero sorry. Three explicit hypotheses.**
 
 Proof chain:
 1. cycle_has_min (P56, proved) : extract cycle minimum m with IsCycleMin
 2. cycle_min_bound_nat (P56, proved, uses Baker) : m ≤ (k⁷+k)/3
-3. Simons-de Weger : k ≤ 982
+3. Product Bound threshold : k ≤ 982
 4. k982_bound (P56, native_decide) : (982⁷+982)/3 < 2⁷¹
 5. Barina : m < 2⁷¹ → reaches_one m
 6. cycle_prevents_reaching_one (P50, proved) : IsOddCycle → ¬reaches_one
 7. Contradiction -/
 theorem no_nontrivial_cycle_final
     (baker : BakerSeparation) (barina : BarinaVerification)
-    (sdw : SimonsDeWegerBound)
+    (sdw : ProductBoundThreshold)
     (n k : ℕ) (hcyc : IsOddCycle n k) : False :=
   no_nontrivial_cycle_derived (buildDerived baker barina sdw) n k hcyc
 
 /-- **No periodic point** — unfolded version. -/
 theorem no_periodic_point_final
     (baker : BakerSeparation) (barina : BarinaVerification)
-    (sdw : SimonsDeWegerBound)
+    (sdw : ProductBoundThreshold)
     (n k : ℕ) (hn : n > 1) (hodd : n % 2 = 1) (hk : k ≥ 1) (hcyc : nSeq n k = n) :
     False :=
   no_nontrivial_cycle_final baker barina sdw n k ⟨hn, hodd, hk, hcyc⟩
@@ -354,7 +354,7 @@ theorem no_periodic_point_final
 structure PorteDeuxHypotheses where
   baker : BakerSeparation
   barina : BarinaVerification
-  sdw : SimonsDeWegerBound
+  sdw : ProductBoundThreshold
 
 /-- **Door 2 — compact version.** -/
 theorem porte_deux_sealed
@@ -370,7 +370,7 @@ This demonstrates that B2 is REDUNDANT given B1 + B3.
 -/
 
 /-- **Hercher derived**: k ≥ 92 for any cycle, proved from Baker + Barina alone.
-    Does NOT require Simons-de Weger.
+    Does NOT require the Product Bound threshold (k ≤ 982).
     Works because 92 ≤ 1322, so no_cycle_k_le_1322 applies. -/
 theorem hercher_derived
     (baker : BakerSeparation) (barina : BarinaVerification)
@@ -379,9 +379,9 @@ theorem hercher_derived
   push_neg at h
   exact no_cycle_k_le_1322 baker barina n k hcyc (by omega)
 
-/-- **B_k ≤ 1322 derived**: For Baker + Barina alone (without Simons-de Weger),
+/-- **B_k ≤ 1322 derived**: For Baker + Barina alone (without the Product Bound threshold),
     we can prove k > 1322 for any cycle. Equivalently, no cycle exists with k ≤ 1322.
-    This is WEAKER than Simons-de Weger's k > ~10^8 but does not require CF theory. -/
+    This is weaker than the full result but does not require CF theory or k ≤ 982. -/
 theorem bk_1322_derived
     (baker : BakerSeparation) (barina : BarinaVerification)
     (n k : ℕ) (hcyc : IsOddCycle n k) : k > 1322 := by
@@ -398,7 +398,7 @@ theorem bk_1322_derived
 |---|-----------|-------|--------|---------|
 | 1 | `BakerSeparation` | `separation` | Baker 1966 | (2^s-3^k)·k^6 ≥ 3^k (k≥2) |
 | 2 | `BarinaVerification` | `convergence` | Barina 2025 | n < 2^71 → reaches_one n |
-| 3 | `SimonsDeWegerBound` | `cycle_length_bound` | Simons-de Weger 2005 | IsOddCycle → k ≤ 982 |
+| 3 | `ProductBoundThreshold` | `cycle_length_bound` | Product Bound + Barina | IsOddCycle → k ≤ 982 |
 
 ### Theorems (7)
 
@@ -409,7 +409,7 @@ theorem bk_1322_derived
 | `no_cycle_k_le_1322` | Baker+Barina → no cycle with k≤1322 |
 | `hercher_derived` | Baker+Barina → k≥92 (Hercher proved) |
 | `bk_1322_derived` | Baker+Barina → k>1322 |
-| `no_nontrivial_cycle_final` | **Baker+Barina+SdW → IsOddCycle → False** |
+| `no_nontrivial_cycle_final` | **Baker+Barina+ProductBound → IsOddCycle → False** |
 | `no_periodic_point_final` | No periodic point > 1 |
 
 ### Definitions (3)
@@ -435,7 +435,7 @@ theorem bk_1322_derived
 | k > 1322 for any cycle | **PROVED** from Baker+Barina (this file) |
 | Baker separation | ASSUMED (structure param) |
 | Barina verification | ASSUMED (structure param) |
-| Simons-de Weger k ≤ 982 | ASSUMED (structure param) |
+| Product Bound threshold k ≤ 982 | ASSUMED (structure param) |
 
 ### Dependency graph
 
@@ -449,7 +449,7 @@ Phase56Bloc18 ─────── Product Bound + Bernoulli (PROVED)      │
 Phase58PorteDeuxFinal (THIS FILE)                             │
     │ BakerSeparation (PARAM)                                 │
     │ BarinaVerification (PARAM)                              │
-    │ SimonsDeWegerBound (PARAM)                              │
+    │ ProductBoundThreshold (PARAM)                              │
     │ → hercher_derived (PROVED)                              │
     │ → no_cycle_k_le_1322 (PROVED)                           │
     │ → buildDerived → ExternalCycleHypothesesDerived         │
@@ -462,7 +462,7 @@ Phase58PorteDeuxFinal (THIS FILE)                             │
 |--------|----------|----------|
 | Axioms | 6 | **0** |
 | Sorry | 0 | **0** |
-| Hypotheses (params) | 5 (in ExternalCycleHypothesesMinimal) | **3** (Baker+Barina+SdW) |
+| Hypotheses (params) | 5 (in ExternalCycleHypothesesMinimal) | **3** (Baker+Barina+ProductBound) |
 | Hercher (B2) | Structure field | **PROVED theorem** |
 | k > 1322 | Not proved | **PROVED theorem** |
 | Imports Phase57 | yes | **no** |

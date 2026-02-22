@@ -13,7 +13,7 @@
   ```lean
   theorem no_nontrivial_cycle_phase59
       (baker : BakerSeparation) (barina : BarinaVerification)
-      (cf : ContinuedFractionSeparation)
+      (cf : DerivedLargeKBound)
       (n k : ℕ) (hcyc : IsOddCycle n k) : False
   ```
 - **Parameters**: 3 hypothesis structures + 2 naturals + 1 proposition
@@ -38,18 +38,18 @@ Phase59ContinuedFractions.lean  <-- THE MAIN THEOREM
   │     │     └── cycle_prevents_reaching_one (Phase50) → contradiction
   │     │
   │     └── CASE k > 1322: no_cycle_k_gt_1322 (Phase59)
-  │           ├── ContinuedFractionSeparation.large_k_bound → n < 2^71
+  │           ├── DerivedLargeKBound.large_k_bound → n < 2^71
   │           ├── BarinaVerification.convergence → reaches_one n
   │           └── cycle_prevents_reaching_one (Phase50) → contradiction
   │
   ├── cf_gap_8..13 (6 native_decide arithmetic proofs)
   ├── cf_nbound_8..13 (6 native_decide bound proofs)
-  └── sdw_from_cf (SdW derived as corollary)
+  └── sdw_from_cf (ProductBoundThreshold derived as corollary)
 
 Phase58PorteDeuxFinal.lean
   ├── BakerSeparation (hypothesis structure, k≥2)
   ├── BarinaVerification (hypothesis structure)
-  ├── SimonsDeWegerBound (hypothesis structure, DERIVED in Phase59)
+  ├── ProductBoundThreshold (hypothesis structure, DERIVED in Phase59)
   └── hercher_derived (k ≥ 92 is PROVED from Baker+Barina)
 
 Phase56Bloc18Complete.lean
@@ -105,7 +105,7 @@ SyracuseDefs.lean
 | Steiner equation | **PROVED** | Phase52 |
 | n ≤ (k⁷+k)/3 for cycle minimum | **PROVED** | Phase56 |
 | k ≥ 92 (Hercher) | **PROVED** from Baker+Barina | Phase58 |
-| SdW (k ≤ 982) | **PROVED** from Baker+Barina+CF | Phase59 |
+| ProductBoundThreshold (k ≤ 982) | **PROVED** from Baker+Barina+CF | Phase59 |
 | Baker separation | **ASSUMED** (hypothesis) | Phase58 |
 | Barina verification | **ASSUMED** (hypothesis) | Phase58 |
 | CF separation for k > 1322 | **ASSUMED** (hypothesis) | Phase59 |

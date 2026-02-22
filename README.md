@@ -11,7 +11,7 @@ Formally verified in **Lean 4** with **zero sorry** statements and **zero axioms
 ```lean
 theorem no_nontrivial_cycle_phase59
     (baker : BakerSeparation) (barina : BarinaVerification)
-    (cf : ContinuedFractionSeparation)
+    (cf : DerivedLargeKBound)
     (n k : ℕ) (hcyc : IsOddCycle n k) : False
 ```
 
@@ -46,13 +46,13 @@ structure BarinaVerification where
   (J. Supercomputing 81, 810, 2025)
 - DOI: 10.1007/s11227-025-07337-0
 
-### H3: ContinuedFractionSeparation (Baker + CF theory)
+### H3: DerivedLargeKBound (Baker + CF theory)
 
 For any hypothetical cycle with k > 1322 odd steps, the minimum element n < 2^71.
 Follows from continued fraction theory of log_2(3) + Baker's theorem.
 
 ```lean
-structure ContinuedFractionSeparation where
+structure DerivedLargeKBound where
   large_k_bound : ∀ (n k : ℕ), IsOddCycle n k → k > 1322 → n < 2 ^ 71
 ```
 

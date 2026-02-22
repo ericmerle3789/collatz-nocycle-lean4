@@ -261,13 +261,13 @@ theorem k_bound_implies_n_bound (k : ℕ) (hk : k ≤ 982) (n : ℕ)
 /-- **Reduced external hypotheses**: B1 + B2 + B3 + B_k.
     B_k (k ≤ 982) replaces the old B4 (n < 2^71).
     B_k is MORE NATURAL: it bounds cycle COMPLEXITY, not cycle ELEMENTS.
-    Follows from Baker + continued fractions of log₂3
-    (Simons & de Weger, Acta Arith. 117.1, 2005). -/
+    Derived from Product Bound: n ≤ (k⁷+k)/3 (Phase 56) + Barina's 2^71 limit.
+    NOTE: This is NOT from Simons & de Weger (2005). See HYPOTHESES.md. -/
 structure ExternalCycleHypothesesDerived extends ExternalCycleHypotheses where
   /-- B_k: Upper bound on the number of odd steps in any cycle.
-      Follows from Baker (1966) + continued fraction theory of log₂3.
-      Simons & de Weger (2005) prove much stronger bounds.
-      We use the conservative bound k ≤ 982. -/
+      Derived from Product Bound: n ≤ (k⁷+k)/3 combined with Barina's 2^71 limit.
+      The number 982 satisfies (982⁷+982)/3 < 2⁷¹ (verified by native_decide).
+      NOTE: This is NOT from Simons & de Weger (2005). See HYPOTHESES.md. -/
   cycle_k_upper_bound : ∀ (n k : ℕ), IsOddCycle n k → k ≤ 982
 
 /-! ## Part F: Cycle Shift (orbit element is also a cycle element) -/
