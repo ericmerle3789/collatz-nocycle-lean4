@@ -1,0 +1,44 @@
+-- Root file for Porte 2: Anti-Cycle Proof
+-- Imports ONLY the files needed for the no_nontrivial_cycle_phase59 theorem
+
+-- Core definitions
+import ProjetCollatz.CollatzCore
+import ProjetCollatz.CollatzOddInst
+import ProjetCollatz.SyracuseDefs
+
+-- Infrastructure (foundation lemmas)
+import ProjetCollatz.Phase6Lemmas
+import ProjetCollatz.Phase6BLemmas
+import ProjetCollatz.ModularHierarchy
+import ProjetCollatz.Phase7Theorems
+import ProjetCollatz.Phase7Sprint3
+import ProjetCollatz.Phase7Sprint5
+import ProjetCollatz.Phase8Transitions
+import ProjetCollatz.Phase9BinaryCascade
+import ProjetCollatz.Phase9CascadeInduction
+import ProjetCollatz.Phase9DescentChain
+import ProjetCollatz.Phase9FirstReturnMap
+import ProjetCollatz.Phase54EmpiricalHypotheses
+import ProjetCollatz.Phase9ErgodicDescent
+import ProjetCollatz.Phase12ReflectionCerts
+import ProjetCollatz.Phase13Stability
+import ProjetCollatz.Phase27DriftLemma
+import ProjetCollatz.Phase28CoverageUnification
+import ProjetCollatz.Phase29FullCoverage
+import ProjetCollatz.Phase30GlobalDescent
+import ProjetCollatz.Phase32CarryChain
+import ProjetCollatz.Phase33ConditionalCollatz
+import ProjetCollatz.HardLowerBoundPaper
+import ProjetCollatz.Phase45UpperBound
+import ProjetCollatz.Phase46CollatzReduction
+import ProjetCollatz.Phase47NoCycle
+
+-- Core Porte 2: Cycle Elimination
+import ProjetCollatz.Phase50CycleEquation
+import ProjetCollatz.Phase50Bridge
+import ProjetCollatz.Phase51ExternalHypotheses
+import ProjetCollatz.Phase52SteinerEquation
+import ProjetCollatz.Phase55CycleBound
+import ProjetCollatz.Phase56Bloc18Complete
+import ProjetCollatz.Phase58PorteDeuxFinal
+import ProjetCollatz.Phase59ContinuedFractions
