@@ -1,0 +1,86 @@
+{
+  "alpha_empirical": 0.686,
+  "per_k": {
+    "4": {
+      "matrix_size": 8,
+      "stochastic_dev": 0.0,
+      "alpha_spectral": 2.365105584514277,
+      "alpha_empirical": 0.686,
+      "alpha_deviation": 1.6791055845142773,
+      "abs_lambda2": 0.09393938130089229,
+      "spectral_gap": 0.9060606186991077,
+      "top5_modules": [
+        0.9999999999999993,
+        0.09393938130089229,
+        0.09393938130089229,
+        0.08525157116849615,
+        0.02419548433666354
+      ],
+      "is_aperiodic_irreducible": true,
+      "match_empirical": false
+    },
+    "5": {
+      "matrix_size": 16,
+      "stochastic_dev": 1.1102230246251565e-16,
+      "alpha_spectral": 2.081081283146361,
+      "alpha_empirical": 0.686,
+      "alpha_deviation": 1.3950812831463613,
+      "abs_lambda2": 0.12479520027187557,
+      "spectral_gap": 0.8752047997281245,
+      "top5_modules": [
+        1.0000000000000009,
+        0.12479520027187557,
+        0.1175275835908148,
+        0.1175275835908148,
+        0.09937456108179553
+      ],
+      "is_aperiodic_irreducible": true,
+      "match_empirical": false
+    },
+    "6": {
+      "matrix_size": 32,
+      "stochastic_dev": 1.1102230246251565e-16,
+      "alpha_spectral": 1.539418566643956,
+      "alpha_empirical": 0.686,
+      "alpha_deviation": 0.8534185666439559,
+      "abs_lambda2": 0.21450578599462375,
+      "spectral_gap": 0.7854942140053762,
+      "top5_modules": [
+        0.9999999999999993,
+        0.21450578599462375,
+        0.21450578599462375,
+        0.20335425104292068,
+        0.20335425104292068
+      ],
+      "is_aperiodic_irreducible": true,
+      "match_empirical": false
+    },
+    "7": {
+      "matrix_size": 64,
+      "stochastic_dev": 1.1102230246251565e-16,
+      "alpha_spectral": 1.6354076155409059,
+      "alpha_empirical": 0.686,
+      "alpha_deviation": 0.9494076155409058,
+      "abs_lambda2": 0.19487292187641425,
+      "spectral_gap": 0.8051270781235857,
+      "top5_modules": [
+        1.0000000000000004,
+        0.19487292187641425,
+        0.19487292187641425,
+        0.18864871317677273,
+        0.18864871317677273
+      ],
+      "is_aperiodic_irreducible": true,
+      "match_empirical": false
+    }
+  },
+  "stability": {
+    "alpha_spectral_mean": 1.905253262461375,
+    "alpha_spectral_std": 0.3350490071546236,
+    "stable": false
+  },
+  "verdict": {
+    "code": "PIVOT_OPTION_B",
+    "rationale": "\u03b1_spectral non stable avec k (std=0.335 \u2265 0.05). Le mod\u00e8le markovien mod 2^k ne capture pas uniform\u00e9ment la structure."
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "verdict": {
+    "code": "DIP_EARLY_STRONG",
+    "rationale": "Le 1er dip h < 4 arrive alors que bl(n) \u2265 80% bl_initial dans 3085/3200 (96.4%) orbites. h chute BIEN AVANT l'approche finale de 1, donc l'hypoth\u00e8se 'h \u2265 4 persiste \u27f9 pas de cycle' est rejet\u00e9e : h descend sous 4 alors que n est encore \u00e0 sa taille initiale. Signal tr\u00e8s clair, pas de bruit."
+  },
+  "caveats_red_team": [
+    "TAUTOLOGIE : 0 orbites 'jamais dip < 4' car Collatz conjecture empirique",
+    "NON-FALSIFIABLE : aucun cycle non-trivial < 2^68, hypoth\u00e8se brute intestable",
+    "Seuil absolu bl > 10 remplac\u00e9 par seuils relatifs (bl/bl_initial \u2265 0.5 et 0.8)"
+  ],
+  "per_range": {
+    "small (bl=10-14)": {
+      "range": "small (bl=10-14)",
+      "N": 1000,
+      "bl_range": [
+        11,
+        14
+      ],
+      "all_orbits_reach_1": true,
+      "frac_ge_4_mean": 0.17845178415575078,
+      "frac_ge_4_std": 0.06187933117616299,
+      "min_h_mean": 0.0,
+      "min_h_max": 0,
+      "min_h_histogram": {
+        "0": 1000
+      },
+      "first_below_4_rel_mean": 0.0166615988140102,
+      "first_below_4_rel_median": 0.0,
+      "bl_at_first_below_4_mean": 13.12,
+      "bl_at_first_below_4_median": 13.0,
+      "bl_ratio_at_first_below_4_mean": 0.984654761904762,
+      "bl_ratio_at_first_below_4_median": 1.0,
+      "orbits_never_below_4_TAUTOLOGIE_COLLATZ": 0,
+      "orbits_dip_bl_gt_10_absolute": 963,
+      "orbits_dip_bl_gte_half_initial": 1000,
+      "orbits_dip_bl_gte_80pct_initial": 963
+    },
+    "medium (bl=20-24)": {
+      "range": "medium (bl=20-24)",
+      "N": 1000,
+      "bl_range": [
+        21,
+        24
+      ],
+      "all_orbits_reach_1": true,
+      "frac_ge_4_mean": 0.30080292013920445,
+      "frac_ge_4_std": 0.07368813261026942,
+      "min_h_mean": 0.0,
+      "min_h_max": 0,
+      "min_h_histogram": {
+        "0": 1000
+      },
+      "first_below_4_rel_mean": 0.025580187488567184,
+      "first_below_4_rel_median": 0.010101010101010102,
+      "bl_at_first_below_4_mean": 22.76,
+      "bl_at_first_below_4_median": 23.0,
+      "bl_ratio_at_first_below_4_mean": 0.9771695840391493,
+      "bl_ratio_at_first_below_4_median": 1.0,
+      "orbits_never_below_4_TAUTOLOGIE_COLLATZ": 0,
+      "orbits_dip_bl_gt_10_absolute": 999,
+      "orbits_dip_bl_gte_half_initial": 999,
+      "orbits_dip_bl_gte_80pct_initial": 967
+    },
+    "large (bl=30-34)": {
+      "range": "large (bl=30-34)",
+      "N": 1000,
+      "bl_range": [
+        31,
+        34
+      ],
+      "all_orbits_reach_1": true,
+      "frac_ge_4_mean": 0.403507462771282,
+      "frac_ge_4_std": 0.078676186340192,
+      "min_h_mean": 0.0,
+      "min_h_max": 0,
+      "min_h_histogram": {
+        "0": 1000
+      },
+      "first_below_4_rel_mean": 0.029617972774482384,
+      "first_below_4_rel_median": 0.017241379310344827,
+      "bl_at_first_below_4_mean": 32.388,
+      "bl_at_first_below_4_median": 33.0,
+      "bl_ratio_at_first_below_4_mean": 0.9728930463314358,
+      "bl_ratio_at_first_below_4_median": 1.0,
+      "orbits_never_below_4_TAUTOLOGIE_COLLATZ": 0,
+      "orbits_dip_bl_gt_10_absolute": 1000,
+      "orbits_dip_bl_gte_half_initial": 1000,
+      "orbits_dip_bl_gte_80pct_initial": 965
+    },
+    "huge (bl=60-64)": {
+      "range": "huge (bl=60-64)",
+      "N": 200,
+      "bl_range": [
+        61,
+        64
+      ],
+      "all_orbits_reach_1": true,
+      "frac_ge_4_mean": 0.5949165683706318,
+      "frac_ge_4_std": 0.06788943166699861,
+      "min_h_mean": 0.0,
+      "min_h_max": 0,
+      "min_h_histogram": {
+        "0": 200
+      },
+      "first_below_4_rel_mean": 0.05223559635027211,
+      "first_below_4_rel_median": 0.03585006693440428,
+      "bl_at_first_below_4_mean": 59.615,
+      "bl_at_first_below_4_median": 61.0,
+      "bl_ratio_at_first_below_4_mean": 0.9436423583568364,
+      "bl_ratio_at_first_below_4_median": 0.967741935483871,
+      "orbits_never_below_4_TAUTOLOGIE_COLLATZ": 0,
+      "orbits_dip_bl_gt_10_absolute": 200,
+      "orbits_dip_bl_gte_half_initial": 200,
+      "orbits_dip_bl_gte_80pct_initial": 190
+    }
+  },
+  "aggregates": {
+    "total_orbits": 3200,
+    "dip_very_early_bl_gte_80pct": 3085,
+    "dip_early_bl_gte_half": 3199,
+    "dip_late_bl_lt_half": 1,
+    "never_dip_TAUTOLOGIE_COLLATZ": 0,
+    "fraction_very_early": 0.9640625,
+    "fraction_early_rel": 0.9996875
+  },
+  "test_1_trivial": {
+    "1": 0,
+    "2": 0,
+    "4": 0
+  },
+  "test_5_fake_cycle": {
+    "candidates": [
+      33,
+      65,
+      129,
+      257,
+      513,
+      1025
+    ],
+    "h_values": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "all_h_ge_4": true,
+    "syracuse_next": [
+      25,
+      49,
+      97,
+      193,
+      385,
+      769
+    ],
+    "is_real_cycle": false
+  }
+}
