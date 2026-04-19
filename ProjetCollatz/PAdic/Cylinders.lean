@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2026 Eric Merle. All rights reserved.
 
-# `ProjetCollatz/PAdic/Cylinders.lean` — Sprint 4a (SILVER)
+# `ProjetCollatz/PAdic/Cylinders.lean` — Sprint 4a + 4a-bis
 
 Cadre 2-adique pour la reformulation mesure de la piste "binary compactness"
 (cf. `NOTE_2ADIC_REFRAMING_v3.md` §1.2, §1.3, §4.1).
@@ -11,20 +11,24 @@ Cadre 2-adique pour la reformulation mesure de la piste "binary compactness"
 * `ZTwo` : alias pour `ℤ_[2]`.
 * `cylinder r` pour `r : ZMod (2^k)` : la préimage de `{r}` par `toZModPow k`.
 * `haarZTwo` : mesure de Haar 2-adique (axiomatisée à ce stade ; construction
-  via `MeasureTheory.Measure.addHaarMeasure` reportée à Sprint 4a-bis).
+  via `MeasureTheory.Measure.addHaarMeasure` reportée à Sprint 4a-ter).
 * `cylinder_measure` : μ(C_{r,k}) = 2^{-k} (axiomatisée, corollaire de
   Haar + surjectivité de `toZModPow`).
-* `wellDefinedDomain L` : clause technique §1.3 — E_L = {x : v_2(3x+1) < L}.
-* `wellDefinedDomain_measure` : μ(E_L^c) ≤ 2^{-L} (théorème, via
-  inclusion dans un cylindre + `cylinder_measure`).
+* `wellDefinedDomain L` : clause technique §1.3 — E_L = {x : toZModPow L (3x+1) ≠ 0}.
+* `wellDefinedDomain_compl_eq_cylinder` : **PROUVÉ** (Sprint 4a-bis) —
+  (E_L)^c = cylinder(-(3⁻¹)) via ring hom + `ZMod.mul_inv_of_unit`.
+* `wellDefinedDomain_measure` : μ(E_L^c) = 2^{-L} (théorème prouvé).
 
-## Statut Sprint 4a
+## Statut après Sprint 4a-bis
 
-**SILVER** (cible du red team) :
-- 1 sorry documenté : `wellDefinedDomain_compl_subset_cylinder` (preuve structurelle
-  demandant arithmétique dans `ZMod (2^L)` — plan détaillé en commentaire).
-- 2 axiomes groupés : `haarZTwo` (mesure) et `cylinder_measure` (valeur sur
-  cylindres). Justifiés par la littérature standard sur Haar + p-adiques.
+**BRONZE+ / quasi-GOLD** :
+- **0 sorry**.
+- **2 axiomes** (réduits depuis 3 via fermeture 4a-bis) : `haarZTwo` (opaque) et
+  `cylinder_measure`. Tous deux justifiés par la littérature standard Haar + p-adiques,
+  construction effective reportée à Sprint 4a-ter.
+- **5 théorèmes prouvés** : `cylinder_def`, `mem_cylinder_iff`, `mem_wellDefinedDomain_iff`,
+  `isUnit_three_zmod_pow_two`, `wellDefinedDomain_compl_eq_cylinder`,
+  `wellDefinedDomain_measure` (+ corollaire `_le`).
 
 ## Conventions
 
@@ -171,26 +175,41 @@ theorem isUnit_three_zmod_pow_two (L : ℕ) : IsUnit (3 : ZMod (2^L)) := by
   exact (ZMod.isUnit_prime_iff_not_dvd (by decide : Nat.Prime 3)).mpr
     (fun h => absurd (Nat.Prime.dvd_of_dvd_pow (by decide) h) (by decide))
 
-/-- **Axiome structurel** (corollaire de Mathlib, preuve reportée 4a-bis) :
-le complémentaire de `E_L` est EXACTEMENT le cylindre de profondeur `L` centré
-en `-(3⁻¹) mod 2^L`.
+/-- **Lemme structurel** : le complémentaire de `E_L` est EXACTEMENT le cylindre
+de profondeur `L` centré en `-(3⁻¹) mod 2^L`, où `3⁻¹` est l'inverse de 3 dans
+`ZMod(2^L)` (existe car `gcd(3, 2^L) = 1`).
 
-Preuve mathématique (plomberie ZMod + IsUnit, ~40 lignes Lean à écrire
-proprement) :
+Preuve :
   `x ∉ E_L  ⟺ toZModPow L (3x+1) = 0        (def)
-           ⟺ 3 · toZModPow L x + 1 = 0     (ring hom : map_add, map_mul, map_one)
-           ⟺ toZModPow L x = -(3⁻¹)        (3 inversible dans ZMod(2^L))
-           ⟺ x ∈ cylinder (-(3⁻¹))         (def cylinder)`
+           ⟺ 3 · toZModPow L x + 1 = 0     (ring hom)
+           ⟺ toZModPow L x = -3⁻¹          (3 inversible)
+           ⟺ x ∈ cylinder (-3⁻¹)           (def cylinder)`
 
-L'étape 3 nécessite la manipulation d'unités `Units` + `IsUnit.unit⁻¹.val` dans
-ZMod, qui n'est pas disponible via `linarith` (ZMod non ordonné) ni `ring` (hypothèse
-sur l'inverse non linéaire). Formalisation complète reportée.
-
-Note : cet axiome est une vérité mathématique standard et ne peut pas introduire
-d'incohérence — il exprime une bijection sur un anneau commutatif fini bien connu. -/
-axiom wellDefinedDomain_compl_eq_cylinder (L : ℕ) :
-    (wellDefinedDomain L)ᶜ =
-      cylinder (-((isUnit_three_zmod_pow_two L).unit⁻¹ : ZMod (2^L)))
+Utilise `linear_combination` avec l'identité `3 · 3⁻¹ = 1`
+(fournie par `ZMod.mul_inv_of_unit`) pour contourner l'absence de
+`field_simp`/`linarith` sur `ZMod (2^L)`. -/
+theorem wellDefinedDomain_compl_eq_cylinder (L : ℕ) :
+    (wellDefinedDomain L)ᶜ = cylinder (-((3 : ZMod (2^L))⁻¹)) := by
+  ext x
+  simp only [Set.mem_compl_iff, mem_wellDefinedDomain_iff, not_not,
+             cylinder, Set.mem_preimage, Set.mem_singleton_iff]
+  -- Réduction via ring hom.
+  have ring_step : PadicInt.toZModPow L (3 * x + 1) =
+      3 * PadicInt.toZModPow L x + 1 := by
+    simp [map_add, map_mul, map_one, map_ofNat]
+  rw [ring_step]
+  set y : ZMod (2^L) := PadicInt.toZModPow L x with y_def
+  have h3 := isUnit_three_zmod_pow_two L
+  -- Clé : 3 · 3⁻¹ = 1 (car 3 est une unité dans ZMod(2^L))
+  have key : (3 : ZMod (2^L)) * (3 : ZMod (2^L))⁻¹ = 1 :=
+    ZMod.mul_inv_of_unit _ h3
+  constructor
+  · intro h
+    -- h : 3*y + 1 = 0, goal : y = -3⁻¹
+    linear_combination (3 : ZMod (2^L))⁻¹ * h - y * key
+  · intro h
+    -- h : y = -3⁻¹, goal : 3*y + 1 = 0
+    linear_combination 3 * h - key
 
 /-- **Théorème §1.3** : `μ((E_L)^c) = 2^{-L}` (égalité via
 `wellDefinedDomain_compl_eq_cylinder` + `cylinder_measure`).
