@@ -1,6 +1,114 @@
 % 07-reproducibility.tex
-% Reproducibility ~1-2 pages. Placeholder for G3.1 skeleton ; drafted in G3.3 (autosign).
+% Section 7 — Reproducibility and audit trail. Drafted G3.3 (auditor autosign
+% per ADR-003). Purely factual; reproducibility artefacts are public.
 
 \section{Reproducibility and Audit Trail}
+\label{sec:reproducibility}
 
-Drafted in G3.3.
+The repository ships with an end-to-end reproducibility script and a
+continuous integration pipeline that enforce the axiom baseline on every
+push. An internal audit trail, kept under version control, records the
+decisions and verifications that led to the current state.
+
+\subsection{End-to-end verification script}
+
+The script \texttt{reproduce.sh} at the repository root performs a
+five-step verification and returns exit codes following the convention
+inherited from a companion project's internal audit :
+
+\begin{itemize}
+  \item \textbf{0} --- toolchain, build, axioms, and sorry checks all pass.
+  \item \textbf{1} --- toolchain mismatch (wrong Lean version pinned, or
+        missing \texttt{elan} / \texttt{lake}).
+  \item \textbf{2} --- library build failure, or a sorry-related warning
+        surfacing in the Lean build log.
+  \item \textbf{3} --- axiom drift : the \texttt{\#print axioms} probe
+        output for any audited theorem does not match the baseline in
+        \texttt{expected\_axioms.md}.
+  \item \textbf{4} --- \texttt{sorryAx} detected in the axiom chain of any
+        audited theorem.
+\end{itemize}
+
+The script is designed for independent reviewer use. After cloning the
+repository :
+
+\begin{lstlisting}[language=bash]
+git clone https://github.com/ericmerle3789/collatz-nocycle-lean4
+cd collatz-nocycle-lean4
+bash reproduce.sh
+# expected: exit 0 within ~5-10 minutes using the Mathlib olean cache
+\end{lstlisting}
+
+An optional flag \texttt{--from-source} skips the Mathlib prebuilt cache
+and rebuilds every dependency from source (approximately one hour and a
+half on a 2021 Apple~M1~Pro laptop). This is intended for deep audit
+scenarios where reviewers want to rule out cache tampering.
+
+\subsection{Continuous integration}
+
+The GitHub Actions workflow \texttt{.github/workflows/build.yml} runs
+\texttt{reproduce.sh} on every push and pull request to \texttt{main}.
+The workflow is pinned (runner, \texttt{elan} version, Mathlib cache
+fetch) to reduce drift in the CI environment. On failure, the verification
+logs are uploaded as a build artefact for post-mortem.
+
+A green CI run is evidence that the axiom baseline held at the time of
+the run; a red run identifies the failing step and, together with the
+uploaded logs, localises the regression. The current baseline (as of
+2026-04-22, commit \texttt{d2fa81a} plus G1--G2 consolidation) has been
+reproduced green in two consecutive CI runs and on the authors' local
+machine.
+
+\subsection{Axiom baseline documents}
+
+Three files are intentionally kept in the repository as reviewer
+deliverables :
+
+\begin{itemize}
+  \item \texttt{expected\_axioms.md} --- canonical baseline listing the
+        axiom set expected for each audited theorem, with a SHA-256
+        anchor of the initial probe snapshot.
+  \item \texttt{probes/check\_central\_axioms.lean} --- executable Lean
+        probe that prints the axiom dependencies of the ten audited
+        theorems.
+  \item \texttt{probes/check\_sorry.lean} --- dedicated probe relying on
+        Lean's own \texttt{sorryAx} detection rather than textual
+        \texttt{grep sorry}, which is insufficient when a \texttt{sorry}
+        is introduced through macro expansion, custom elaboration, or a
+        dependency.
+\end{itemize}
+
+\subsection{Audit trail}
+
+The directory \texttt{docs/BIBLE/} records the process that produced the
+current repository state. It contains, among other artefacts :
+
+\begin{itemize}
+  \item \texttt{JOURNAL.md} --- an append-only journal of major decisions
+        and commits.
+  \item \texttt{DECISIONS.md} --- the ADR (architectural decision record)
+        index.
+  \item \texttt{signoffs/} --- one file per validated development gate
+        (G0 baseline, G1 consolidation, G2 hardening, and so on).
+  \item \texttt{redteam/} --- reports from adversarial internal reviews
+        conducted before each major release event.
+  \item \texttt{env-snapshots/} --- dated captures of environment and
+        verification outputs at significant checkpoints.
+  \item \texttt{integrity\_logs/} --- SHA-256 digests of the Lean source
+        tree at gate boundaries.
+  \item \texttt{LIMITATIONS.md} --- an explicit list of known limitations
+        and out-of-scope items at the current stage.
+\end{itemize}
+
+These artefacts are not claimed to replace a published peer review; their
+purpose is to provide an auditable record that an external reviewer can
+cross-check against the code and the paper.
+
+\subsection{Related internal artefact}
+
+The author also maintains a local, non-public backup of an earlier
+formalisation of a related but distinct result (the so-called
+\emph{Junction Theorem}, conditional on a different set of hypotheses).
+This backup is preserved solely as a source of templates (LaTeX preamble,
+verification scripts, probe skeletons) and is not referenced further in
+this paper, to avoid citing unpublished material as prior work.
