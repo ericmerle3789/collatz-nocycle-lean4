@@ -38,15 +38,14 @@ recent milestones directly relevant to our formulation :
         positive integer below \(2^{71}\) reaches \(1\) under
         \(\collatz\). This in particular excludes any nontrivial cycle
         whose minimum value is below that threshold.
-  \item Hercher~\cite{Hercher2023} excludes Collatz cycles for small
-        values of the cycle-length parameter \(k\).
-        % [ERIC-REVIEW] H5 mitigation: the original draft said "m-cycle
-        % for m <= 91" which conflates m-cycle notation from different
-        % references. Please restate the exact bound from Hercher's 2023
-        % paper (m = ? or k = ?) and ensure we cite the precise statement
-        % rather than paraphrasing.
-        Earlier analytic bounds of Simons--de Weger
-        type~\cite{SimonsDeWeger2005} remain influential background.
+  \item Hercher~\cite{Hercher2023} proves that no Collatz \(m\)-cycle
+        exists for \(m \leq 91\), where \(m\) denotes the number of
+        local minima along the cycle (a parameter distinct from the
+        cycle-length parameter \(k\) used in the present paper).
+        Together with the earlier analytic bounds of Simons--de Weger
+        type~\cite{SimonsDeWeger2005} and subsequent refinements, this
+        is the sharpest explicit exclusion for small-\(m\) cycles
+        available at the time of writing.
   \item Several recent formalisations in interactive theorem provers
         target partial results on the cycle problem. We do not attempt
         an exhaustive survey here ;

@@ -36,21 +36,18 @@ value other than \(1\).
 
 \subsection{The \texttt{IsOddCycle} predicate}
 
-% [ERIC-REVIEW] The natural-language rendering of IsOddCycle below should
-% be independently verified against the Lean definition in
-% ProjetCollatz/Phase50CycleEquation.lean. The exact formal shape may
-% differ slightly from the description here (e.g.\ using increment
-% sequences rather than iterate tuples).
-
 The repository's central predicate is
 \(\mathtt{IsOddCycle} : \Nat \to \Nat \to \mathtt{Prop}\). Intuitively,
-\texttt{IsOddCycle n k} asserts that the Syracuse
-orbit starting at \(n\) is periodic of period exactly \(k\), with \(n\)
-being the smallest value in the orbit. The theorems proved in the
-repository's Phase~50 modules establish the equivalence of this predicate
-with several classical formulations, including the \emph{Steiner
-equation} \(n_0 \cdot d = \text{corrSum}(A)\) where \(A\) is the sequence
-of \(2\)-adic valuations along the orbit and \(d = 2^S - 3^k\) with
+\texttt{IsOddCycle n k} asserts that \(n\) is a positive odd integer
+strictly greater than \(1\), and that the Syracuse orbit of length
+\(k\) starting at \(n\) returns to \(n\). The formal definition does
+not require \(n\) to be minimal along the orbit; any element of a
+cycle satisfies the predicate (for its own length \(k\) and possibly
+a rotated starting index). The theorems proved in the repository's
+Phase~50 modules establish the equivalence of this predicate with
+several classical formulations, including the \emph{Steiner equation}
+\(n_0 \cdot d = \text{corrSum}(A)\) where \(A\) is the sequence of
+\(2\)-adic valuations along the orbit and \(d = 2^S - 3^k\) with
 \(S = \sum_i A_i\)~\cite{Steiner1977}.
 
 In the formal statement of our main theorem, \texttt{IsOddCycle n k} plays
