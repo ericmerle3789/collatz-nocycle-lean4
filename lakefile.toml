@@ -1,6 +1,6 @@
 name = "ProjetCollatz"
 version = "1.0.0"
-defaultTargets = ["projetcollatz"]
+defaultTargets = ["ProjetCollatz", "projetcollatz"]
 
 [[lean_lib]]
 name = "ProjetCollatz"
