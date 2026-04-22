@@ -1,6 +1,156 @@
 % 06-lean-formalization.tex
-% Lean formalization ~3 pages. Placeholder for G3.1 skeleton ; drafted in G3.2 (autosign).
+% Section 6 — Lean formalization. Drafted G3.2 (auditor autosign per ADR-003).
+% Technical description of the Lean 4 formalisation, axiom baseline, and
+% structural choices. Everything stated here is independently verifiable by
+% running `./reproduce.sh` from the repo root.
 
-\section{Lean Formalization}
+\section{Lean Formalisation}
+\label{sec:lean}
 
-Drafted in G3.2.
+This section describes the Lean~4 formalisation of the main result and the
+choices made to preserve its auditability. All claims are reproducible
+by cloning the repository and running \texttt{./reproduce.sh}
+(see Section~\ref{sec:reproducibility}).
+
+\subsection{Toolchain and dependencies}
+
+The formalisation uses \textbf{Lean~4, toolchain \texttt{leanprover/lean4:v4.27.0}},
+pinned in the repository file \texttt{lean-toolchain}. The dependency on
+\emph{Mathlib} is pinned to revision \texttt{v4.27.0} in \texttt{lakefile.toml}
+(compatible with the Lean toolchain). Upgrading either component is a
+classified~P1 action requiring an ADR entry (see
+\texttt{docs/BIBLE/DECISIONS.md}) and passes of the pre-commit verification
+protocol.
+
+\subsection{Repository structure}
+
+The central result is stated and proved in the module
+\texttt{ProjetCollatz.Phase59ContinuedFractions}. The broader library
+\texttt{ProjetCollatz} consists of 36 \texttt{.lean} files organised in
+development phases (\texttt{Phase6} through \texttt{Phase59}), totalling 393
+theorems and lemmas. The top-level file \texttt{ProjetCollatz.lean} imports
+the modules required for the main theorem.
+
+\subsection{The central theorem}
+
+The statement of the main theorem, as formalised, is :
+
+\begin{lstlisting}[caption={Central theorem declaration (\texttt{Phase59ContinuedFractions.lean}:236).},label={lst:central}]
+theorem no_nontrivial_cycle_phase59
+    (baker : BakerSeparation) (barina : BarinaVerification)
+    (cf : DerivedLargeKBound)
+    (n k : N) (hcyc : IsOddCycle n k) : False
+\end{lstlisting}
+
+The theorem takes the three external hypotheses as explicit
+parameters (see Section~\ref{sec:hypotheses}) and concludes
+\texttt{False} under the assumption that \(n\) and \(k\) define a nontrivial
+odd cycle. The proof is a case split on \(k \leq 1322\) versus \(k > 1322\),
+closed by distinct sub-lemmas (\texttt{no\_cycle\_k\_le\_1322} and
+\texttt{no\_cycle\_k\_gt\_1322}). All intermediate lemmas of the central
+chain are fully proved in Lean with no \texttt{sorry}.
+
+\subsection{Structures instead of axioms}
+
+For each of the three external hypotheses (see Section~\ref{sec:hypotheses}),
+we deliberately use a Lean \texttt{structure} rather than a user-declared
+\texttt{axiom} :
+
+\begin{lstlisting}[caption={\texttt{DerivedLargeKBound} as a structure (\texttt{Phase59ContinuedFractions.lean}:115).}]
+structure DerivedLargeKBound where
+  large_k_bound : \forall (n k : N),
+    IsOddCycle n k \rightarrow k > 1322 \rightarrow n < 2 ^ 71
+\end{lstlisting}
+
+This choice has two consequences :
+
+\begin{enumerate}
+  \item A Lean \texttt{structure} field is \emph{not} an axiom of the
+        ambient theory. Its content must be provided by whoever
+        instantiates the structure, and the proof term that does so is
+        itself subject to axiom auditing. Replacing the \texttt{structure}
+        with a proven theorem is therefore a strictly additive refinement
+        that does not require changing the statement of the main theorem.
+  \item The \texttt{\#print axioms} probe on the main theorem reports only
+        those axioms that its proof actually uses, \emph{not} those that
+        would be needed to prove the structural content of the hypothesis.
+        This is the basis of the axiom discipline recorded in
+        \texttt{expected\_axioms.md}.
+\end{enumerate}
+
+\subsection{Axiom baseline}
+\label{sec:axioms}
+
+The \texttt{\#print axioms} probe on the main theorem yields :
+
+\begin{lstlisting}[language={}]
+'ProjetCollatz.no_nontrivial_cycle_phase59' depends on axioms:
+  [propext, Classical.choice, Quot.sound]
+\end{lstlisting}
+
+These are the three standard kernel axioms of Mathlib, required by
+essentially every non-constructive theorem that uses classical reasoning
+and quotient types. No user-declared \texttt{axiom} appears in
+\texttt{ProjetCollatz}. The same three axioms and no others appear for the
+variant theorems \texttt{no\_nontrivial\_cycle\_\{final,derived,full\}} and
+the immediate sub-lemmas \texttt{no\_cycle\_k\_le\_1322},
+\texttt{no\_cycle\_k\_gt\_1322}, and \texttt{sdw\_from\_cf}.
+
+The file \texttt{expected\_axioms.md} is the canonical baseline against which
+all commits are checked. Its contents are enforced by
+\texttt{probes/check\_central\_axioms.lean} invoked from
+\texttt{reproduce.sh}, which fails with exit code~3 on any axiom drift.
+
+\subsection{Auxiliary lemmas using \texttt{native\_decide}}
+
+Certain computational facts used to justify the content of
+\texttt{DerivedLargeKBound} at the mathematical level are, in the repository,
+stated as standalone auxiliary lemmas. Examples include arithmetic
+separations such as :
+
+\begin{lstlisting}[caption={Representative \texttt{native\_decide} lemma (\texttt{Phase59ContinuedFractions.lean}:128).}]
+theorem cf_gap_8 : 2 * (2 : N) ^ 1055 \geq 3 * (3 : N) ^ 665 := by native_decide
+\end{lstlisting}
+
+These lemmas depend on the tactic \texttt{native\_decide}, which in Lean~4
+introduces the axioms \texttt{Lean.ofReduceBool} and
+\texttt{Lean.trustCompiler}. The \texttt{\#print axioms} probe confirms
+this :
+
+\begin{lstlisting}[language={}]
+'ProjetCollatz.cf_gap_8' depends on axioms:
+  [propext, Lean.ofReduceBool, Lean.trustCompiler]
+\end{lstlisting}
+
+\begin{remark}[Isolation of \texttt{native\_decide} from the central chain]
+At the current stage, \texttt{cf\_gap\_\*} and related
+\texttt{cf\_nbound\_\*} lemmas are \emph{not} transitively used by the main
+theorem, because \texttt{DerivedLargeKBound} is taken as an hypothesis
+(a \texttt{structure} parameter). Consequently,
+\texttt{Lean.ofReduceBool} and \texttt{Lean.trustCompiler} do not appear in
+the axiom list of \texttt{no\_nontrivial\_cycle\_phase59}. Should future
+work (see Section~\ref{sec:conclusion}) promote
+\texttt{DerivedLargeKBound} from a structure to a proven theorem using
+these lemmas, these two axioms would enter the central chain. We plan to
+declare them explicitly in \texttt{expected\_axioms.md} at that point and
+to acknowledge them in a subsequent version of this paper.
+\end{remark}
+
+\subsection{What the code does not claim}
+
+To avoid any misreading, we make explicit what the Lean formalisation
+\emph{does not} establish :
+
+\begin{itemize}
+  \item It does not prove the Collatz conjecture.
+  \item It does not prove the three hypotheses listed in
+        Section~\ref{sec:hypotheses}; it conditionally concludes from
+        them.
+  \item It does not prove the content of \texttt{DerivedLargeKBound}; it
+        uses the structure as a parameter. The mathematical justification
+        for this content is sketched in Section~\ref{sec:hypotheses}, but
+        its full formalisation is planned for a future version.
+\end{itemize}
+
+The paper and the repository are intentionally conservative about these
+boundaries.
