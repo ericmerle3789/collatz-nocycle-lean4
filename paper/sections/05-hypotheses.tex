@@ -1,6 +1,151 @@
 % 05-hypotheses.tex
-% Hypotheses ~3 pages. Placeholder for G3.1 skeleton ; drafted in G3.5 [ERIC-REVIEW].
+% Section 5 — Hypotheses. Drafted G3.5. [ERIC-REVIEW] on mathematical details.
 
 \section{Hypotheses}
+\label{sec:hypotheses}
 
-[ERIC-REVIEW] Placeholder --- filled in G3.5.
+The main theorem depends on three structural hypotheses, each formalised
+as a Lean \texttt{structure} and supplied to the theorem as an explicit
+parameter. Two of the three correspond to published results; the third is
+derived from a continued-fractions argument and is stated as a conjecture
+to be formalised in future work. This section describes each hypothesis
+in turn.
+
+\subsection{\textsf{BakerSeparation} (B1)}
+
+\begin{hypothesis}[Baker separation, formalised]\label{hyp:baker}
+There exists a structural witness \textsf{BakerSeparation} providing the
+Lean function
+\[
+\forall\, s, k \in \Nat,\ s \geq 1 \wedge k \geq 2 \wedge 2^s > 3^k \;\Longrightarrow\;
+(2^s - 3^k) \cdot k^6 \geq 3^k .
+\]
+\end{hypothesis}
+
+% [ERIC-REVIEW] The constant exponent 6 in k^6 is a deliberate weakening
+% of the Rhin bound. Please verify the following explanation is accurate.
+
+The inequality corresponds to a lower bound on \(|s \log 2 - k \log 3|\)
+of the form \(|s \log 2 - k \log 3| \gtrsim k^{-\mu}\), where
+\(\mu\) is an irrationality-measure-type exponent for \(\log_2 3\). Taking
+\(\mu = 6\) is strictly weaker than Rhin's finer bound
+\(\mu(\log_2 3) \leq 5.125\)~\cite{Rhin1987}; we use \(\mu = 6\) in the
+Lean formulation because it admits a clean integer statement and matches
+the subsequent arithmetic at the price of a slightly larger threshold for
+the case split (see \textsf{DerivedLargeKBound} below).
+
+Hypothesis~\textsf{BakerSeparation} is a direct consequence of Baker's
+theorem on linear forms in logarithms of algebraic
+numbers~\cite{Baker1966}, strengthened by subsequent work on effective
+irrationality measures. We supply it as a structural hypothesis in the
+Lean formalisation to keep the main theorem conditional on a clearly
+identified published result, rather than as a user-declared axiom.
+
+\subsection{\textsf{BarinaVerification} (B2)}
+
+\begin{hypothesis}[Barina computational verification, formalised]\label{hyp:barina}
+There exists a structural witness \textsf{BarinaVerification} providing
+the Lean function
+\[
+\forall\, n \in \Nat,\ n > 0 \wedge n < 2^{71} \;\Longrightarrow\;
+\text{\texttt{reaches\_one}}(n).
+\]
+\end{hypothesis}
+
+This hypothesis corresponds to Barina's published computational
+verification~\cite{Barina2025} that every positive integer below
+\(2^{71}\) reaches \(1\) under the Collatz iteration. Since a Collatz
+cycle containing a value below \(2^{71}\) would contradict this
+verification, \textsf{BarinaVerification} is equivalent, for our
+purposes, to a small-\(n\) exclusion.
+
+The DOI \texttt{10.1007/s11227-025-07337-0} has been resolved as of
+2026-04-22 (see \texttt{docs/BIBLE/env-snapshots/2026-04-22-doi-check.txt}
+in the repository).
+
+\subsection{\textsf{DerivedLargeKBound} (B3)}
+
+\begin{hypothesis}[Derived large-\(k\) bound]\label{hyp:derived}
+There exists a structural witness \textsf{DerivedLargeKBound} providing
+the Lean function
+\[
+\forall\, n, k \in \Nat,\ \text{\texttt{IsOddCycle}}\,n\,k \wedge k > 1322
+\;\Longrightarrow\; n < 2^{71}.
+\]
+\end{hypothesis}
+
+% [ERIC-REVIEW] This is the pivotal hypothesis. The summary below
+% sketches the mathematical argument intended. Please verify : (i) the
+% continued-fractions argument is stated correctly, (ii) the role of
+% Baker with mu=6 leading to the 1322 threshold is summarised faithfully,
+% (iii) we do not over-claim.
+
+Unlike the first two, \textsf{DerivedLargeKBound} is not, to our
+knowledge, a result published as a standalone theorem. The mathematical
+justification for its content rests on two ingredients :
+
+\begin{enumerate}
+  \item The continued-fraction expansion of \(\log_2 3\), whose
+        convergents \(p_i / q_i\) approximate \(\log_2 3\) optimally
+        among rationals with denominator at most \(q_i\) (Legendre's
+        best-approximation theorem, see for example
+        \cite{HardyWright1979,Khinchin1964}). The sequence of denominators
+        \(q_i\) is well studied; the ones relevant here are bracketed by
+        the threshold \(k = 1322\) in the formal statement.
+  \item The Baker-type inequality of Hypothesis~\ref{hyp:baker} combined
+        with a product-bound argument on the sequence of odd iterates in
+        a hypothetical cycle. Given a putative cycle of length \(k\)
+        with seed \(n\), one obtains an inequality of the form
+        \(n \lesssim F(k)\) where \(F\) is explicit in terms of
+        \((2^s - 3^k)\)-type quantities.
+\end{enumerate}
+
+Combining the two, one can derive a bound \(n < 2^{71}\) for all cycle
+parameters \(k\) above a computable threshold. The specific threshold
+\(1322\) reflects the choice \(\mu = 6\) in Hypothesis~\ref{hyp:baker} and
+the precise windows of continued-fraction convergents that the argument
+uses; a finer \(\mu\) (e.g.\ Rhin's \(5.125\)) would permit a lower
+threshold. A full mathematical derivation of the specific value \(1322\)
+in the repository's proof supporting modules is outside the scope of this
+paper and is the target of the future work sketched in
+Section~\ref{sec:conclusion}.
+
+% [ERIC-REVIEW] We deliberately do NOT claim the threshold 1322 is tight.
+% Please verify this restraint is correct and matches the proof files.
+
+\begin{remark}[Why a \texttt{structure}, not an \texttt{axiom}]
+We emphasise that, in the Lean formalisation,
+\textsf{DerivedLargeKBound} is a \emph{structure}, not a user-declared
+axiom. Consequently, promoting it to a proven Lean theorem (the target of
+Phase Legendre; see Section~\ref{sec:conclusion}) would be strictly
+additive : the statement of the main theorem
+(Theorem~\ref{thm:main}) would not change, only its axiom list would be
+updated to reflect the additional machinery used in the new proof of the
+former structure (specifically, the \texttt{native\_decide} axioms
+\texttt{Lean.ofReduceBool} and \texttt{Lean.trustCompiler}, as discussed
+in Section~\ref{sec:axioms}).
+\end{remark}
+
+\subsection{Integrity of the conditional form}
+
+We consider the conditional form \emph{Baker + Barina + DerivedLargeKBound
+\(\Rightarrow\) no nontrivial odd cycle} to be a meaningful intermediate
+step, for three reasons :
+
+\begin{enumerate}
+  \item Both \textsf{BakerSeparation} and \textsf{BarinaVerification}
+        are backed by published, peer-reviewed work.
+  \item \textsf{DerivedLargeKBound}, while not independently published,
+        is a \emph{derivation} from published ingredients; its content
+        is not circularly tied to the conclusion of the main theorem.
+  \item The partition \(k \leq 1322\) (Barina-driven) versus \(k > 1322\)
+        (CF-derived) is decided by a named threshold, making the
+        boundary between published and derived ingredients explicit in
+        the code rather than buried in a proof.
+\end{enumerate}
+
+% [ERIC-REVIEW] The three-reason statement above defends against a
+% potential reviewer attack along the lines of "DerivedLargeKBound is a
+% petitio principii". Please verify you are comfortable with this
+% articulation. If we anticipate this attack, it should probably be
+% addressed in the introduction as well.
