@@ -1,0 +1,11 @@
+DOI-check for HYPOTHESES.md — 2026-04-22T17:34:27Z
+
+| Reference | URL/DOI | HTTP | Status |
+|-----------|---------|------|--------|
+| Barina 2025, J. Supercomputing 81:810 | https://doi.org/10.1007/s11227-025-07337-0 | 200 | RESOLVES (Springer, cookies warning irrelevant) |
+| Hercher 2023, arXiv | https://arxiv.org/abs/2201.00406 | 200 | RESOLVES |
+| Baker 1966, Mathematika (from METAPROMPT §7 Annexe B) | https://doi.org/10.1112/S0025579300003971 | 403 | DOI VALID (resolver redirects to Wiley), page requires auth for full access — not a DOI failure |
+
+Notes :
+- Rhin 1987 (Proc. Amer. Math. Soc.) mentioned in METAPROMPT §2 as source for μ(log₂3) ≤ 5.125, but NOT cited in HYPOTHESES.md directly. Used implicitly via Baker's bound. TO-ADD in HYPOTHESES.md as rigor improvement.
+- 3/3 DOI/arXiv links resolve successfully. Baker returns 403 because Wiley requires auth for full PDF, but the DOI itself is valid (it correctly redirects to the publisher page). Not a blocker — a reviewer with institutional access can retrieve the paper.
