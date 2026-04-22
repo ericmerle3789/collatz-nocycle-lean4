@@ -1,6 +1,105 @@
 % 02-introduction.tex
-% Introduction ~3 pages. Placeholder for G3.1 skeleton ; drafted in G3.6 [ERIC-REVIEW].
+% Section 2 — Introduction. Drafted G3.6. [ERIC-REVIEW] on positioning,
+% state-of-the-art references, and contribution framing.
 
 \section{Introduction}
+\label{sec:introduction}
 
-[ERIC-REVIEW] Placeholder --- filled in G3.6.
+\subsection{The Collatz conjecture}
+
+The Collatz conjecture, attributed to Lothar Collatz around 1937,
+concerns the behaviour of the map
+\[
+\collatz : \Nat \to \Nat, \qquad
+\collatz(n) = \begin{cases} n / 2 & \text{if } n \text{ is even,}\\ 3n + 1 & \text{if } n \text{ is odd.}\end{cases}
+\]
+The conjecture asserts that, for every positive integer \(n\), the orbit
+\(n, \collatz(n), \collatz^2(n), \ldots\) eventually reaches \(1\).
+Equivalently, one can show that the conjecture is equivalent to the
+simultaneous absence of two phenomena : divergent orbits, and
+\emph{nontrivial cycles} (periodic orbits different from the loop
+\(1 \mapsto 4 \mapsto 2 \mapsto 1\)).
+
+% [ERIC-REVIEW] Historical attribution "around 1937" — please confirm or
+% refine. Some sources attribute earlier/later. Non-critical but should
+% be accurate.
+
+\subsection{State of the art on cycle exclusion}
+
+The \emph{cycle problem} has attracted sustained attention. Representative
+recent milestones :
+
+\begin{itemize}
+  \item Barina~\cite{Barina2025} has verified computationally that every
+        positive integer below \(2^{71}\) reaches \(1\) under
+        \(\collatz\). This in particular excludes any nontrivial cycle
+        whose minimum value is below that threshold.
+  \item Hercher~\cite{Hercher2023} has shown that no Collatz \(m\)-cycle
+        exists for \(m \leq 91\), building on prior
+        Simons--de Weger--type analysis~\cite{SimonsDeWeger2005}.
+  \item Several formalisations in interactive theorem provers have
+        appeared recently, targeting partial results on the cycle
+        problem with varying scope and rigour levels. The present work
+        differs from these efforts in its specific conditional form and
+        in the explicit management of its axiom baseline
+        (see Section~\ref{sec:lean}).
+\end{itemize}
+
+% [ERIC-REVIEW] The "several formalisations" sentence is deliberately
+% vague ; if you want to name specific prior formalisations by other
+% authors (cf. your memory of e.g. johnjanik, fc0web, kaiarasanen) please
+% provide the names and we'll cite them factually. Current phrasing is
+% safe but less informative.
+
+Against this backdrop, the present paper does \emph{not} claim to resolve
+the Collatz conjecture nor the cycle problem unconditionally. It
+formalises, in Lean~4, a conditional non-existence of nontrivial odd
+cycles, under three explicit hypotheses (Section~\ref{sec:hypotheses}).
+
+\subsection{Contributions}
+
+% [ERIC-REVIEW] contributions phrasing. Please confirm these are
+% accurate and appropriately modest.
+
+The main contributions of this paper and the accompanying repository are
+the following :
+
+\begin{enumerate}
+  \item A Lean~4 formalisation of a conditional cycle-exclusion theorem
+        (Theorem~\ref{thm:main}) whose central axiom chain is exactly
+        \([\texttt{propext},\, \texttt{Classical.choice},\,
+        \texttt{Quot.sound}]\), the three standard kernel axioms of
+        Mathlib.
+  \item An explicit, auditable separation between \emph{published}
+        hypotheses (\textsf{BakerSeparation} from~\cite{Baker1966}, and
+        \textsf{BarinaVerification} from~\cite{Barina2025}) and a
+        \emph{derived} hypothesis (\textsf{DerivedLargeKBound}),
+        formalised as named Lean structures rather than as
+        user-declared axioms.
+  \item An end-to-end reproducibility pipeline (\texttt{reproduce.sh}
+        with five exit codes, matching probes in
+        \texttt{probes/check\_central\_axioms.lean} and
+        \texttt{probes/check\_sorry.lean}, and a continuous integration
+        workflow) that enforces the axiom baseline on every commit.
+  \item A public audit trail under \texttt{docs/BIBLE/} documenting the
+        gating decisions, risk register, limitations, and adversarial
+        reviews that produced the current state of the repository.
+\end{enumerate}
+
+\subsection{Organisation}
+
+The remainder of the paper is organised as follows.
+Section~\ref{sec:preliminaries} fixes notation and defines the formal
+predicate \texttt{IsOddCycle} used throughout.
+Section~\ref{sec:main} states the main theorem
+and sketches its proof structure. Section~\ref{sec:hypotheses} details
+the three hypotheses, distinguishing published from derived components.
+Section~\ref{sec:lean} describes the Lean~4 formalisation, including the
+axiom baseline. Section~\ref{sec:reproducibility} gives the
+reproducibility pipeline. Section~\ref{sec:conclusion} identifies the
+main item of future work (Phase Legendre : promoting
+\textsf{DerivedLargeKBound} from a structure to a proven theorem) and
+discusses implications.
+
+% [ERIC-REVIEW] If desired, we can add a brief "acknowledgements" stub
+% here for potential reviewers / colleagues. Currently omitted.
