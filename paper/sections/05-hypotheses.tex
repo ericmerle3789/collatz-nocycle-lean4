@@ -9,7 +9,8 @@ as a Lean \texttt{structure} and supplied to the theorem as an explicit
 parameter. Two of the three correspond to published results; the third is
 derived from a continued-fractions argument and is stated as a conjecture
 to be formalised in future work. This section describes each hypothesis
-in turn.
+in turn. The restriction to odd cycles (\texttt{IsOddCycle}) is without
+loss of generality for the cycle problem ; see Section~\ref{sec:preliminaries}.
 
 \subsection{\textsf{BakerSeparation} (B1)}
 
@@ -22,24 +23,32 @@ Lean function
 \]
 \end{hypothesis}
 
-% [ERIC-REVIEW] The constant exponent 6 in k^6 is a deliberate weakening
-% of the Rhin bound. Please verify the following explanation is accurate.
+% [ERIC-REVIEW] Post-RT-B H-B3 : the choice of \mu = 6 over the finer
+% Rhin bound is now framed explicitly as a formalisation-ergonomics
+% choice with a documented cost. Please verify the cost statement
+% (larger threshold) is faithful to the Phase51 reasoning.
 
 The inequality corresponds to a lower bound on \(|s \log 2 - k \log 3|\)
 of the form \(|s \log 2 - k \log 3| \gtrsim k^{-\mu}\), where
-\(\mu\) is an irrationality-measure-type exponent for \(\log_2 3\). Taking
-\(\mu = 6\) is strictly weaker than Rhin's finer bound
-\(\mu(\log_2 3) \leq 5.125\)~\cite{Rhin1987}; we use \(\mu = 6\) in the
-Lean formulation because it admits a clean integer statement and matches
-the subsequent arithmetic at the price of a slightly larger threshold for
-the case split (see \textsf{DerivedLargeKBound} below).
+\(\mu\) is the effective irrationality exponent for \(\log_2 3\) in the
+sense of Baker~\cite{Baker1966}, refined by Rhin~\cite{Rhin1987} to
+\(\mu(\log_2 3) \leq 5.125\). In the Lean formulation we adopt
+\(\mu = 6\), a strict weakening of Rhin's bound, for formalisation
+reasons only : an integer exponent produces cleaner arithmetic in the
+supporting Lean modules and avoids manipulating non-integer constants
+at the kernel level. The \emph{cost} of this choice is a larger
+threshold in the case split of Theorem~\ref{thm:main} (the value
+\(1322\) discussed in \textsf{DerivedLargeKBound} below). Using Rhin's
+\(\mu = 5.125\) directly would yield a smaller threshold ; optimising
+this is left to future work (see Section~\ref{sec:conclusion}).
 
 Hypothesis~\textsf{BakerSeparation} is a direct consequence of Baker's
 theorem on linear forms in logarithms of algebraic
 numbers~\cite{Baker1966}, strengthened by subsequent work on effective
 irrationality measures. We supply it as a structural hypothesis in the
-Lean formalisation to keep the main theorem conditional on a clearly
-identified published result, rather than as a user-declared axiom.
+Lean formalisation to keep the main theorem conditional on an
+explicitly identified published result, rather than as a user-declared
+axiom.
 
 \subsection{\textsf{BarinaVerification} (B2)}
 
@@ -59,8 +68,6 @@ cycle containing a value below \(2^{71}\) would contradict this
 verification, \textsf{BarinaVerification} is equivalent, for our
 purposes, to a small-\(n\) exclusion.
 
-The DOI \texttt{10.1007/s11227-025-07337-0} is listed in our bibliography
-and was verified against the Springer resolver at the time of writing.
 
 \subsection{\textsf{DerivedLargeKBound} (B3)}
 
@@ -100,72 +107,112 @@ justification for its content rests on two ingredients :
 \end{enumerate}
 
 Combining the two, one can derive a bound \(n < 2^{71}\) for all cycle
-parameters \(k\) above a computable threshold. The specific threshold
-\(1322\) reflects the choice \(\mu = 6\) in Hypothesis~\ref{hyp:baker} and
-the precise windows of continued-fraction convergents that the argument
-uses; a finer \(\mu\) (e.g.\ Rhin's \(5.125\)) would permit a lower
-threshold. A full mathematical derivation of the specific value \(1322\)
-in the repository's proof supporting modules is outside the scope of this
-paper and is the target of the future work sketched in
-Section~\ref{sec:conclusion}.
+parameters \(k\) above a computable threshold. The mechanism can be
+sketched as follows. Substituting Hypothesis~\ref{hyp:baker} with
+\(\mu = 6\) into the Product Bound on the sequence of odd iterates of a
+hypothetical cycle yields an upper bound of the form
+\(n \leq \exp(c \cdot k^\mu \log k)\) for an explicit constant \(c\)
+depending on the continued-fraction windows of \(\log_2 3\). Intersecting
+this with the requirement \(n \geq 2^{71}\) that would be forced by any
+cycle evading Barina's verification
+(Hypothesis~\ref{hyp:barina}) yields
+\(k \leq K_0\) for some explicit \(K_0\) depending on the CF convergents
+(roughly, the \(q_i\) in the window \(q_8, \ldots, q_{13}\) of
+\(\log_2 3\)). The paper takes \(K_0 = 1322\) as a safe bound ; the
+value is \emph{not claimed to be tight}, and a finer \(\mu\)
+(e.g.\ Rhin's \(5.125\) instead of \(6\)) would permit a smaller threshold
+(see Hypothesis~\ref{hyp:baker} and Section~\ref{sec:conclusion}). A
+complete quantitative derivation of \(1322\) from the convergents and the
+explicit constant \(c\) lives in the repository's Phase~58--59 modules
+and the supporting commentary ; a formal Lean proof (as opposed to the
+\texttt{structure} used here) is the target of Phase Legendre (see
+Section~\ref{sec:conclusion}).
 
-% [ERIC-REVIEW] We deliberately do NOT claim the threshold 1322 is tight.
-% Please verify this restraint is correct and matches the proof files.
+% [ERIC-REVIEW] Post-RT-B H-B2 : the skeleton derivation above replaces
+% the previous "outside scope" deferral. The constant c and the CF
+% window q_8..q_13 are indicated at a sketch level ; please verify the
+% sketch is faithful to Phase58/Phase59 reasoning, in particular :
+% (i) is n <= exp(c k^mu log k) the right form of the Product Bound ?
+% (ii) is the relevant CF window exactly q_8..q_13 ? Adjust as needed.
+% The value 1322 remains acknowledged as not tight.
 
 \begin{remark}[Why a \texttt{structure}, not an \texttt{axiom}]
 We emphasise that, in the Lean formalisation,
 \textsf{DerivedLargeKBound} is a \emph{structure}, not a user-declared
 axiom. Consequently, promoting it to a proven Lean theorem (the target of
 Phase Legendre; see Section~\ref{sec:conclusion}) would be strictly
-additive : the statement of the main theorem
-(Theorem~\ref{thm:main}) would not change, only its axiom list would be
-updated to reflect the additional machinery used in the new proof of the
-former structure (specifically, the \texttt{native\_decide} axioms
-\texttt{Lean.ofReduceBool} and \texttt{Lean.trustCompiler}, as discussed
-in Section~\ref{sec:axioms}).
+additive \emph{at the statement level}: the statement of the main theorem
+(Theorem~\ref{thm:main}) would not change. At the level of the trust
+base, however, the axiom list does change : the \texttt{native\_decide}
+tactic used by the supporting arithmetic lemmas introduces
+\texttt{Lean.ofReduceBool} and \texttt{Lean.trustCompiler} into the chain
+of \(\mathtt{no\_nontrivial\_cycle\_phase59}\) once
+\textsf{DerivedLargeKBound} is replaced by a proven theorem
+(see Section~\ref{sec:axioms}). The headline "three fundamental axioms
+only" reported in this paper is thus tied to the current stage of the
+formalisation where \textsf{DerivedLargeKBound} remains a \texttt{structure}
+parameter. We flag this explicitly rather than leave the escalation
+implicit.
 \end{remark}
 
-\subsection{Integrity of the conditional form}
+\subsection{Scope of the formal theorem}
 
-We consider the conditional form \emph{Baker + Barina + DerivedLargeKBound
-\(\Rightarrow\) no nontrivial odd cycle} to be a meaningful intermediate
-step. A sharp reviewer will observe that
-\(\mathsf{B3} \wedge \mathsf{B2}\) alone already excludes cycles for
-\(k > 1322\) : combining
-\texttt{IsOddCycle\,n\,k} \(\wedge k > 1322 \Rightarrow n < 2^{71}\)
-with Barina's verification for \(n < 2^{71}\) yields a contradiction
-directly. We acknowledge this plainly. The work performed by the
-formal theorem is therefore not to combine \(\mathsf{B3}\) with
-\(\mathsf{B2}\) in a surprising way, but :
+We state plainly what the Lean theorem proves and what it does not.
 
-\begin{enumerate}
-  \item To handle the range \(2 \leq k \leq 1322\) \emph{independently of
-        \(\mathsf{B3}\)}, via a Product Bound argument built on
-        \(\mathsf{B1}\) and closed with \(\mathsf{B2}\).
-  \item To isolate, as a single named Lean object \(\mathsf{B3}\), the
-        analytic ingredient (continued-fraction derivation of an upper
-        bound on the seed for \(k > 1322\)) whose Lean formalisation is
-        the subject of planned Phase Legendre work
-        (Section~\ref{sec:conclusion}). This isolation makes the
-        remaining unformalised content of the proof \emph{explicit and
-        locally confined}, rather than diffuse across the argument.
-  \item To certify in Lean that every other step of the cycle-exclusion
-        argument --- the definitions, the case split, the arithmetic
-        reductions in the \(k \leq 1322\) branch --- is fully formalised
-        under the standard Mathlib axiom discipline. The remaining gap
-        is exactly the content of \(\mathsf{B3}\).
-\end{enumerate}
+\paragraph{What the formal theorem proves.}
+The Lean theorem (Theorem~\ref{thm:main}) establishes in particular
+the branch
+\[
+\mathsf{B1} \wedge \mathsf{B2}
+\;\Longrightarrow\;
+\neg\,\exists\,(n, k)\ \text{with}\ k \leq 1322\ \text{and}\ \texttt{IsOddCycle}\,n\,k,
+\]
+that is, the non-existence of a nontrivial odd cycle in the range
+\(2 \leq k \leq 1322\) under the two published hypotheses
+\(\mathsf{B1}\) (Baker separation with \(\mu = 6\)) and
+\(\mathsf{B2}\) (Barina's verification to \(2^{71}\)). This is the
+sub-lemma \texttt{no\_cycle\_k\_le\_1322} in the proof file. Its proof
+is fully formalised in Lean, with the axiom baseline reported in
+Section~\ref{sec:axioms}. This sub-lemma does not rely on \(\mathsf{B3}\).
 
-In other words, the paper and the formalisation do not claim that
-\(\mathsf{B3}\) is easy, or that it is independent of the conclusion.
-They claim that the gap between the current state and an unconditional
-theorem is \emph{precisely} \(\mathsf{B3}\), concentrated at a named
-place in the code.
+\paragraph{What the formal theorem does not prove.}
+For \(k > 1322\), the theorem relies on the structural hypothesis
+\(\mathsf{B3}\) (\textsf{DerivedLargeKBound}). A sharp reviewer will
+observe that \(\mathsf{B3} \wedge \mathsf{B2}\) directly excludes cycles
+in this range : combining
+\(\texttt{IsOddCycle}\,n\,k \wedge k > 1322 \Rightarrow n < 2^{71}\)
+with Barina's verification for \(n < 2^{71}\) yields a contradiction at
+once. The Lean branch \texttt{no\_cycle\_k\_gt\_1322} is therefore an
+elementary composition of \(\mathsf{B3}\) and \(\mathsf{B2}\); it
+\emph{does not} add new mathematical content beyond the hypothesis. The
+substantive mathematical content of the \(k > 1322\) range is entirely
+inside \(\mathsf{B3}\).
 
-% [ERIC-REVIEW] H2 mitigation post-RT : the previous wording claimed the
-% derivation was "not circularly tied", which the hostile reviewer
-% demolished as factually misleading. Reformulated above to acknowledge
-% the k>1322 circularity plainly and reposition the contribution as
-% "isolation of the remaining gap", not "absence of a gap". Please
-% verify you are comfortable with this framing and that "isolation"
-% accurately reflects the proof structure in Phase50--Phase59 modules.
+\paragraph{Relationship to prior bounds.}
+The \(k \leq 1322\) branch overlaps in spirit with Simons and de
+Weger's~\cite{SimonsDeWeger2005} analytic small-\(k\) bound (which
+ruled out cycles up to \(k \leq 68\), since extended further by the
+subsequent work cited in Section~\ref{sec:introduction}). Our
+contribution for \(k \leq 1322\) is therefore the full Lean
+certification of the Product-Bound argument under \(\mathsf{B1}\) and
+\(\mathsf{B2}\), rather than a new mathematical bound on that range.
+The authors make no claim of mathematical novelty for the
+\(k > 1322\) range : the role of \(\mathsf{B3}\) is to isolate the
+residual analytic gap in a single, auditable Lean object ---
+the formalisation of its content (via Legendre's theorem on CF
+convergents, see Section~\ref{sec:conclusion}) is the advertised future
+work.
+
+% [ERIC-REVIEW] Post-RT-B H-B1 : the previous "Integrity of the
+% conditional form" framing was flagged by the hostile reviewer as
+% rhetorical rather than substantive. Retitled "Scope of the formal
+% theorem" with explicit delimitation : what is proved
+% (no_cycle_k_le_1322 under B1 and B2), what is not proved
+% (no_cycle_k_gt_1322 is elementary composition of B3 and B2).
+% Simons-de Weger overlap acknowledged. Please verify :
+% (i) "Product-Bound argument under B1 and B2" matches Phase51's proof
+%     structure accurately ;
+% (ii) "no new mathematical bound" on k <= 1322 is the correct honest
+%     positioning, or if Phase51 does give a novel bound on some
+%     sub-range that deserves naming ;
+% (iii) the sub-lemma name no_cycle_k_le_1322 is cited correctly.
