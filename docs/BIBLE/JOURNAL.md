@@ -86,3 +86,35 @@
 **Réversibilité** : triviale via `gh repo unarchive` (instantané par repo).
 
 **Prochain** : G2 hardening (reproduce.sh, probes/, expected_axioms.md, lakefile defaultTargets fix, CI renforcée).
+
+---
+
+## 2026-04-22 — G2 CLÔTURE [P1] Hardening infrastructure done
+
+**Autorité** : Eric via ADR-003 extended gate delegation (8/8 conditions PASS, vérification indépendante auditor post-0009 filesystem + RT trail). Auditor sign-off 17:50Z.
+
+**Actions exécutées** :
+- 6 commits G2.1-G2.6 sur branche `g2-hardening`, merged ff → main (`6dae8ce`)
+- push origin main (6407100..6dae8ce)
+- CI GitHub Actions run `24793727572` : **SUCCESS** en 6m53s (ubuntu-24.04, elan v4.1.2 pinned, reproduce.sh EXIT 0)
+
+**Mitigations Red Team G2 appliquées avant commits** :
+- 7 HIGH tous mitigés (probe file empty check, awk strict anchor, build log sorry grep, SHA256 baseline, ubuntu-24.04 pin, elan tag pin, CI cache hard-fail)
+- 4 MEDIUM mitigés (toolchain [ -f ], sorry probe 10 théorèmes, out-of-scope documented, exe target)
+- 3 MEDIUM tech debt + 7 LOW reportés
+
+**Vérifications post-G2** :
+- ProjetCollatz/ sha256 inchangé : `a18dce00...` (zéro Lean modifié)
+- `#print axioms no_nontrivial_cycle_phase59` inchangé : `[propext, Classical.choice, Quot.sound]`
+- reproduce.sh EXIT 0 (toolchain/build/axioms/sorry)
+- CI green
+
+**Nouvelles capacités repo** :
+- `reproduce.sh` end-to-end (convention Junction exit codes 0/1/2/3/4)
+- `probes/check_central_axioms.lean` + `probes/check_sorry.lean` (10 théorèmes audités)
+- `expected_axioms.md` canonical + SHA256 anchor
+- CI reproduce-based (remplace grep-based)
+
+**Réversibilité** : `git revert f05f3cc..6dae8ce` (6 commits).
+
+**Prochain** : G3 paper v1 draft + decision Legendre (Eric-only probable pour commit final paper).
