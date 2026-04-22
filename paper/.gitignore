@@ -1,0 +1,11 @@
+# LaTeX build artefacts — do not commit compiled PDFs or intermediate files
+*.pdf
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk

@@ -1,0 +1,117 @@
+\documentclass[11pt,a4paper]{article}
+
+% -----------------------------------------------------------------------------
+% Packages
+% -----------------------------------------------------------------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  citecolor=blue!60!black,
+  urlcolor=blue!60!black,
+}
+
+% -----------------------------------------------------------------------------
+% Theorem environments
+% -----------------------------------------------------------------------------
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% -----------------------------------------------------------------------------
+% Listings configuration for Lean
+% -----------------------------------------------------------------------------
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+
+\lstdefinelanguage{Lean}{
+  keywords={theorem,lemma,definition,structure,def,axiom,import,namespace,end,
+           match,with,if,then,else,fun,let,in,by,exact,apply,intro,rfl,
+           variable,variables,open,section},
+  sensitive=true,
+  comment=[l]{--},
+  morestring=[b]",
+}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue}\bfseries,
+  commentstyle=\color{codegray}\itshape,
+  stringstyle=\color{codepurple},
+  numbers=left,
+  numberstyle=\tiny\color{codegray},
+  numbersep=8pt,
+  frame=single,
+  breaklines=true,
+  showstringspaces=false,
+  language=Lean,
+  captionpos=b,
+}
+
+% -----------------------------------------------------------------------------
+% Custom macros
+% -----------------------------------------------------------------------------
+\newcommand{\collatz}{\ensuremath{T}}
+\newcommand{\Nat}{\ensuremath{\mathbb{N}}}
+\newcommand{\Z}{\ensuremath{\mathbb{Z}}}
+\newcommand{\leanfile}[2]{\texttt{#1}\footnote{\texttt{#2}}}
+
+% -----------------------------------------------------------------------------
+% Title & authors
+% -----------------------------------------------------------------------------
+\title{%
+  No Nontrivial Cycle in the Collatz Dynamics\\
+  \large A Lean 4 Formalisation Conditional on Baker~1966, Barina~2025,\\
+  and a Continued-Fractions-Derived Bound
+}
+
+\author{%
+  Eric Merle\\
+  \texttt{ericmerle3789@gmail.com}
+}
+
+\date{April 2026 --- \emph{draft v1}}
+
+% -----------------------------------------------------------------------------
+\begin{document}
+
+\maketitle
+
+\input{sections/01-abstract}
+
+\tableofcontents
+\medskip
+
+\input{sections/02-introduction}
+\input{sections/03-preliminaries}
+\input{sections/04-main-result}
+\input{sections/05-hypotheses}
+\input{sections/06-lean-formalization}
+\input{sections/07-reproducibility}
+\input{sections/08-conclusion-future-work}
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+\end{document}
