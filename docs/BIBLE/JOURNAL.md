@@ -60,3 +60,29 @@
 **Interdits actifs jusqu'à G1 signed** : aucun `git add` / `commit` / `push` / modification fichier Lean / archivage GitHub.
 
 **Sign-off Eric** : [EN ATTENTE G1]
+
+---
+
+## 2026-04-22 — G1 CLÔTURE [P1] GitHub consolidation done
+
+**Autorité** : Eric via ADR-003 extended gate delegation. Citation : *"C'est à toi de lui dire, c'est ça que je veux, tu la pilote."* Auditor sign-off 17:32Z.
+
+**Actions exécutées** :
+- G1.7 merge `--ff-only` `g1-consolidation` → `main` (HEAD `503e5e9`)
+- G1.8 push origin main (f292307 LINEAGE + 503e5e9 BIBLE)
+- G1.9 archive `Collatz-Junction-Theorem` (commit `a57d29e` + `gh repo archive`)
+- G1.10 archive `collatz-cycles-lean` (commit `1d77168` + `gh repo archive`)
+- G1.11 archive `collatz-audit-2026` (commit `40c1269` + `gh repo archive`) — Option A autosigned per Q1 délégation
+- G1.12 signoff `docs/BIBLE/signoffs/G1-consolidation.md` + cette entrée JOURNAL
+
+**Vérifications post-archivages** :
+- 3/3 repos `archived=true` confirmé via `gh api`
+- `collatz-nocycle-lean4` reste actif, `archived=false`
+- ProjetCollatz/ sha256 inchangé : `a18dce00...` (zéro Lean modifié)
+- `#print axioms no_nontrivial_cycle_phase59` inchangé : `[propext, Classical.choice, Quot.sound]`
+
+**Inventaire GitHub post-G1** : `collatz-nocycle-lean4` actif (officiel) + `MATHEVO`/`PROMETHEUS` actifs hors-scope Collatz + 4 repos archivés (Junction-Theorem, cycles-lean, audit-2026, Projet_Collatz pré-G1).
+
+**Réversibilité** : triviale via `gh repo unarchive` (instantané par repo).
+
+**Prochain** : G2 hardening (reproduce.sh, probes/, expected_axioms.md, lakefile defaultTargets fix, CI renforcée).
