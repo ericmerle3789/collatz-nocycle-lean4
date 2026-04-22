@@ -1,6 +1,109 @@
 % 04-main-result.tex
-% Main result ~3 pages. Placeholder for G3.1 skeleton ; drafted in G3.4 [ERIC-REVIEW].
+% Section 4 — Main result. Drafted G3.4.
+% [ERIC-REVIEW] on mathematical phrasing + proof sketch accuracy.
 
 \section{Main Result}
+\label{sec:main}
 
-[ERIC-REVIEW] Placeholder --- filled in G3.4.
+We state the main theorem in its Lean 4 formulation and sketch the
+structure of its proof. Detailed discussion of the hypotheses is deferred
+to Section~\ref{sec:hypotheses}, and the formalisation choices are
+described in Section~\ref{sec:lean}.
+
+\subsection{Statement}
+
+\begin{theorem}[Main theorem, conditional]\label{thm:main}
+% [ERIC-REVIEW] This is the natural-language rendering of
+% ProjetCollatz.no_nontrivial_cycle_phase59. Please verify the English
+% matches the intended mathematical content.
+Let \(\collatz : \Nat \to \Nat\) be the Collatz map, and call \emph{nontrivial
+odd cycle} a pair \((n, k)\) with \(k \geq 2\) such that \((n, k)\)
+satisfies the formal predicate \texttt{IsOddCycle} from the repository
+(see Section~\ref{sec:preliminaries} and the Lean definition). Then, under
+the three hypotheses described in Section~\ref{sec:hypotheses} ---
+\textsf{BakerSeparation}, \textsf{BarinaVerification}, and
+\textsf{DerivedLargeKBound} --- no such nontrivial odd cycle exists.
+\end{theorem}
+
+The formal Lean statement is :
+
+\begin{lstlisting}[caption={\texttt{no\_nontrivial\_cycle\_phase59} (\texttt{Phase59ContinuedFractions.lean}:236).}]
+theorem no_nontrivial_cycle_phase59
+    (baker : BakerSeparation) (barina : BarinaVerification)
+    (cf : DerivedLargeKBound)
+    (n k : N) (hcyc : IsOddCycle n k) : False
+\end{lstlisting}
+
+The conclusion \texttt{False} from the assumption \texttt{IsOddCycle n k}
+is equivalent to the non-existence of a witness : the theorem rules out
+any pair \((n, k)\) that satisfies \texttt{IsOddCycle}.
+
+\subsection{Proof structure}
+
+The proof is a case split on the value of \(k\) relative to the threshold
+\(1322\) introduced by Hypothesis~\textsf{DerivedLargeKBound}
+(see Section~\ref{sec:hypotheses}). Writing the Lean proof term
+schematically :
+
+\begin{lstlisting}
+theorem no_nontrivial_cycle_phase59 baker barina cf n k hcyc := by
+  by_cases hk : k \leq 1322
+  \cdot exact no_cycle_k_le_1322 baker barina n k hcyc hk
+  \cdot push_neg at hk
+    exact no_cycle_k_gt_1322 barina cf n k hcyc hk
+\end{lstlisting}
+
+The two branches are handled by the following sub-lemmas, both proved in
+the repository with the same three-axiom chain as the main theorem
+(\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}) :
+
+\begin{itemize}
+  \item \textbf{\texttt{no\_cycle\_k\_le\_1322}} : the range \(2 \leq k
+        \leq 1322\) is handled by combining a lower bound on the seed
+        \(n\) of any hypothetical cycle (from the Product Bound argument
+        built on Baker's theorem, see Section~\ref{sec:hypotheses}) with
+        the Barina range \(n \geq 2^{71}\). Hypothesis
+        \textsf{BarinaVerification} then yields a contradiction against
+        any cycle with \(n < 2^{71}\), while the Product Bound shows
+        \(n \geq 2^{71}\) under Baker's hypothesis ; the two bounds are
+        incompatible.
+  \item \textbf{\texttt{no\_cycle\_k\_gt\_1322}} : for \(k > 1322\),
+        Hypothesis~\textsf{DerivedLargeKBound} supplies a bound
+        \(n < 2^{71}\), which again contradicts the Product Bound under
+        \textsf{BarinaVerification}.
+\end{itemize}
+
+% [ERIC-REVIEW] The interplay Product Bound / Baker / Barina above is a
+% natural-language rendering of the proof structure inside
+% ProjetCollatz.Phase59ContinuedFractions + the supporting Phase50--Phase58
+% modules. Please verify that this summary does not over-simplify or
+% mis-attribute the role of each hypothesis.
+
+A detailed mathematical derivation of
+\textsf{DerivedLargeKBound} from the continued-fraction expansion of
+\(\log_2 3\) combined with Baker's theorem is sketched in
+Section~\ref{sec:hypotheses}. Its full Lean formalisation is identified
+as future work (see Section~\ref{sec:conclusion}).
+
+\subsection{Scope and limitations}
+
+\begin{remark}[What the theorem does \emph{not} claim]
+The theorem does not assert the truth of the three hypotheses it depends
+on. In particular :
+\begin{itemize}
+  \item \textsf{BakerSeparation} is supplied as a structural witness for
+        Baker's published theorem with a weakened constant
+        (see Section~\ref{sec:hypotheses}).
+  \item \textsf{BarinaVerification} is supplied as a structural witness
+        for Barina's published verification of the Collatz conjecture
+        below \(2^{71}\).
+  \item \textsf{DerivedLargeKBound} is a structural witness for a bound
+        whose mathematical justification is sketched in
+        Section~\ref{sec:hypotheses} but which is not, at the time of
+        writing, a proven Lean theorem. Its promotion from a structure
+        to a theorem is the main item of future work.
+\end{itemize}
+The theorem establishes a conditional non-existence : \emph{if} the three
+witnesses are instantiated with valid content, \emph{then} no nontrivial
+odd Collatz cycle exists.
+\end{remark}
