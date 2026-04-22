@@ -2,22 +2,31 @@
 % Abstract — drafted G3.4. [ERIC-REVIEW] on phrasing + positioning.
 
 \begin{abstract}
-% [ERIC-REVIEW] phrasing, positioning claims vs field. Please confirm or amend.
-We present a Lean~4 formalisation of the non-existence of nontrivial odd cycles
-in the Collatz dynamics, conditional on three explicit external hypotheses :
-Baker's theorem on linear forms in logarithms~\cite{Baker1966} (with constant
-\(\mu = 6\) for \(\log_2 3\), a weakening of the finer Rhin bound~\cite{Rhin1987}),
-Barina's computational verification of the Collatz conjecture up to
-\(2^{71}\)~\cite{Barina2025}, and a continued-fractions-derived bound on the
-seed of a potential large-\(k\) cycle, which we state as a named structure.
-The central theorem is formalised in
-Lean~4 (toolchain \texttt{v4.27.0}) with Mathlib~\texttt{v4.27.0},
-contains \emph{zero} \texttt{sorry}, and its axiom chain is
+% [ERIC-REVIEW] Post-RT H3 mitigation : flag explicitly that one of three
+% hypotheses is not externally published, to preempt "euphemism"
+% critique. Please validate phrasing.
+We present a Lean~4 formalisation of a conditional non-existence result
+for nontrivial odd cycles in the Collatz dynamics. The result is stated as
+\((\mathsf{B1} \wedge \mathsf{B2} \wedge \mathsf{B3}) \Rightarrow \neg\,
+\text{(nontrivial odd cycle exists)}\), where
+\(\mathsf{B1}\) is a structural witness for Baker's theorem on linear
+forms in logarithms~\cite{Baker1966} with constant \(\mu = 6\) for
+\(\log_2 3\) (a weakening of the finer Rhin bound~\cite{Rhin1987}),
+\(\mathsf{B2}\) is a structural witness for Barina's computational
+verification of the Collatz conjecture up to \(2^{71}\)~\cite{Barina2025},
+and \(\mathsf{B3}\) is a \emph{derived} --- \emph{not externally
+published} --- bound of the form \(\mathtt{IsOddCycle}\,n\,k \wedge k >
+1322 \Rightarrow n < 2^{71}\), motivated by the
+continued-fraction expansion of \(\log_2 3\) and the subject of planned
+future work (see Section~\ref{sec:conclusion}). The Lean~4 formalisation
+(toolchain \texttt{v4.27.0}, Mathlib \texttt{v4.27.0}) contains zero
+\texttt{sorry} in the central theorem chain, and its axiom list is
 \([\text{\texttt{propext}},\, \text{\texttt{Classical.choice}},\,
-\text{\texttt{Quot.sound}}]\) --- the three standard kernel axioms of
-Mathlib, and no others. The repository ships with an end-to-end
-reproducibility script and a continuous integration pipeline that enforce
-this baseline on every commit. We state explicitly which hypotheses are
-published, which are derived, and what work would be required to replace
-the derived hypothesis with a fully formalised theorem.
+\text{\texttt{Quot.sound}}]\) --- the three standard kernel axioms used
+by essentially every non-constructive Mathlib theorem. The repository
+ships with an end-to-end reproducibility script and a continuous
+integration pipeline that enforce this baseline on every commit. We
+describe the explicit separation between published and derived hypotheses,
+the Lean-level \texttt{structure}-versus-\texttt{axiom} design choice, and
+the work required to promote \(\mathsf{B3}\) to a proven theorem.
 \end{abstract}

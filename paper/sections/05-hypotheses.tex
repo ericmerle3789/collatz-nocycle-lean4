@@ -59,9 +59,8 @@ cycle containing a value below \(2^{71}\) would contradict this
 verification, \textsf{BarinaVerification} is equivalent, for our
 purposes, to a small-\(n\) exclusion.
 
-The DOI \texttt{10.1007/s11227-025-07337-0} has been resolved as of
-2026-04-22 (see \texttt{docs/BIBLE/env-snapshots/2026-04-22-doi-check.txt}
-in the repository).
+The DOI \texttt{10.1007/s11227-025-07337-0} is listed in our bibliography
+and was verified against the Springer resolver at the time of writing.
 
 \subsection{\textsf{DerivedLargeKBound} (B3)}
 
@@ -130,22 +129,43 @@ in Section~\ref{sec:axioms}).
 
 We consider the conditional form \emph{Baker + Barina + DerivedLargeKBound
 \(\Rightarrow\) no nontrivial odd cycle} to be a meaningful intermediate
-step, for three reasons :
+step. A sharp reviewer will observe that
+\(\mathsf{B3} \wedge \mathsf{B2}\) alone already excludes cycles for
+\(k > 1322\) : combining
+\texttt{IsOddCycle\,n\,k} \(\wedge k > 1322 \Rightarrow n < 2^{71}\)
+with Barina's verification for \(n < 2^{71}\) yields a contradiction
+directly. We acknowledge this plainly. The work performed by the
+formal theorem is therefore not to combine \(\mathsf{B3}\) with
+\(\mathsf{B2}\) in a surprising way, but :
 
 \begin{enumerate}
-  \item Both \textsf{BakerSeparation} and \textsf{BarinaVerification}
-        are backed by published, peer-reviewed work.
-  \item \textsf{DerivedLargeKBound}, while not independently published,
-        is a \emph{derivation} from published ingredients; its content
-        is not circularly tied to the conclusion of the main theorem.
-  \item The partition \(k \leq 1322\) (Barina-driven) versus \(k > 1322\)
-        (CF-derived) is decided by a named threshold, making the
-        boundary between published and derived ingredients explicit in
-        the code rather than buried in a proof.
+  \item To handle the range \(2 \leq k \leq 1322\) \emph{independently of
+        \(\mathsf{B3}\)}, via a Product Bound argument built on
+        \(\mathsf{B1}\) and closed with \(\mathsf{B2}\).
+  \item To isolate, as a single named Lean object \(\mathsf{B3}\), the
+        analytic ingredient (continued-fraction derivation of an upper
+        bound on the seed for \(k > 1322\)) whose Lean formalisation is
+        the subject of planned Phase Legendre work
+        (Section~\ref{sec:conclusion}). This isolation makes the
+        remaining unformalised content of the proof \emph{explicit and
+        locally confined}, rather than diffuse across the argument.
+  \item To certify in Lean that every other step of the cycle-exclusion
+        argument --- the definitions, the case split, the arithmetic
+        reductions in the \(k \leq 1322\) branch --- is fully formalised
+        under the standard Mathlib axiom discipline. The remaining gap
+        is exactly the content of \(\mathsf{B3}\).
 \end{enumerate}
 
-% [ERIC-REVIEW] The three-reason statement above defends against a
-% potential reviewer attack along the lines of "DerivedLargeKBound is a
-% petitio principii". Please verify you are comfortable with this
-% articulation. If we anticipate this attack, it should probably be
-% addressed in the introduction as well.
+In other words, the paper and the formalisation do not claim that
+\(\mathsf{B3}\) is easy, or that it is independent of the conclusion.
+They claim that the gap between the current state and an unconditional
+theorem is \emph{precisely} \(\mathsf{B3}\), concentrated at a named
+place in the code.
+
+% [ERIC-REVIEW] H2 mitigation post-RT : the previous wording claimed the
+% derivation was "not circularly tied", which the hostile reviewer
+% demolished as factually misleading. Reformulated above to acknowledge
+% the k>1322 circularity plainly and reposition the contribution as
+% "isolation of the remaining gap", not "absence of a gap". Please
+% verify you are comfortable with this framing and that "isolation"
+% accurately reflects the proof structure in Phase50--Phase59 modules.

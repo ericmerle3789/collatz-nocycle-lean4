@@ -13,16 +13,23 @@ described in Section~\ref{sec:lean}.
 \subsection{Statement}
 
 \begin{theorem}[Main theorem, conditional]\label{thm:main}
-% [ERIC-REVIEW] This is the natural-language rendering of
-% ProjetCollatz.no_nontrivial_cycle_phase59. Please verify the English
-% matches the intended mathematical content.
-Let \(\collatz : \Nat \to \Nat\) be the Collatz map, and call \emph{nontrivial
-odd cycle} a pair \((n, k)\) with \(k \geq 2\) such that \((n, k)\)
-satisfies the formal predicate \texttt{IsOddCycle} from the repository
-(see Section~\ref{sec:preliminaries} and the Lean definition). Then, under
-the three hypotheses described in Section~\ref{sec:hypotheses} ---
-\textsf{BakerSeparation}, \textsf{BarinaVerification}, and
-\textsf{DerivedLargeKBound} --- no such nontrivial odd cycle exists.
+% [ERIC-REVIEW] Natural-language rendering of
+% ProjetCollatz.no_nontrivial_cycle_phase59. Corrected post-RT H1 : the
+% Lean theorem universally quantifies over all n, k : \Nat, so the
+% natural-language statement must not add an extraneous k >= 2
+% hypothesis. The k >= 2 condition is implicit in the \texttt{IsOddCycle}
+% predicate itself (length-1 "cycles" are either fixed points of the
+% Syracuse map, excluded by the predicate's definition, or the trivial
+% 1 \to 1 loop). Eric, please confirm this alignment with Phase50
+% definitions.
+Let \(\collatz : \Nat \to \Nat\) be the Collatz map. For any pair of
+natural numbers \((n, k)\) satisfying the formal predicate
+\texttt{IsOddCycle} defined in the repository (see
+Section~\ref{sec:preliminaries}), the three hypotheses described in
+Section~\ref{sec:hypotheses} --- \textsf{BakerSeparation},
+\textsf{BarinaVerification}, and \textsf{DerivedLargeKBound} --- jointly
+imply a contradiction. Equivalently : under these three hypotheses, no
+pair \((n, k)\) satisfies \texttt{IsOddCycle}.
 \end{theorem}
 
 The formal Lean statement is :

@@ -136,21 +136,7 @@ declare them explicitly in \texttt{expected\_axioms.md} at that point and
 to acknowledge them in a subsequent version of this paper.
 \end{remark}
 
-\subsection{What the code does not claim}
-
-To avoid any misreading, we make explicit what the Lean formalisation
-\emph{does not} establish :
-
-\begin{itemize}
-  \item It does not prove the Collatz conjecture.
-  \item It does not prove the three hypotheses listed in
-        Section~\ref{sec:hypotheses}; it conditionally concludes from
-        them.
-  \item It does not prove the content of \texttt{DerivedLargeKBound}; it
-        uses the structure as a parameter. The mathematical justification
-        for this content is sketched in Section~\ref{sec:hypotheses}, but
-        its full formalisation is planned for a future version.
-\end{itemize}
-
-The paper and the repository are intentionally conservative about these
-boundaries.
+% [ERIC-REVIEW] M8 mitigation post-RT : the "What the code does not
+% claim" subsection was flagged as a duplicate of the Remark at the end
+% of Section~\ref{sec:main}. Removed here to reduce repetition. The
+% non-claim list is retained in that Remark.

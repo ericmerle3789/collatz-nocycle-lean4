@@ -54,10 +54,17 @@ logs are uploaded as a build artefact for post-mortem.
 
 A green CI run is evidence that the axiom baseline held at the time of
 the run; a red run identifies the failing step and, together with the
-uploaded logs, localises the regression. The current baseline (as of
-2026-04-22, commit \texttt{d2fa81a} plus G1--G2 consolidation) has been
-reproduced green in two consecutive CI runs and on the authors' local
-machine.
+uploaded logs, localises the regression. The two CI runs recorded at the
+time of writing (corresponding to the G1 and G2 consolidation commits)
+both concluded with a \texttt{success} status and executed
+\texttt{reproduce.sh} end-to-end. The same run of \texttt{reproduce.sh}
+also succeeds on the authors' local machine against the current
+\texttt{main} branch.
+% [ERIC-REVIEW] M5 mitigation post-RT : the previous wording ("two
+% consecutive CI runs") invited the "comically thin evidence" critique.
+% Rephrased above to be factual and dated. As more commits land and
+% trigger more runs, this paragraph can be updated; for the v1 draft it
+% should remain strictly factual.
 
 \subsection{Axiom baseline documents}
 
@@ -104,11 +111,9 @@ These artefacts are not claimed to replace a published peer review; their
 purpose is to provide an auditable record that an external reviewer can
 cross-check against the code and the paper.
 
-\subsection{Related internal artefact}
-
-The author also maintains a local, non-public backup of an earlier
-formalisation of a related but distinct result (the so-called
-\emph{Junction Theorem}, conditional on a different set of hypotheses).
-This backup is preserved solely as a source of templates (LaTeX preamble,
-verification scripts, probe skeletons) and is not referenced further in
-this paper, to avoid citing unpublished material as prior work.
+% [ERIC-REVIEW] L5 mitigation post-RT : the previous "Related internal
+% artefact" subsection discussed a local Junction Theorem backup. A
+% hostile reviewer flagged this as odd paper content ("belongs in the
+% repository README, not a journal submission"). Removed here ; the
+% backup is documented in the repository's docs/LINEAGE.md and
+% docs/BIBLE/decisions/ADR-002, which is the appropriate place.

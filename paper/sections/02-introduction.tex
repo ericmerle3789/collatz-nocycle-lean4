@@ -26,30 +26,39 @@ simultaneous absence of two phenomena : divergent orbits, and
 
 \subsection{State of the art on cycle exclusion}
 
-The \emph{cycle problem} has attracted sustained attention. Representative
-recent milestones :
+The \emph{cycle problem} has a long history. Landmark references include
+Lagarias's surveys~% [ERIC-REVIEW] ref missing: Lagarias 1985 Amer. Math. Monthly + Lagarias 2010 Ultimate Challenge; please add exact citations to references.bib
+{}, early analytic bounds such as Crandall's % [ERIC-REVIEW] ref missing: Crandall 1978, Math. Comp.
+{}, Eliahou's lower bound on the length of hypothetical cycles % [ERIC-REVIEW] ref missing: Eliahou 1993, Discrete Math. 118
+{}, and Tao's recent almost-all result on Collatz orbits % [ERIC-REVIEW] ref missing: Tao 2022, Forum of Mathematics Pi (or similar)
+{}. Representative recent milestones directly relevant to our
+formulation :
 
 \begin{itemize}
   \item Barina~\cite{Barina2025} has verified computationally that every
         positive integer below \(2^{71}\) reaches \(1\) under
         \(\collatz\). This in particular excludes any nontrivial cycle
         whose minimum value is below that threshold.
-  \item Hercher~\cite{Hercher2023} has shown that no Collatz \(m\)-cycle
-        exists for \(m \leq 91\), building on prior
-        Simons--de Weger--type analysis~\cite{SimonsDeWeger2005}.
-  \item Several formalisations in interactive theorem provers have
-        appeared recently, targeting partial results on the cycle
-        problem with varying scope and rigour levels. The present work
-        differs from these efforts in its specific conditional form and
-        in the explicit management of its axiom baseline
-        (see Section~\ref{sec:lean}).
+  \item Hercher~\cite{Hercher2023} excludes Collatz cycles for small
+        values of the cycle-length parameter \(k\).
+        % [ERIC-REVIEW] H5 mitigation: the original draft said "m-cycle
+        % for m <= 91" which conflates m-cycle notation from different
+        % references. Please restate the exact bound from Hercher's 2023
+        % paper (m = ? or k = ?) and ensure we cite the precise statement
+        % rather than paraphrasing.
+        Earlier analytic bounds of Simons--de Weger
+        type~\cite{SimonsDeWeger2005} remain influential background.
+  \item Several recent formalisations in interactive theorem provers
+        target partial results on the cycle problem. We do not attempt
+        an exhaustive survey here ;
+        % [ERIC-REVIEW] If specific prior Lean formalisations by other
+        % authors should be named and cited (e.g. from the Lean
+        % Community Zulip or arXiv), please supply names. Avoid citing
+        % unless the references are stable.
+        the present work differs from those efforts in its specific
+        conditional form and in the explicit management of its axiom
+        baseline (see Section~\ref{sec:lean}).
 \end{itemize}
-
-% [ERIC-REVIEW] The "several formalisations" sentence is deliberately
-% vague ; if you want to name specific prior formalisations by other
-% authors (cf. your memory of e.g. johnjanik, fc0web, kaiarasanen) please
-% provide the names and we'll cite them factually. Current phrasing is
-% safe but less informative.
 
 Against this backdrop, the present paper does \emph{not} claim to resolve
 the Collatz conjecture nor the cycle problem unconditionally. It
