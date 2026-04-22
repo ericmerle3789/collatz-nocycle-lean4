@@ -1,0 +1,19 @@
+=== Collatz NoCycle Verification ===
+Date: Wed Apr 22 17:40:14 CEST 2026
+Lean version: Lean (version 4.27.0, arm64-apple-darwin24.6.0, commit db93fe1608548721853390a10cd40580fe7d22ae, Release)
+
+Building...
+info: ProjetCollatz/HardLowerBoundPaper.lean:52:0: ProjetCollatz.x0_of_start (start_n : ℕ) : ℚ
+info: ProjetCollatz/HardLowerBoundPaper.lean:53:0: ProjetCollatz.NrecSyr (start_n k : ℕ) : ℚ
+info: ProjetCollatz/HardLowerBoundPaper.lean:54:0: ProjetCollatz.steps_up_to_NrecSyr (start_n K : ℕ) :
+  CollatzCore.steps_up_to (fun k => NrecSyr start_n k) (aSeq start_n) K
+Build completed successfully (7922 jobs).
+Build exit code: 0
+
+Axioms: 0
+Sorry (as tactic): 0
+Theorems + Lemmas: 393
+Lean files: 36
+Main theorem present: YES
+
+VERIFICATION PASSED

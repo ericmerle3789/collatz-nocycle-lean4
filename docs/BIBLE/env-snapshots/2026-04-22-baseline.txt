@@ -1,0 +1,19 @@
+# Env snapshot — baseline G0
+Date: 2026-04-22T14:00:42Z
+Commit: d2fa81a4aa18ecd011ebe7832fe7ba518e1068df
+
+## elan
+elan 4.1.2 (58e8d545e 2025-05-26)
+
+## lean
+Lean (version 4.27.0, arm64-apple-darwin24.6.0, commit db93fe1608548721853390a10cd40580fe7d22ae, Release)
+
+## uname
+Darwin Erics-MacBook-Pro.local 25.3.0 Darwin Kernel Version 25.3.0: Wed Jan 28 20:54:46 PST 2026; root:xnu-12377.91.3~2/RELEASE_ARM64_T6000 arm64
+
+## lean-toolchain
+leanprover/lean4:v4.27.0
+
+## git remote
+origin	https://github.com/ericmerle3789/collatz-nocycle-lean4 (fetch)
+origin	https://github.com/ericmerle3789/collatz-nocycle-lean4 (push)
