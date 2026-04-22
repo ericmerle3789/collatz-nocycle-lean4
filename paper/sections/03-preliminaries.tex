@@ -1,6 +1,95 @@
 % 03-preliminaries.tex
-% Preliminaries ~2 pages. Placeholder for G3.1 skeleton ; drafted in G3.7 [ERIC-REVIEW].
+% Section 3 — Preliminaries. Drafted G3.7. [ERIC-REVIEW] on notation choices
+% and IsOddCycle presentation.
 
 \section{Preliminaries}
+\label{sec:preliminaries}
 
-[ERIC-REVIEW] Placeholder --- filled in G3.7.
+This section fixes notation and defines the formal predicate
+\texttt{IsOddCycle} used throughout the paper. All definitions here are
+natural-language renderings of Lean objects in
+\texttt{ProjetCollatz/Phase50CycleEquation.lean} and adjacent files; the
+Lean source is authoritative.
+
+\subsection{The Collatz map and its Syracuse acceleration}
+
+We write \(\collatz : \Nat \to \Nat\) for the Collatz map
+(Section~\ref{sec:introduction}). For the purposes of cycle exclusion it
+is convenient to accelerate past the even steps. Define, for an odd
+integer \(n\), the \emph{Syracuse successor} \(S(n)\) as the unique odd
+integer obtained from \(n\) by applying \(\collatz\) once and then
+repeatedly dividing by \(2\) until the result is odd. Formally :
+\[
+S(n) = \frac{3n + 1}{2^{\nu_2(3n+1)}},
+\]
+where \(\nu_2\) denotes the \(2\)-adic valuation. The Syracuse map \(S\)
+is well defined on positive odd integers.
+
+\subsection{Odd cycles}
+
+An \emph{odd cycle} of length \(k\) is a sequence of \(k\) positive odd
+integers \(n_0, n_1, \ldots, n_{k-1}\) with
+\(S(n_i) = n_{(i+1) \bmod k}\) for all \(i\). The loop
+\(1 \mapsto 1\) (length \(k = 1\)) is the \emph{trivial} odd cycle.
+A \emph{nontrivial} odd cycle is one of length \(k \geq 2\) containing a
+value other than \(1\).
+
+\subsection{The \texttt{IsOddCycle} predicate}
+
+% [ERIC-REVIEW] The natural-language rendering of IsOddCycle below should
+% be independently verified against the Lean definition in
+% ProjetCollatz/Phase50CycleEquation.lean. The exact formal shape may
+% differ slightly from the description here (e.g.\ using increment
+% sequences rather than iterate tuples).
+
+The repository's central predicate is \texttt{IsOddCycle : \Nat \to \Nat
+\to Prop}. Intuitively, \texttt{IsOddCycle n k} asserts that the Syracuse
+orbit starting at \(n\) is periodic of period exactly \(k\), with \(n\)
+being the smallest value in the orbit. The theorems proved in the
+repository's Phase~50 modules establish the equivalence of this predicate
+with several classical formulations, including the \emph{Steiner
+equation} \(n_0 \cdot d = \text{corrSum}(A)\) where \(A\) is the sequence
+of \(2\)-adic valuations along the orbit and \(d = 2^S - 3^k\) with
+\(S = \sum_i A_i\)~\cite{Steiner1977}.
+
+In the formal statement of our main theorem, \texttt{IsOddCycle n k} plays
+the role of the hypothesis to be refuted : we conclude
+\texttt{False} from it, conditional on the three structural hypotheses of
+Section~\ref{sec:hypotheses}.
+
+\subsection{Baker's theorem and irrationality measures}
+
+We briefly record the form of Baker's theorem relevant to our formulation.
+Baker's theorem~\cite{Baker1966} on linear forms in the logarithms of
+algebraic numbers implies an effective lower bound :
+there exist computable constants \(C_0, \mu\) such that, for all positive
+integers \(s, k\) with \(2^s > 3^k\),
+\[
+|s \log 2 - k \log 3| \geq C_0 \cdot k^{-\mu}.
+\]
+An equivalent reformulation, after multiplying through and using
+\(2^s - 3^k > 0\), gives an inequality of the form
+\((2^s - 3^k) \cdot k^{\mu} \geq C_1 \cdot 3^k\) for some constant
+\(C_1\) and sufficiently large \(k\). The Rhin refinement~\cite{Rhin1987}
+reduces \(\mu\) to at most \(5.125\) for the pair \((\log 2, \log 3)\). In
+the Lean statement of Hypothesis~\ref{hyp:baker}, we take \(\mu = 6\), a
+deliberate weakening that trades finer-grained constants for a cleaner
+integer statement (see Section~\ref{sec:hypotheses}).
+
+\subsection{Continued fractions of \(\log_2 3\)}
+
+The continued-fraction expansion of \(\log_2 3\) produces a sequence of
+convergents \(p_i / q_i\) minimising
+\(|q_i \log_2 3 - p_i|\) among rationals with denominator at most \(q_i\)
+(Legendre's best-approximation theorem, see
+\cite{HardyWright1979,Khinchin1964}). The convergent denominators
+\(q_i\) grow rapidly; the argument behind
+Hypothesis~\ref{hyp:derived} uses a windowing of these convergents to
+derive the \(k > 1322\) case of the main theorem (see
+Section~\ref{sec:hypotheses} for a sketch and
+Section~\ref{sec:conclusion} for the planned full formalisation).
+
+% [ERIC-REVIEW] The "windowing" terminology reflects terminology from the
+% repository's Phase59 docstrings ("CF window 8", "window 13", etc.).
+% Please confirm this usage is consistent with how you intend to present
+% the argument in publication.

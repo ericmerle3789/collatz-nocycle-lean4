@@ -1,6 +1,103 @@
 % 08-conclusion-future-work.tex
-% Conclusion + future work ~2 pages. Placeholder for G3.1 skeleton ; drafted in G3.7 [ERIC-REVIEW].
+% Section 8 — Conclusion and future work. Drafted G3.7. [ERIC-REVIEW] on
+% Phase Legendre description and openness discussion.
 
 \section{Conclusion and Future Work}
+\label{sec:conclusion}
 
-[ERIC-REVIEW] Placeholder --- filled in G3.7.
+\subsection{Summary}
+
+We have presented a Lean~4 formalisation of a conditional non-existence
+result for nontrivial odd Collatz cycles (Theorem~\ref{thm:main}), with
+an explicit, auditable separation between \emph{published} hypotheses
+(Baker~\cite{Baker1966}, Barina~\cite{Barina2025}) and a \emph{derived}
+hypothesis (\textsf{DerivedLargeKBound}). The formalisation contains zero
+\texttt{sorry}, and the axiom chain of the main theorem consists of the
+three standard kernel axioms of Mathlib and no others. An end-to-end
+reproducibility pipeline, a continuous integration workflow, and an
+internal audit trail under \texttt{docs/BIBLE/} accompany the paper and
+the repository.
+
+\subsection{Phase Legendre : formalising \textsf{DerivedLargeKBound}}
+
+% [ERIC-REVIEW] Phase Legendre description and timeline. Please confirm
+% the plan below is accurate and that 2--3 months is a realistic
+% estimate.
+
+The main item of planned future work is to promote
+\textsf{DerivedLargeKBound} from a structure to a proven Lean theorem,
+thereby removing it from the list of conditional hypotheses. We refer to
+this follow-up as \emph{Phase Legendre}, in reference to Legendre's
+best-approximation theorem on convergents of continued fractions, which
+is the central analytic tool involved.
+
+The plan has three parts :
+
+\begin{enumerate}
+  \item \emph{Mathlib survey.} Determine the current state of the
+        \texttt{Mathlib.NumberTheory.ContinuedFractions} subsystem and
+        identify which pieces (convergents of \(\log_2 3\), best-
+        approximation properties, effective estimates) are already
+        available and which need to be added.
+  \item \emph{Formal derivation.} Formalise the argument sketched in
+        Section~\ref{sec:hypotheses}, which combines Hypothesis~\ref{hyp:baker}
+        with a convergent-based windowing argument, to produce a Lean
+        proof of the predicate currently held by
+        \textsf{DerivedLargeKBound}.
+  \item \emph{Integration.} Replace the \texttt{structure} at the
+        definition site in \texttt{Phase59ContinuedFractions.lean} by the
+        newly proven theorem, keeping the statement of
+        Theorem~\ref{thm:main} unchanged.
+\end{enumerate}
+
+Upon completion of Phase Legendre, the axiom chain of
+Theorem~\ref{thm:main} will additionally include
+\texttt{Lean.ofReduceBool} and \texttt{Lean.trustCompiler}, introduced by
+the \texttt{native\_decide} tactic used in the arithmetic gap lemmas
+(\(\mathtt{cf\_gap\_*}\), \(\mathtt{cf\_nbound\_*}\)) that underlie the
+derivation. This change will be declared preemptively in
+\texttt{expected\_axioms.md} before the integration commit and
+acknowledged in a subsequent version of this paper.
+
+A rough estimate for Phase Legendre is two to three additional months of
+work, subject to a survey of Mathlib's current continued-fractions
+infrastructure.
+
+\subsection{Openness and limitations}
+
+The present formalisation leaves several avenues open :
+
+\begin{itemize}
+  \item \textbf{Tightening the threshold.} The specific value \(k = 1322\)
+        in Hypothesis~\ref{hyp:derived} is a consequence of taking
+        \(\mu = 6\) rather than the finer Rhin bound. A refined
+        formulation with \(\mu = 5.125\) would lower the threshold and
+        could shorten the case split; this is a candidate for a
+        follow-up technical note.
+  \item \textbf{Auditing more theorems.} The probe
+        \texttt{probes/check\_central\_axioms.lean} currently covers
+        ten theorems (seven central, three illustrative
+        \texttt{native\_decide} auxiliaries). Extending the baseline to
+        all \(\mathtt{cf\_gap\_*}\) and \(\mathtt{cf\_nbound\_*}\)
+        variants would remove residual ambiguity for reviewers
+        consulting the code in depth.
+  \item \textbf{Interoperating with other formalisations.} As other
+        Lean formalisations of partial Collatz results
+        appear~(see references in Section~\ref{sec:introduction}),
+        reusing common lemmas (e.g.\ Syracuse maps, 2-adic valuations,
+        Steiner-style equations) across repositories would be mutually
+        beneficial. Such interoperation is not part of the present
+        scope.
+\end{itemize}
+
+\subsection{Closing remark}
+
+% [ERIC-REVIEW] Closing phrasing — please amend to your voice. Currently
+% reserved and conditional, matching the rest of the paper.
+
+We view this work as an intermediate step towards a fully unconditional
+formalisation of the no-nontrivial-odd-cycle result, not as a final
+statement on the subject. Its value, we hope, lies in the explicit
+articulation of the conditional form, in the reproducibility and audit
+infrastructure that accompanies it, and in the concrete path it identifies
+for the remaining Phase Legendre work.
