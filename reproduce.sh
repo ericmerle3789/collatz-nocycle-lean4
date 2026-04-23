@@ -60,6 +60,13 @@ CENTRAL_THEOREMS=(
 M3_THEOREMS=(
     "ProjetCollatz.Phase60.log23_irrational"
     "ProjetCollatz.Phase60.two_pow_ne_three_pow"
+    "ProjetCollatz.Phase61.log23_convergent"
+    "ProjetCollatz.Phase61.logb23_pos"
+    "ProjetCollatz.Phase61.q_n"
+    "ProjetCollatz.Phase61.q_n_pos"
+    "ProjetCollatz.Phase61.q_n_eq_den"
+    "ProjetCollatz.Phase61.InWindow"
+    "ProjetCollatz.Phase61.not_convergent_implies_far_approx"
 )
 
 NATIVE_LEMMAS=(

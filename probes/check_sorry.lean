@@ -42,3 +42,12 @@ auxiliary), so a sorry in e.g. `no_cycle_k_le_1322` cannot slip through.
 -- Any sorryAx introduced in Phase60-63 will surface here immediately.
 #print axioms ProjetCollatz.Phase60.log23_irrational
 #print axioms ProjetCollatz.Phase60.two_pow_ne_three_pow
+
+-- Phase61 CF convergents (7) — added 2026-04-23 M3.2
+#print axioms ProjetCollatz.Phase61.log23_convergent
+#print axioms ProjetCollatz.Phase61.logb23_pos
+#print axioms ProjetCollatz.Phase61.q_n
+#print axioms ProjetCollatz.Phase61.q_n_pos
+#print axioms ProjetCollatz.Phase61.q_n_eq_den
+#print axioms ProjetCollatz.Phase61.InWindow
+#print axioms ProjetCollatz.Phase61.not_convergent_implies_far_approx

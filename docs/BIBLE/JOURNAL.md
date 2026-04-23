@@ -205,3 +205,75 @@
 **Sign-off** :
 - Eric via "GO Session B" terminal 2026-04-23T07:45+02
 - Session B auto-sign ADR-003 M3.1 via terminal override Eric 08:50+02 ("tu prends les décisions justes au regard de la rigueur et intégrité mathématique")
+
+---
+
+## 2026-04-23 — M3.2 WIP [P2] Phase61 CFConvergents infrastructure
+
+**Autorité** : Session B auditor GO Voie B+ écriture Phase61 via terminal override Eric explicite ("On ne perd pas de temps", 2026-04-23T09:12+02). Décantation 24h M3.1 raccourcie par autorité Eric directe (auto-sign ADR-003 M3.1 a eu lieu à 08:53+02, GO M3.2 à 09:12+02, Eric silence effective 19 min vs 24h prévus).
+
+**Contexte** : Phase61 fournit l'infrastructure de théorie des fractions continues pour `Real.logb 2 3`, réutilisée par Phase63 dans la preuve de `DerivedLargeKBoundTheorem` (remplacement final de `DerivedLargeKBound` structure-as-hypothesis). Pre-flight M3.2 Mathlib CF lookup (`0043-m3.2-mathlib-cf-mapping.md`) a confirmé : 13 modules CF disponibles, `Real.exists_rat_eq_convergent` formalisé (H3 mitigé), bridge H2 tractable ~30-50 lignes, pas de Baker nécessaire avant Phase63.
+
+**Actions exécutées** :
+- Pre-writing inspection R-M3.H8 : `Real.convergent` définie via `Int.floor`/`Int.fract`, pas de `Rat.continuedFractionOf` dependency. H8 downgradé NEGLIGIBLE.
+- `ProjetCollatz/Phase61CFConvergents.lean` (151 lignes post-fix) : 4 sections (Wrapper + Positivity / H2 Denominator bridge + InWindow predicate / H2 theorems / H3 contrapositive).
+- 11 items exposés : `log23_convergent`, `logb23_pos`, `q_n`, `q_n_pos`, `q_n_eq_den`, `q_n_real_pos`, `InWindow`, `InWindow.lower/.upper/.mk`, `not_convergent_implies_far_approx`.
+- `probes/check_phase61_axioms.lean` (nouveau, 21 lignes) : probe dédiée Phase61.
+- `probes/check_central_axioms.lean` + `probes/check_sorry.lean` étendus avec Phase61 (Section 3 M3 expanded 2 → 9 théorèmes).
+- `reproduce.sh` `M3_THEOREMS` array étendu 2 → 9 items.
+- Import `ProjetCollatz.Phase61CFConvergents` ajouté dans racine `ProjetCollatz.lean`.
+
+**Stratégie de preuve (Voie B, Phase61)** :
+- `log23_convergent n := Real.convergent (Real.logb 2 3) n` (wrapper direct Mathlib).
+- `logb23_pos` via `Real.logb_pos` (classique, 2 arguments `1 < 2`, `1 < 3`).
+- `q_n_pos` via `Rat.pos` (dénominateur positif).
+- `q_n_eq_den` par `rfl` (équivalence définitionnelle).
+- `not_convergent_implies_far_approx` contrapositive de `Real.exists_rat_eq_convergent` — preuve 5 lignes effectives :
+  ```lean
+  by_contra h_close
+  push_neg at h_close
+  obtain ⟨n, hn⟩ := Real.exists_rat_eq_convergent h_close
+  exact h_not_conv n hn
+  ```
+
+**Vérifications §3 checklist** :
+- §3.0 Toolchain : `leanprover/lean4:v4.27.0` PASS
+- §3.1 Build complet : PASS 7927 jobs / 47s
+- §3.2 Central axioms (7) : `[propext, Classical.choice, Quot.sound]` inchangé
+- §3.3 Phase61 axioms (11) : tous `[propext, Classical.choice, Quot.sound]` — **kernel 3 strict**
+- §3.4 Sorry probe (19 théorèmes) : 0 sorryAx
+- §3.5 reproduce.sh end-to-end : **EXIT 0** (1m26s, 19 théorèmes audités = 7 central + 3 native + 9 M3)
+- §3.6 JOURNAL.md entry : cette section
+
+**Anti-disguise D1-D10 self-audit (directive Eric 0046)** :
+- D1 sorry/admit/stop : PASS (grep vide)
+- D2 axiom-as-def : PASS (axiomes kernel 3 stricts)
+- D3 native_decide : PASS (seulement docstring mentions)
+- D4 circularité : PASS (not_convergent_implies_far_approx n'utilise PAS log23_irrational, seulement Real.exists_rat_eq_convergent)
+- D5 macro/elab : PASS (grep vide)
+- D6 imports : PASS (2 imports Mathlib.*, pas de scratch)
+- D7 unsafe/partial : PASS (grep vide)
+- D8 vacuous stmt : PASS (review manuelle 11 items)
+- D9 docstring/content : PASS (review manuelle 11 items)
+- D10 exact?/aesop : PASS (grep vide)
+- **10/10 PASS** (self-audit indépendamment confirmé par RT hostile-reviewer)
+
+**Red Team hostile-reviewer Phase61** : verdict `GO with fixes` (0 HIGH, 1 MEDIUM + 1 LOW).
+- MEDIUM (82) : import `ProjetCollatz.Phase60IrrationalityLog23` non utilisé par les preuves (aucun symbol Phase60 invoqué). Fix : import retiré + commentaire narratif 7 lignes expliquant pourquoi.
+- LOW (80) : docstring items 3 et 4 dans ordre différent du code (InWindow listé avant q_n alors que q_n est défini avant). Fix : swap items 3↔4 dans docstring.
+- Tous fixes appliqués pre-commit.
+
+**Intégrité pré/post-M3.2** :
+- Pré-M3.2 (post-M3.1) : tree sha256 `bc2f4b2c47f293de5b5ee83f89f13b4b9d253224778d85d691c207802cd17e8f`
+- Post-M3.2 : tree sha256 `29c8bdac4e2033ad4a1496b272a48a7d83cc1ac71132a303e40d273b541b0eb7` (delta exclusivement Phase61 + probes + reproduce.sh extension)
+- Central axioms inchangés
+- `expected_axioms.md` non modifié (M3.2 hors chaîne centrale, Phase63 future integration)
+- Tag `paper-v1-draft` immutable
+
+**Budget ligne** : Phase61 = 151 lignes / 350 plafond (43%) / 300 alert (50%). Bonne marge.
+
+**Dépendances Mathlib utilisées** :
+- `Mathlib.Analysis.SpecialFunctions.Log.Base` (`Real.logb`, `Real.logb_pos`)
+- `Mathlib.NumberTheory.DiophantineApproximation.Basic` (`Real.convergent`, `Real.exists_rat_eq_convergent`)
+
+**Prochain** : rapport `to_auditor/NNNN-m3.2-phase61-ready-for-signoff.md` → T₀ anti-G3.11 → décantation 15 min min → sign-off (auto-ADR-003 ou ALERT Eric) → commit + push `m3-legendre` → CI.

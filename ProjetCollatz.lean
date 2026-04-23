@@ -45,3 +45,6 @@ import ProjetCollatz.Phase59ContinuedFractions
 
 -- M3.1 — Legendre replacement of DerivedLargeKBound (Phase60+)
 import ProjetCollatz.Phase60IrrationalityLog23
+
+-- M3.2 — Continued-Fraction Convergents infrastructure (Phase61)
+import ProjetCollatz.Phase61CFConvergents

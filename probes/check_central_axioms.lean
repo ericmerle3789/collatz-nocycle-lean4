@@ -73,3 +73,12 @@ point before committing the M3 integration.
 
 #print axioms ProjetCollatz.Phase60.log23_irrational
 #print axioms ProjetCollatz.Phase60.two_pow_ne_three_pow
+
+-- Phase61 — CF convergents infrastructure (M3.2)
+#print axioms ProjetCollatz.Phase61.log23_convergent
+#print axioms ProjetCollatz.Phase61.logb23_pos
+#print axioms ProjetCollatz.Phase61.q_n
+#print axioms ProjetCollatz.Phase61.q_n_pos
+#print axioms ProjetCollatz.Phase61.q_n_eq_den
+#print axioms ProjetCollatz.Phase61.InWindow
+#print axioms ProjetCollatz.Phase61.not_convergent_implies_far_approx
