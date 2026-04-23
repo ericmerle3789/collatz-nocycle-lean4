@@ -61,3 +61,15 @@ point before committing the M3 integration.
 #print axioms ProjetCollatz.cf_gap_8
 #print axioms ProjetCollatz.cf_gap_13
 #print axioms ProjetCollatz.cf_nbound_8
+
+-- ============================================================================
+-- Section 3 — M3 Legendre foundational theorems (M3.1+)
+-- Expected : [propext, Classical.choice, Quot.sound] (kernel 3 only)
+-- These theorems are not yet integrated into the central chain ; they will
+-- compose into no_nontrivial_cycle_phase59 at Phase63 (planned).
+-- Tracked separately in reproduce.sh under M3_THEOREMS to make regressions
+-- visible immediately, without waiting for Phase63 integration.
+-- ============================================================================
+
+#print axioms ProjetCollatz.Phase60.log23_irrational
+#print axioms ProjetCollatz.Phase60.two_pow_ne_three_pow

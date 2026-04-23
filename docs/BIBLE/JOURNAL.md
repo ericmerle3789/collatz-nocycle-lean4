@@ -118,3 +118,52 @@
 **Réversibilité** : `git revert f05f3cc..6dae8ce` (6 commits).
 
 **Prochain** : G3 paper v1 draft + decision Legendre (Eric-only probable pour commit final paper).
+
+---
+
+## 2026-04-23 — M3.1 WIP [P2] Phase60 Irrationality log₂3 Voie B
+
+**Autorité** : Session B auditor GO Voie B, autorité ADR-001 §1 auto-décision non-gate ("choix d'implémentation"). Message mailbox `archive/to_worker/0039-go-voie-B-phase60-branche-m3-legendre.md` daté 2026-04-23T08:35Z.
+
+**Contexte** : Phase60 fournit le premier lemme analytique fondamental pour remplacer `DerivedLargeKBound` (Phase59, structure-as-hypothesis) par une preuve formelle dans la chaîne M3 Legendre. Voie A (lookup Mathlib v4.27.0 pour `Irrational (Real.logb 2 3)` ou équivalents) a été épuisée : 8 patterns testés, 0 match (findings archivés dans `archive/to_auditor/0038-voie-a-findings.md`). Voie B (preuve ab initio) retenue.
+
+**Actions exécutées** :
+- Traitement amendment 0038 : §3.0 toolchain PASS (`leanprover/lean4:v4.27.0`) + isolation legendre_spike PASS (grep `ProjetCollatz/*.lean` vide) + anti-G3.11 rule acceptée explicitement.
+- Branche `m3-legendre` créée depuis `main 4ec239d` (= `4ec239deeea642315fcb431ca0d22a09727911f3`, postmortem G3.11) puis push origin avec tracking. Séparation stricte du sandbox `m2-legendre-spike` (M2 archive documentaire via PR #2 OPEN).
+- `ProjetCollatz/Phase60IrrationalityLog23.lean` (149 lignes) : preuve Voie B sur 2 théorèmes (structure §5.4 recommandée par auditor).
+- Ajout `import ProjetCollatz.Phase60IrrationalityLog23` dans racine `ProjetCollatz.lean`.
+- `probes/check_phase60_axioms.lean` (nouveau) : probe dédiée aux 2 théorèmes Phase60.
+
+**Stratégie Voie B** (2-adic valuation) :
+- Hypothèse par contradiction : `Real.logb 2 3 = (q : ℝ)` pour `q : ℚ`. Positivité de `logb 2 3` implique `q > 0`, donc `q = p / d` avec `p = q.num.toNat ≥ 1` et `d = q.den ≥ 1`.
+- Définition `logb b x = log x / log b` (définitionnelle, `rfl`). Cross-multiply + `Real.log_pow` donne `log (3^d) = log (2^p)` en ℝ.
+- Injectivité `Real.log_injOn_pos` sur `(0, ∞)` transfère en `3^d = 2^p` en ℝ, puis en ℕ via `exact_mod_cast`.
+- Auxiliary `two_pow_ne_three_pow` contredit via `padicValNat 2` : `padicValNat 2 (2^p) = p` (car 2 premier) vs `padicValNat 2 (3^d) = 0` (car `¬ 2 ∣ 3`). D'où `p = 0`, contradiction avec `p ≥ 1`.
+
+**Vérifications §3 checklist** :
+- §3.0 Toolchain : `leanprover/lean4:v4.27.0` (exact string match MISSION_NASA §13)
+- §3.1 Build complet : PASS (`lake build` EXIT 0, 7926 jobs, 46s sur M1 Pro)
+- §3.2 Central axioms (7 théorèmes) : `[propext, Classical.choice, Quot.sound]` inchangé — Phase60 n'entre pas dans la chaîne centrale à M3.1 (integration attendue Phase63)
+- §3.3 Phase60 axioms (2 théorèmes) : `log23_irrational` et `two_pow_ne_three_pow` ont tous deux `[propext, Classical.choice, Quot.sound]` (kernel 3 uniquement, zéro nouvel axiom)
+- §3.4 Sorry probe (`probes/check_sorry.lean`) : 0 sorryAx
+- §3.5 reproduce.sh end-to-end : **EXIT 0** (1m32s, toolchain + cache + build + axioms + sorry tous PASS)
+- §3.6 Voie A exhaustion documentée dans `archive/to_auditor/0038-voie-a-findings.md` (8 patterns initiaux + 3 patterns étendus `Transcendental/Liouville log` tous 0 match)
+
+**Interdits Voie B §5.5 respectés** :
+- Zéro `native_decide` (arithmétique symbolique uniquement)
+- Zéro `axiom` (kernel 3 suffisent, aucune déclaration nouvelle)
+- `expected_axioms.md` inchangé (pas d'intégration centrale à M3.1 — Section 3 `expected_axioms.md` documente la mise à jour future à l'intégration Phase63)
+- Docstrings anglais uniquement (MISSION_NASA §10)
+
+**Dépendances Mathlib utilisées** :
+- `Mathlib.Analysis.SpecialFunctions.Log.Base` (`logb`, `log_pow`, `log_injOn_pos`, `logb_pos`)
+- `Mathlib.NumberTheory.Real.Irrational` (`Irrational` definition)
+- `Mathlib.NumberTheory.Padics.PadicVal.Basic` (`padicValNat.prime_pow`, `padicValNat.eq_zero_of_not_dvd`)
+
+**Commit status à ce stade** : Phase60 écrit et buildé localement. Pas encore de commit sur `m3-legendre`. Déclenchement fenêtre décantation 15 min anti-G3.11 au moment du rapport `0040-phase60-ready-for-signoff.md`.
+
+**Red Team** : hostile-reviewer dédié Phase60 à spawner avant rapport sign-off.
+
+**Réversibilité** : trivial — branche `m3-legendre` séparée, non mergée. Abandonner la branche = rollback instantané sans impact sur `main` ou `m2-legendre-spike`.
+
+**Prochain** : RT hostile-reviewer Phase60 → rapport `0040-phase60-ready-for-signoff.md` → décantation 15 min minimum (anti-G3.11) → ALERT Eric ou auto-sign ADR-003 selon dispo → commit + push `m3-legendre` → CI capture.

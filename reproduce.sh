@@ -53,6 +53,15 @@ CENTRAL_THEOREMS=(
     "ProjetCollatz.sdw_from_cf"
 )
 
+# M3 Legendre foundational theorems — same axiom profile as CENTRAL (kernel 3
+# only), tracked separately for semantic clarity. Not yet integrated into the
+# central chain at M3.1 ; will be composed into no_nontrivial_cycle_phase59 at
+# M3 integration (Phase63 planned).
+M3_THEOREMS=(
+    "ProjetCollatz.Phase60.log23_irrational"
+    "ProjetCollatz.Phase60.two_pow_ne_three_pow"
+)
+
 NATIVE_LEMMAS=(
     "ProjetCollatz.cf_gap_8"
     "ProjetCollatz.cf_gap_13"
@@ -140,7 +149,7 @@ fi
 # H1 mitigation : `|| true` guarantees arithmetic is meaningful ; separately check file non-empty
 probed_count=$(grep -cE "depends on axioms" /tmp/nocycle_axioms.log || true)
 probed_count=${probed_count:-0}
-expected_probes=$(( ${#CENTRAL_THEOREMS[@]} + ${#NATIVE_LEMMAS[@]} ))
+expected_probes=$(( ${#CENTRAL_THEOREMS[@]} + ${#NATIVE_LEMMAS[@]} + ${#M3_THEOREMS[@]} ))
 if [ "$probed_count" -lt "$expected_probes" ]; then
     echo "ERROR: probe reported $probed_count theorems, expected >= $expected_probes" >&2
     echo "  — possible cause : a theorem was renamed or removed ; check probes/check_central_axioms.lean" >&2
@@ -193,6 +202,11 @@ for theorem in "${NATIVE_LEMMAS[@]}"; do
 done
 echo "    ${#NATIVE_LEMMAS[@]}/${#NATIVE_LEMMAS[@]} auxiliary lemmas OK (native_decide, isolated from central chain)"
 
+for theorem in "${M3_THEOREMS[@]}"; do
+    check_axioms_exact "$theorem" "$EXPECTED_CENTRAL_AXIOMS" || exit 3
+done
+echo "    ${#M3_THEOREMS[@]}/${#M3_THEOREMS[@]} M3 Legendre foundational theorems OK (kernel 3 only, not yet in central chain)"
+
 # ----- Step 5 : sorry probe (Lean kernel authoritative) -----------------------
 echo "==> [5/5] Sorry detection via Lean kernel (sorryAx)"
 
@@ -215,7 +229,7 @@ echo "========================================="
 echo "reproduce.sh : ALL CHECKS PASS"
 echo "  - toolchain : $ACTUAL_TOOLCHAIN"
 echo "  - build     : EXIT 0 ($built_jobs jobs)"
-echo "  - axioms    : ${#CENTRAL_THEOREMS[@]} central + ${#NATIVE_LEMMAS[@]} auxiliary match expected_axioms.md"
+echo "  - axioms    : ${#CENTRAL_THEOREMS[@]} central + ${#NATIVE_LEMMAS[@]} auxiliary + ${#M3_THEOREMS[@]} M3 foundational match expected_axioms.md"
 echo "  - sorry     : 0 sorryAx"
 echo "========================================="
 exit 0

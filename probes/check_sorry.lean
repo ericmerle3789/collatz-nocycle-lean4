@@ -37,3 +37,8 @@ auxiliary), so a sorry in e.g. `no_cycle_k_le_1322` cannot slip through.
 #print axioms ProjetCollatz.cf_gap_8
 #print axioms ProjetCollatz.cf_gap_13
 #print axioms ProjetCollatz.cf_nbound_8
+
+-- M3 Legendre foundational theorems (2) — added 2026-04-23 M3.1
+-- Any sorryAx introduced in Phase60-63 will surface here immediately.
+#print axioms ProjetCollatz.Phase60.log23_irrational
+#print axioms ProjetCollatz.Phase60.two_pow_ne_three_pow

@@ -42,3 +42,6 @@ import ProjetCollatz.Phase55CycleBound
 import ProjetCollatz.Phase56Bloc18Complete
 import ProjetCollatz.Phase58PorteDeuxFinal
 import ProjetCollatz.Phase59ContinuedFractions
+
+-- M3.1 — Legendre replacement of DerivedLargeKBound (Phase60+)
+import ProjetCollatz.Phase60IrrationalityLog23
