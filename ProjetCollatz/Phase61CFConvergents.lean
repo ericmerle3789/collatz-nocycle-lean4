@@ -69,13 +69,13 @@ open Real
 /-- The `n`-th continued-fraction convergent of `Real.logb 2 3` as a
 rational number. This is a thin wrapper around `Real.convergent`. -/
 noncomputable def log23_convergent (n : ℕ) : ℚ :=
-  Real.convergent (Real.logb 2 3) n
+  convergent (logb 2 3) n
 
 /-- Positivity of `Real.logb 2 3`. Re-stated as a standalone lemma for use
 in downstream Phase62/63 arguments (Phase60 proves irrationality but does
 not export this). -/
-theorem logb23_pos : 0 < Real.logb 2 3 :=
-  Real.logb_pos (by norm_num : (1 : ℝ) < 2) (by norm_num : (1 : ℝ) < 3)
+theorem logb23_pos : 0 < logb 2 3 :=
+  logb_pos (by norm_num : (1 : ℝ) < 2) (by norm_num : (1 : ℝ) < 3)
 
 /-! ## Section 2 — Abstract window frame
 
@@ -119,7 +119,7 @@ theorem q_n_pos (n : ℕ) : 0 < q_n n := by
 /-- Definitional unfolding: `q_n n` equals the denominator of the Mathlib
 convergent of `log₂ 3`. Exposed as a rewrite handle for downstream proofs. -/
 theorem q_n_eq_den (n : ℕ) :
-    q_n n = (Real.convergent (Real.logb 2 3) n).den :=
+    q_n n = (convergent (logb 2 3) n).den :=
   rfl
 
 /-- The denominator as a real number is strictly positive (common downstream
@@ -155,11 +155,11 @@ approximation bound, not the CF-theoretic "best approximation of the
 second kind" (which concerns comparison of `|q·ξ - p|` across
 denominators and is not used here). -/
 theorem not_convergent_implies_far_approx
-    {q : ℚ} (h_not_conv : ∀ n, q ≠ (Real.logb 2 3).convergent n) :
-    1 / (2 * (q.den : ℝ) ^ 2) ≤ |Real.logb 2 3 - (q : ℝ)| := by
+    {q : ℚ} (h_not_conv : ∀ n, q ≠ (logb 2 3).convergent n) :
+    1 / (2 * (q.den : ℝ) ^ 2) ≤ |logb 2 3 - (q : ℝ)| := by
   by_contra h_close
   push_neg at h_close
-  obtain ⟨n, hn⟩ := Real.exists_rat_eq_convergent h_close
+  obtain ⟨n, hn⟩ := exists_rat_eq_convergent h_close
   exact h_not_conv n hn
 
 end ProjetCollatz.Phase61
