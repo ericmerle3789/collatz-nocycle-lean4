@@ -167,3 +167,41 @@
 **Réversibilité** : trivial — branche `m3-legendre` séparée, non mergée. Abandonner la branche = rollback instantané sans impact sur `main` ou `m2-legendre-spike`.
 
 **Prochain** : RT hostile-reviewer Phase60 → rapport `0040-phase60-ready-for-signoff.md` → décantation 15 min minimum (anti-G3.11) → ALERT Eric ou auto-sign ADR-003 selon dispo → commit + push `m3-legendre` → CI capture.
+
+---
+
+## 2026-04-23 — Session A→B handoff + Eric §5.6 override one-time [P1-historique]
+
+**Événement** : Transition Session A Auditor → Session B Auditor pendant Phase Legendre M3 start, puis réalisation M3.1 Phase60 signed.
+
+**Timeline intégrée** :
+- 2026-04-22T21:01Z : Worker paused (CronDelete `b7a3adfe` post-M2)
+- 2026-04-22T23:03Z : Eric choix α "GO LEGENDRE" (4-6 mois extended, possiblement 3 hypothèses publiées)
+- 2026-04-23T07:20Z : Session B validation answers → Session A grade 23/23 + Q10 5/5
+- 2026-04-23T07:45Z : Eric GO Session B
+- 2026-04-23T07:55Z : **Eric §5.6 override direct terminal worker** — réveil sans attendre wakeup-ack formel
+- 2026-04-23T07:58Z : Session B envoie 0036 (intro + status check + M3.1 plan) sans bypass §5.7 violation (override Eric documenté)
+- 2026-04-23T08:02Z : Session B demande cross-validation hostile à Session A
+- 2026-04-23T08:10Z : Session A review hostile 0036 — 22.5/25, 2 HIGH findings
+- 2026-04-23T08:20Z (approx) : Session B envoie 0038 amendment avec fixes (§3.0 toolchain + legendre_spike isolation + anti-G3.11 rule)
+- 2026-04-23T08:31Z : Worker ready-for-signoff M3.1 (T₀ anti-G3.11 = `2026-04-23T08:31:39Z`)
+- 2026-04-23T08:43Z : Commit `703d085760cc73651d06a6270d1ad3bd8f6b160b` M3.1 Phase60 sur `m3-legendre` + PR #3 draft créée
+- 2026-04-23T08:50Z : **CI GitHub Actions SUCCESS** 6m39s (run `24825749813`, workflow `verify` sur ubuntu-24.04 pinned)
+- 2026-04-23T08:53+02 : Auto-sign ADR-003 (8 conditions vérifiées, ALERT `ALERT-M3.1-AUTOSIGN-ADR-003-PHASE60-READY.md`)
+- 2026-04-23T08:54Z : M3.2 pre-flight complete (rapport `0043-m3.2-mathlib-cf-mapping.md`)
+
+**Classification** : P1 historique (transition auditor + override §5.6). Traçabilité obligatoire.
+
+**Précédent §5.6 override à surveiller** : one-time acceptable pour réveil M3 initial + transition Session A→B. Si Eric override §5.7 systématiquement dans la suite, créer ADR-006 "bypass §5.7 conditions précises" pour re-cadrer le protocole.
+
+**Autorité désormais** : Session B auditor pour Phase Legendre M3 (M3.1-M3.4 ADR-003 éligibles, M3.5-M3.8 Eric-only absolus). Session A reste active ~2h transition puis ferme.
+
+**Intégrité préservée** :
+- Hash ProjetCollatz/ pré-M3.1 `a18dce00dba72dffc67fdb2dd7f1882b69f9c4c9e3239e2215cc231e6a00f00f` maintenu jusqu'au commit M3.1
+- Hash post-M3.1 `bc2f4b2c47f293de5b5ee83f89f13b4b9d253224778d85d691c207802cd17e8f` (delta exclusivement ajout Phase60 + CI tooling)
+- Axiomes centraux inchangés : `[propext, Classical.choice, Quot.sound]` pour les 7 théorèmes central chain
+- Tag `paper-v1-draft` immutable (commit `2eb88cb`)
+
+**Sign-off** :
+- Eric via "GO Session B" terminal 2026-04-23T07:45+02
+- Session B auto-sign ADR-003 M3.1 via terminal override Eric 08:50+02 ("tu prends les décisions justes au regard de la rigueur et intégrité mathématique")
