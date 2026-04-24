@@ -1,15 +1,16 @@
 ---
 section: "9"
 owner: worker
-status: skeleton
+status: skeleton-plus-session-c-paragraphs
 contributions:
   - "§9.6 paragraph drafted by Session C Mathlib-Prover, Track C Day 1 Tao persona analysis (mailbox from_mathlib_prover/0023, 2026-04-24T22:00Z), integrated verbatim by Worker per Session B authorization 0067 §6.3."
+  - "§9.7 paragraph drafted by Session C Mathlib-Prover, Phase IX Part A synthesis §9.3 (mailbox from_mathlib_prover/0042, 2026-04-25T~03:00Z), integrated verbatim by Worker per Session B authorization 0078 §6.3 + 0080 §3.1."
 last_updated: 2026-04-24
 ---
 
 # 9. Open problems
 
-*[WIP — Day 3 draft planned per 0064 §4 timeline. §9.6 already contains Session C's pre-drafted Tao paragraph.]*
+*[WIP — skeleton prose for §9.1-§9.5 pending Day-3 polish ; §9.6 Tao and §9.7 structural-excess (Ψ_s) paragraphs are Session C direct-verified and integrated verbatim per Session B authorization.]*
 
 ## Planned structure
 
@@ -31,18 +32,28 @@ Session C Track B continues 6-12 weeks with Day 14 kill-switch on transcendence-
 
 ### 9.6 Probabilistic techniques (Tao)
 
-*[Paragraph drafted by Session C Track C Day 1 Tao persona analysis (mailbox 0023 §5.2), integrated verbatim per Session B authorization 0067 §6.3. Worker prose adjustments will be applied in Day 3 polish pass.]*
+*[Paragraph drafted by Session C Track C Day 1 Tao persona analysis (mailbox 0023 §5.2), integrated verbatim per Session B authorization 0067 §6.3.]*
 
 Tao's probabilistic approach (2019, *Forum of Mathematics, Pi*) proves that almost all Collatz orbits attain almost bounded values under logarithmic density. This result is **probabilistic** and does not extend to deterministic statements about hypothetical cycles (which have density zero). Tao's broader toolkit (entropy compression à la Moser-Tardos [blog 2009], higher-order Fourier analysis à la Green-Tao-Ziegler) has not been successfully applied to deterministic Collatz cycle bounds; such applications would require substantial new theoretical work. We therefore do not integrate probabilistic techniques into our proof of Theorem 3.1 (which remains conditional on the structural hypotheses §4).
 
-## Deliverables Day 3
+### 9.7 Structural-excess framework Ψ_s (Phase VIII extension)
 
-- [ ] Clean English prose, ~1-2 pages.
-- [ ] Every open problem explicitly labelled (Open 9.1, 9.2, ...).
-- [ ] No hype. No claim that "future work will certainly resolve" anything.
+*[Paragraph drafted by Session C Mathlib-Prover, Phase IX Part A synthesis §9.3 (mailbox from_mathlib_prover/0042), integrated verbatim per Session B authorization 0078 §6.3 + 0080 §3.1. See §8.5 for the formalization status and the separate branch `phase8-psi-s-lean`.]*
 
-## RT#1 checklist
+We formalize in Lean 4 a custom Φ_s / Ψ_s structural-excess framework (Mathlib v4.27.0 lacks Gowers norms). Machine-verified : the trivial Collatz cycle has Ψ_2 = 32/81, establishing a factor-33× structural excess over its mean prediction (1/81). The T4c conjecture is encoded as parametric `def T4c_Conjecture_Psi2`, and the contradiction schema `psi2_bounds_no_cycle` records the logical shape of the intended attack. See `ProjetCollatz.PhaseVIII.StructuralExcess` in the repository branch `phase8-psi-s-lean` (§8.5).
 
-- [ ] Every open problem traceable to a §5/§6/§7 obstruction.
+## Style notes (Worker internal — remove before publication)
+
+- §9.1-§9.5 remain at skeleton prose ; Day-3 polish will elevate phrasing and add missing citations (Hercher 2023 Corollary 29 for §9.5, Tao 2019 arXiv id for §9.6, Session C Phase IX commit hashes for §9.7 if reviewer requests).
+- §9.6 and §9.7 are Session C direct-verified integrations ; do not alter without re-coordination.
+- "Day 3" deliverables checklist removed (internal ; superseded by the RT#1 cycle before Commit).
+- §9.2 numerical claim "~10^5 digits" deferred to §5/§7 Session C import (where window-size arithmetic is authoritative).
+
+## RT#1 checklist (to apply Day 3 polish pass)
+
+- [ ] Every open problem traceable to a §5 / §6 / §7 obstruction.
 - [ ] R-M3.H12 bridge named explicitly and linked to `docs/BIBLE/RISK_REGISTER.md`.
 - [ ] Scope (cycle-only) re-stated in §9.4.
+- [ ] §9.2 numerical claim ("~10^5 digits") cross-verified with §5.2 / §7 Session C values post-import.
+- [ ] §9.5 Hercher corollary reference made concrete (Corollary 29 in Hercher 2023 JIS 26 article 23.6.5).
+- [ ] §9.7 attribution chain preserved (Session C 0042 §9.3 → Session B 0078/0080 → Worker).
