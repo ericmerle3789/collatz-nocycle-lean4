@@ -30,6 +30,38 @@ All 7 theorems depend on exactly the 3 fundamental Mathlib axioms :
 
 **All 3 axioms are standard Mathlib kernel axioms**, required by any non-constructive theorem using classical reasoning and quotient types. No user-declared `axiom` is ever introduced in `ProjetCollatz/`.
 
+<!-- M3.4 ANTICIPATED UPDATE - activated post-Phase63 commit
+Section 1 will include `Lean.ofReduceBool` + `Lean.trustCompiler` once
+Phase63 (`DerivedLargeKBoundTheorem`) integrates `cf_gap_*` / `cf_nbound_*`
+into the central theorem chain by promoting `DerivedLargeKBound` from a
+`structure` (external hypothesis) to a proven theorem.
+
+Anticipated post-M3.4 Section 1 axioms for all 7 central theorems:
+  [propext, Classical.choice, Quot.sound, Lean.ofReduceBool, Lean.trustCompiler]
+
+Activation procedure (post-Phase63 commit, part of the M3.4 commit itself):
+  1. Update each row of the Section 1 table with the 5-axiom list above.
+  2. Update the sentence "All 3 axioms are standard Mathlib kernel axioms"
+     to "All 5 axioms consist of the 3 standard Mathlib kernel axioms plus
+     the 2 `native_decide`-related axioms inherited from `cf_gap_*` via
+     Phase63's integration of continued-fraction arithmetic."
+  3. Remove this comment block.
+  4. Update Section 3 "Forthcoming changes" to reflect post-M3.4 state
+     (either mark as DONE or relocate to a Historical note).
+  5. Update the Historical note entry "M3 (planned)" to "M3.4 (delivered on
+     <commit hash>, <date>)".
+  6. Ensure `probes/check_central_axioms.lean` and `reproduce.sh` both
+     expect the updated 5-axiom list for Section 1 theorems.
+
+Cross-references:
+  - `docs/BIBLE/RISK_REGISTER.md` R-10 FORESEEN-M3 (axiom chain expansion)
+  - `docs/BIBLE/RISK_REGISTER.md` R-M3.H14 (native_decide axioms into chain)
+  - `ProjetCollatz/Phase63DerivedLargeKBoundTheorem.lean` module docstring
+    section "Axiom profile impact (M3.4 central chain expansion)"
+  - Paper v2 (post-M3.6) formalisation section will explicitly acknowledge
+    these two axioms.
+-->
+
 ---
 
 ## Section 2 — Auxiliary native_decide lemmas

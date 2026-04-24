@@ -75,6 +75,57 @@ M3_THEOREMS=(
     "ProjetCollatz.Phase62.log23_abs_sub_convergent_le_in_window"
 )
 
+# -----------------------------------------------------------------------------
+# M3.4 ANTICIPATED UPDATE - activated post-Phase63 commit
+#
+# When Phase63 (`DerivedLargeKBoundTheorem`) lands, the following array will
+# be un-commented and the probe will exercise it. At the same time,
+# CENTRAL_THEOREMS will inherit `Lean.ofReduceBool` + `Lean.trustCompiler`
+# via Phase63's integration of `cf_gap_*` / `cf_nbound_*`, so the
+# EXPECTED_CENTRAL_AXIOMS constant will be updated to:
+#
+#   EXPECTED_CENTRAL_AXIOMS="[propext, Classical.choice, Quot.sound, Lean.ofReduceBool, Lean.trustCompiler]"
+#
+# M3.4 Phase63 theorems (same 5-axiom profile as new CENTRAL post-M3.4,
+# because Phase63 is the integration point that introduces the native_decide
+# axioms into the central chain) :
+#
+# M3_4_THEOREMS=(
+#     "ProjetCollatz.Phase63.window_n_bound_proof"
+#     "ProjetCollatz.Phase63.window_bound_8"
+#     "ProjetCollatz.Phase63.window_bound_9"
+#     "ProjetCollatz.Phase63.window_bound_10"
+#     "ProjetCollatz.Phase63.window_bound_11"
+#     "ProjetCollatz.Phase63.window_bound_12"
+#     "ProjetCollatz.Phase63.window_bound_13"
+#     "ProjetCollatz.Phase63.large_k_exists_window"
+#     "ProjetCollatz.Phase63.large_k_bound_theorem_phase63"
+#     "ProjetCollatz.Phase63.derivedLargeKBound_proved"
+# )
+#
+# Activation procedure (part of the M3.4 commit itself) :
+#   1. Uncomment the M3_4_THEOREMS array above.
+#   2. Update EXPECTED_CENTRAL_AXIOMS to the 5-axiom list.
+#   3. Add a verification loop mirroring the M3_THEOREMS loop :
+#        for theorem in "${M3_4_THEOREMS[@]}"; do
+#            check_axioms_exact "$theorem" "$EXPECTED_CENTRAL_AXIOMS" || exit 3
+#        done
+#      (Same EXPECTED_CENTRAL_AXIOMS as CENTRAL_THEOREMS post-M3.4.)
+#   4. Update `expected_probes` arithmetic on the Step 4 probed_count check
+#      to include `${#M3_4_THEOREMS[@]}`.
+#   5. Update the Step 5 summary echo with "${#M3_4_THEOREMS[@]} M3.4 Phase63".
+#   6. Un-comment the #print axioms directives in probes/check_phase63_axioms.lean.
+#   7. Update expected_axioms.md to reflect the post-M3.4 state (see comment
+#      block in that file for the full activation procedure).
+#
+# Cross-references :
+#   - docs/BIBLE/RISK_REGISTER.md R-10 FORESEEN-M3 and R-M3.H14
+#   - expected_axioms.md Section 1 M3.4 ANTICIPATED UPDATE block
+#   - probes/check_phase63_axioms.lean (dedicated Phase63 probe)
+#   - ProjetCollatz/Phase63DerivedLargeKBoundTheorem.lean module docstring
+#     section "Axiom profile impact (M3.4 central chain expansion)"
+# -----------------------------------------------------------------------------
+
 NATIVE_LEMMAS=(
     "ProjetCollatz.cf_gap_8"
     "ProjetCollatz.cf_gap_13"

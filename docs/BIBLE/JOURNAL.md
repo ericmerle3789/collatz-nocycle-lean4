@@ -340,3 +340,90 @@
 - `Mathlib.Algebra.ContinuedFractions.Computation.TerminatesIffRat` (`terminates_iff_rat`)
 
 **Prochain** : D1-D10 anti-disguise self-audit + RT #1 hostile-reviewer (zero-flag obligatoire tous findings fixés pre-rapport) → rapport `to_auditor/NNNN-m3.3-phase62-ready-for-push.md` avec T₀ anti-G3.11 15 min → RT #2 auditor indépendant → GO pré-push écrit Session B → commit + push `m3-legendre` → CI.
+
+---
+
+## 2026-04-24 — M3.4 WIP PARTIAL [P1] Phase63 DerivedLargeKBoundTheorem — Section 1 infrastructure + math-guidance standby
+
+**Autorité** : Session B auditor GO écriture Phase63 per plan 0061 (§1 approuvé). Workflow zero-flag + GO pré-push policy permanente (M3.3+). Policy Indiana Jones (2026-04-24T~13:00+02) : pas de limite de lignes, critères d'arrêt = blocage mathématique / Mathlib gap sans contournement / tourne-en-rond (3+ erreurs répétées) / 5 échecs tactiques consécutifs.
+
+**Contexte** : Phase63 = effort principal M3 Legendre M3.4. Objectif = remplacer la `DerivedLargeKBound` structure-as-hypothesis de Phase59 par un théorème prouvé, combinant (a) hypothèse externe `BakerSeparation` Phase58, (b) 6 gap constants `cf_gap_8..13` Phase59 (`native_decide`), (c) 6 `cf_nbound_8..13` Phase59 (`native_decide`), (d) infrastructure Phase60-62 (irrationalité log₂3, CF convergents, approximation bound). Architecture 11 sections prévue (helper DRY + 6 windows + disjonction + main theorem + replacement def).
+
+**État courant (2026-04-24 fin-journée)** : **Section 1 écrite + infrastructure préparée + STANDBY math guidance auditor**. Sections 2-11 pending.
+
+**Actions exécutées (Phase63 Section 1 + infrastructure)** :
+- `ProjetCollatz/Phase63DerivedLargeKBoundTheorem.lean` (143 lignes Section 1 only) : imports (2 Mathlib + 5 Phase58-62), module docstring 11 sections architecture, invariants M3.4, Axiom profile impact (Lean.ofReduceBool + Lean.trustCompiler entering chain), Policy Indiana Jones note, References Phase59 constants (q_8=665 to q_14=10590737), R-M3.H12 bridge decision (deferred), namespace + opens (`BakerSeparation BarinaVerification IsOddCycle DerivedLargeKBound` + 6 `cf_gap_*` + 6 `cf_nbound_*`).
+- **Rebuild OK** : `lake build ProjetCollatz` EXIT 0, 7924 jobs (M1 Pro, incremental).
+- `probes/check_phase63_axioms.lean` (56 lignes, skeleton) : 11 `#print axioms` placeholders commentés (Section 2 helper + 6 windows + disjonction + main + replacement def). Activation post-écriture Sections 2-11.
+- `expected_axioms.md` Section 1 : **M3.4 ANTICIPATED UPDATE block** (commented-out) ajouté avec procédure d'activation post-Phase63 commit (5 axioms incl. Lean.ofReduceBool + Lean.trustCompiler pour les 7 théorèmes centraux).
+- `reproduce.sh` : **M3_4_THEOREMS array** (commented-out, 10 items Phase63) avec procédure d'activation détaillée (un-comment + EXPECTED_CENTRAL_AXIOMS update + loop + probed_count arithmetic + summary echo).
+- `mailbox/to_auditor/0069-phase63-section2-math-guidance-request.md` : disclosure immédiate (§7 of 0057 policy) — **dérivation math `cf_gap_n × BakerSeparation → n ≤ (q_{n+1}-1) × C_n` non reconstruisible** depuis documentation disponible (M2.4 architecture draft et RT M2 plan référencés en 0061 sont ABSENTS du working tree). 3 options A/B/C proposées à auditor.
+- ACK Session B 0062 reçu : §4 infrastructure work autorisé pendant standby math guidance.
+
+**Blocage actuel (math guidance standby)** :
+- Section 2 helper lemma `window_n_bound_proof` nécessite la dérivation precise cf_gap × Baker → n-bound. Le pattern architectural est référencé dans plan 0061 §1.1 ("pattern M2.4") mais le fichier M2.4 architecture draft n'existe pas dans le working tree. Confirmation Session B 0062 : absence confirmée.
+- **Worker disclosure 0069** à Eric via Session B relay, attente réponse math guidance (Option A docs pointer / Option B inline math derivation / Option C template skeleton).
+
+**R-M3.H12 bridge decision (per plan 0061 §1.2)** :
+- Phase63 démarre **sans** le bridge `((Real.convergent v n).den : ℝ) = (of v).dens n`.
+- Utilise alias paramétrique `log23_abs_sub_convergent_le_in_window` (Phase62 Section 6) qui abstrait sur dens réel-valués.
+- **Décision reportée** : si Section 2 helper proof requiert `q_n n` (Phase61 ℕ-valued) plutôt que `(of logb23).dens n` (Phase62 ℝ-valued), bridge ~30-50 lignes à construire à ce moment-là. État courant : deferred, not needed yet.
+
+**Axiom profile impact (M3.4 central chain expansion)** :
+- Phase60-62 : kernel-3 strict (`propext, Classical.choice, Quot.sound`).
+- Phase63 : **expansion** via `import Phase59` (native_decide `cf_gap_*` / `cf_nbound_*`).
+- Post-commit M3.4 : axioms centraux = 5 = kernel-3 + `Lean.ofReduceBool` + `Lean.trustCompiler`.
+- Documenté préventivement : RISK_REGISTER R-10 FORESEEN-M3 + R-M3.H14 (2026-04-22 déjà), expected_axioms.md Section 3 (2026-04-22 déjà), + M3.4 ANTICIPATED UPDATE blocks (2026-04-24 ce jour).
+
+**Vérifications §3 checklist — TODO (post Sections 2-11 écriture)** :
+- §3.0 Toolchain : à vérifier
+- §3.1 Build complet : à vérifier
+- §3.2 Central axioms (7 théorèmes) : attendu **5 axioms** (vs 3 avant)
+- §3.3 Phase63 axioms (10 théorèmes) : attendu 5 axioms
+- §3.4 Sorry probe (35 théorèmes total) : attendu 0 sorryAx
+- §3.5 reproduce.sh end-to-end : attendu EXIT 0 (35 théorèmes audités = 7 central + 3 native + 15 M3 + 10 M3.4)
+- §3.6 JOURNAL.md entry : cette section (à compléter post-écriture)
+
+**Interdits M3.4 (per plan 0061 §1.4) — tous respectés à date** :
+- Zéro `axiom` utilisateur déclaré (seuls axiomes kernel + native_decide inherited).
+- Zéro `sorry`, zéro `admit`, zéro `stop` (Section 1 ne contient pas de preuves).
+- Docstrings anglais uniquement.
+- Pas de `native_decide` *tactique* dans les preuves Phase63 (axiomes arrivent via `import Phase59` uniquement).
+- Helper lemma obligatoire (R-M3.H13 mitigation) — architecture Section 2 prévue DRY.
+
+**Tree sha256 intermédiaire (Section 1 only)** : TODO (calcul post-écriture Sections 2-11 + commit).
+
+**Budget lignes** : policy Indiana Jones 2026-04-24 = indicatif (800 plafond, 700 alert). Actuellement Section 1 = 143 lignes. Projection Sections 2-11 dépend de la math guidance à venir.
+
+**Dépendances Mathlib projetées (à confirmer post-écriture)** :
+- `Mathlib.Analysis.SpecialFunctions.Log.Base` (Real.logb)
+- `Mathlib.NumberTheory.DiophantineApproximation.Basic` (Real.convergent)
+- + Phase58-62 (propagation transitive des imports Mathlib listés précédemment).
+
+**Prochain (ordre)** :
+1. Réception math guidance Eric via Session B relay (Option A/B/C).
+2. Phase63 Sections 2-11 writing (helper lemma + 6 windows + disjonction + main + replacement def).
+3. §3 checklist (probes/central/sorry + reproduce.sh + JOURNAL + expected_axioms.md activation).
+4. RT#1 worker hostile-reviewer + zero-flag fixes (2-4h estimé).
+5. Rapport `to_auditor/NNNN-m3.4-phase63-ready-for-push.md` avec T₀ anti-G3.11 15 min.
+6. 3× RT#2 auditor parallel prompts (independent).
+7. GO pré-push écrit Session B.
+8. Commit + push `m3-legendre` → CI.
+9. DIGEST Eric M3.4 final.
+
+**TODO sections (à compléter post-écriture Sections 2-11 et post-reviews)** :
+- Stratégie de preuve Section 2 helper lemma (une fois math guidance reçue).
+- Stratégie 6 windows instantiations.
+- Stratégie disjunction synthesis large_k_exists_window.
+- Stratégie main theorem large_k_bound_theorem_phase63 case-analysis.
+- Replacement definition derivedLargeKBound_proved mechanics.
+- RT#1 findings + fixes (zero-flag).
+- RT#2 findings auditor 3× parallel + fixes.
+- Métriques finales (lignes totales, tree hash, build jobs, commits).
+
+> **2026-04-24 TRANSITION NOTE** : Following exhaustive Session C
+> exploration (11/11 sub-branches closed, 5 innovations identified :
+> 6α, δ7, δ8, δ8', δ9), project pivots from Option α (full Phase63
+> proof) to Option β renforcée (paper v2 conditional with documented
+> structural obstructions). See dedicated M3.4 PIVOT entry below
+> (pending paper v2 §1+§2 completion for context).
