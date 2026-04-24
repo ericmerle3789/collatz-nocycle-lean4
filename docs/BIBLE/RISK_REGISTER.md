@@ -30,6 +30,15 @@
 
 ---
 
+## Risques identifiés pendant M3.3 (Phase62 BestApproxBridge)
+
+| ID | Risque | Probabilité | Impact | Mitigation | Owner | Statut |
+|----|--------|-------------|--------|------------|-------|--------|
+| R-M3.H12 | Bridge `q_n (Phase61, ℕ) ↔ (of logb23).dens (Phase62, ℝ)` non prouvé directement par Mathlib v4.27.0 (4 patterns grep retournent 0 match). Conceptuellement égaux par normalisation CF coprime, mais formalisation demande ~30-50 lignes sous-projet (gcd + Rat.num_div_den + casts ℕ→ℝ). Phase62 Section 6 paramétrique pour ne pas bloquer. | LOW | Phase63 decision | Phase62 Section 6 expose `log23_abs_sub_convergent_le_in_window` (alias enrichi d'un window context, post RT#2 rename pour clarté sémantique). Phase63 choisira instanciation (`(of).dens n` directe OU `q_n n` via bridge construit à ce moment si nécessaire pour compat avec Phase59 `DerivedLargeKBound` signature). `InWindow` Phase61 non orphelin — préservé pour Phase63. | Session B + Worker | DEFERRED-TO-M3.4 (Phase63) |
+
+---
+
 ## Historique
 
 - **2026-04-22** : registre initialisé à G0 avec R-01..R-05 (depuis MISSION §7.3) + R-06..R-08 (baseline findings).
+- **2026-04-24** : R-M3.H12 ajouté pendant M3.3 Phase62 écriture (proactive disclosure + Option C paramétrique adoption, décision Session B auditor per message archive/to_worker/0056).

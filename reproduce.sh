@@ -67,6 +67,12 @@ M3_THEOREMS=(
     "ProjetCollatz.Phase61.q_n_eq_den"
     "ProjetCollatz.Phase61.InWindow"
     "ProjetCollatz.Phase61.not_convergent_implies_far_approx"
+    "ProjetCollatz.Phase62.of_convs_eq_log23_convergent"
+    "ProjetCollatz.Phase62.log23_never_terminates"
+    "ProjetCollatz.Phase62.log23_partDens_some"
+    "ProjetCollatz.Phase62.log23_abs_sub_convergent_le"
+    "ProjetCollatz.Phase62.log23_dens_mono"
+    "ProjetCollatz.Phase62.log23_abs_sub_convergent_le_in_window"
 )
 
 NATIVE_LEMMAS=(

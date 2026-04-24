@@ -277,3 +277,66 @@
 - `Mathlib.NumberTheory.DiophantineApproximation.Basic` (`Real.convergent`, `Real.exists_rat_eq_convergent`)
 
 **Prochain** : rapport `to_auditor/NNNN-m3.2-phase61-ready-for-signoff.md` → T₀ anti-G3.11 → décantation 15 min min → sign-off (auto-ADR-003 ou ALERT Eric) → commit + push `m3-legendre` → CI.
+
+---
+
+## 2026-04-24 — M3.3 WIP [P2] Phase62 BestApproxBridge Option C paramétrique
+
+**Autorité** : Session B auditor GO écriture immediat per terminal override Eric (0055 "GO écriture M3.3" + 0056 GO Option C paramétrique). Workflow zero-flag + GO pré-push policy permanente (M3.3+).
+
+**Policy update 2026-04-24T~13:00+02** : Indiana Jones exploration — pas de limite de lignes, critère d'arrêt = blocage mathématique / Mathlib gap / tourne-en-rond. Filets de sécurité protocolaires maintenus strictement. Cf mailbox 0057 to_worker.
+
+**Contexte** : Phase62 fournit l'infrastructure best-approximation bridge pour `Real.logb 2 3`, utilisée par Phase63 dans la preuve `DerivedLargeKBoundTheorem` (remplacement final de la `DerivedLargeKBound` structure-as-hypothesis de Phase59). Pre-flight M3.3 (`0059-m3.3-mathlib-bestapprox-mapping.md`) a confirmé : H4 confirmé no-window-bounds, H5 clear no-cycle, H9 MEDIUM→LOW après découverte `Real.convs_eq_convergent` direct, H10 LOW via `terminates_iff_rat` + Phase60.log23_irrational. Pre-writing inspection H9/H10 (`0060-ack-plan-m3.3-h9-h10-inspection-go-writing.md`) a résolu les détails API.
+
+**Actions exécutées** :
+- Pre-writing inspection R-M3.H8 équivalent : `Real.convs_eq_convergent` direct egality (pas iff), `terminates_iff_rat` standard pattern.
+- `ProjetCollatz/Phase62BestApproxBridge.lean` (291 lignes post-Option-C) : 6 sections (Wrapper+Architecture note / H9 bridge / H10 never_terminates / PUBLIC abs_sub_convergent / real-valued dens monotonicity / paramétrique window_bound).
+- 9 items exposés : `of_convs_eq_log23_convergent`, `log23_never_terminates`, `log23_not_terminatedAt`, `log23_partDens_some`, `log23_abs_sub_convergent_le`, `log23_dens_nonneg`, `log23_dens_mono`, `log23_dens_monotone`, `log23_abs_sub_convergent_le_in_window`.
+- `probes/check_phase62_axioms.lean` (nouveau, 31 lignes) : probe dédiée Phase62.
+- `probes/check_central_axioms.lean` + `probes/check_sorry.lean` étendus avec Phase62 (Section 3 M3 expanded 9 → 15 théorèmes).
+- `reproduce.sh` `M3_THEOREMS` array étendu 9 → 15 items.
+- Import `ProjetCollatz.Phase62BestApproxBridge` ajouté dans racine `ProjetCollatz.lean`.
+- `docs/BIBLE/RISK_REGISTER.md` : R-M3.H12 ajouté (bridge q_n ↔ dens deferred to M3.4).
+- Architecture note dans module docstring Phase62 (Option C rationale + deferral).
+
+**Décision Option C paramétrique (per 0056)** :
+- Plan original §3 Section 5 = strict monotonicity `q_n` (Phase61 ℕ), Section 6 = window-bound `InWindow` (Phase61 ℕ).
+- Bridge Mathlib `((Real.convergent v n).den : ℝ) = (of v).dens n` **absent** (4 patterns grep 0 match). Construction bridge ~30-50 lignes avec coprimality gcd non-vérifiée.
+- **Option C** : Section 5 = weak monotonicity sur `(of v).dens` (réel), Section 6 = `log23_abs_sub_convergent_le_in_window` alias de Section 4 avec hypothèses window (`_h_lo`/`_h_hi`) documentées pour Phase63 instantiation pattern (post RT#2 rename).
+- **InWindow Phase61 préservé** (non-orphelin) pour Phase63 instanciation.
+
+**Stratégie de preuve Phase62** :
+- `log23_never_terminates` : 5 lignes effectives (`terminates_iff_rat` + Phase60.log23_irrational contrapositive).
+- `log23_abs_sub_convergent_le` PUBLIC : applique `abs_sub_convergents_le'` Mathlib + H9 bridge `of_convs_eq_log23_convergent`.
+- `log23_abs_sub_convergent_le_in_window` paramétrique : framework restatement de Section 4 avec hypothèses window `_h_lo` / `_h_hi` (underscore prefix = intentional framework).
+
+**Vérifications §3 checklist** :
+- §3.0 Toolchain : `leanprover/lean4:v4.27.0` (exact string match)
+- §3.1 Build complet : PASS (`lake build` EXIT 0, 7928 jobs, 49s sur M1 Pro)
+- §3.2 Central axioms (7 théorèmes) : `[propext, Classical.choice, Quot.sound]` inchangé
+- §3.3 Phase62 axioms (9 théorèmes) : tous `[propext, Classical.choice, Quot.sound]` — **kernel 3 strict**
+- §3.4 Sorry probe (25 théorèmes total) : 0 sorryAx
+- §3.5 reproduce.sh end-to-end : **EXIT 0** (1m33s, 25 théorèmes audités = 7 central + 3 native + 15 M3)
+- §3.6 JOURNAL.md entry : cette section
+
+**Tree sha256 nouveau** : `6310cbf712b1c5b110e7ffdf6076ef2cb3129225a4646835faad2583aaedfd8f` (vs post-M3.2 fix-low `003e1056a299...`).
+
+**Interdits M3.3 (per 0055 §4) — tous respectés** :
+- Zéro `native_decide` (reserved Phase63)
+- Zéro `axiom` utilisateur
+- `expected_axioms.md` non modifié
+- Docstrings anglais uniquement
+- Pas de calcul valeurs numériques q_n
+
+**Budget lignes** : Phase62 = 291 lignes (budget original plafond 300 / alert 250, **depuis policy Indiana Jones 2026-04-24 : budget lignes = indicatif, pas contrainte**). Projet total actuel : 5 nouveau fichiers M3 totalisant 151+165+291+18+31 = 656 lignes M3 foundational.
+
+**Gap Mathlib identifié R-M3.H12** : bridge `Rat.den ↔ (of v).dens` non-direct dans Mathlib v4.27.0. Deferred to M3.4 (Phase63 choisira instanciation). Architecture note in-module + RISK_REGISTER entrée.
+
+**Dépendances Mathlib utilisées** :
+- `Mathlib.Analysis.SpecialFunctions.Log.Base` (`Real.logb`)
+- `Mathlib.NumberTheory.DiophantineApproximation.Basic` (`Real.convergent`)
+- `Mathlib.NumberTheory.DiophantineApproximation.ContinuedFractions` (`Real.convs_eq_convergent`)
+- `Mathlib.Algebra.ContinuedFractions.Computation.Approximations` (`abs_sub_convergents_le'`, `of_den_mono`, `zero_le_of_den`)
+- `Mathlib.Algebra.ContinuedFractions.Computation.TerminatesIffRat` (`terminates_iff_rat`)
+
+**Prochain** : D1-D10 anti-disguise self-audit + RT #1 hostile-reviewer (zero-flag obligatoire tous findings fixés pre-rapport) → rapport `to_auditor/NNNN-m3.3-phase62-ready-for-push.md` avec T₀ anti-G3.11 15 min → RT #2 auditor indépendant → GO pré-push écrit Session B → commit + push `m3-legendre` → CI.

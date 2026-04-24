@@ -48,3 +48,6 @@ import ProjetCollatz.Phase60IrrationalityLog23
 
 -- M3.2 — Continued-Fraction Convergents infrastructure (Phase61)
 import ProjetCollatz.Phase61CFConvergents
+
+-- M3.3 — Best-Approximation Bridge (Phase62)
+import ProjetCollatz.Phase62BestApproxBridge
