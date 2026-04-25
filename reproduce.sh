@@ -53,6 +53,79 @@ CENTRAL_THEOREMS=(
     "ProjetCollatz.sdw_from_cf"
 )
 
+# M3 Legendre foundational theorems — same axiom profile as CENTRAL (kernel 3
+# only), tracked separately for semantic clarity. Not yet integrated into the
+# central chain at M3.1 ; will be composed into no_nontrivial_cycle_phase59 at
+# M3 integration (Phase63 planned).
+M3_THEOREMS=(
+    "ProjetCollatz.Phase60.log23_irrational"
+    "ProjetCollatz.Phase60.two_pow_ne_three_pow"
+    "ProjetCollatz.Phase61.log23_convergent"
+    "ProjetCollatz.Phase61.logb23_pos"
+    "ProjetCollatz.Phase61.q_n"
+    "ProjetCollatz.Phase61.q_n_pos"
+    "ProjetCollatz.Phase61.q_n_eq_den"
+    "ProjetCollatz.Phase61.InWindow"
+    "ProjetCollatz.Phase61.not_convergent_implies_far_approx"
+    "ProjetCollatz.Phase62.of_convs_eq_log23_convergent"
+    "ProjetCollatz.Phase62.log23_never_terminates"
+    "ProjetCollatz.Phase62.log23_partDens_some"
+    "ProjetCollatz.Phase62.log23_abs_sub_convergent_le"
+    "ProjetCollatz.Phase62.log23_dens_mono"
+    "ProjetCollatz.Phase62.log23_abs_sub_convergent_le_in_window"
+)
+
+# -----------------------------------------------------------------------------
+# M3.4 ANTICIPATED UPDATE - activated post-Phase63 commit
+#
+# When Phase63 (`DerivedLargeKBoundTheorem`) lands, the following array will
+# be un-commented and the probe will exercise it. At the same time,
+# CENTRAL_THEOREMS will inherit `Lean.ofReduceBool` + `Lean.trustCompiler`
+# via Phase63's integration of `cf_gap_*` / `cf_nbound_*`, so the
+# EXPECTED_CENTRAL_AXIOMS constant will be updated to:
+#
+#   EXPECTED_CENTRAL_AXIOMS="[propext, Classical.choice, Quot.sound, Lean.ofReduceBool, Lean.trustCompiler]"
+#
+# M3.4 Phase63 theorems (same 5-axiom profile as new CENTRAL post-M3.4,
+# because Phase63 is the integration point that introduces the native_decide
+# axioms into the central chain) :
+#
+# M3_4_THEOREMS=(
+#     "ProjetCollatz.Phase63.window_n_bound_proof"
+#     "ProjetCollatz.Phase63.window_bound_8"
+#     "ProjetCollatz.Phase63.window_bound_9"
+#     "ProjetCollatz.Phase63.window_bound_10"
+#     "ProjetCollatz.Phase63.window_bound_11"
+#     "ProjetCollatz.Phase63.window_bound_12"
+#     "ProjetCollatz.Phase63.window_bound_13"
+#     "ProjetCollatz.Phase63.large_k_exists_window"
+#     "ProjetCollatz.Phase63.large_k_bound_theorem_phase63"
+#     "ProjetCollatz.Phase63.derivedLargeKBound_proved"
+# )
+#
+# Activation procedure (part of the M3.4 commit itself) :
+#   1. Uncomment the M3_4_THEOREMS array above.
+#   2. Update EXPECTED_CENTRAL_AXIOMS to the 5-axiom list.
+#   3. Add a verification loop mirroring the M3_THEOREMS loop :
+#        for theorem in "${M3_4_THEOREMS[@]}"; do
+#            check_axioms_exact "$theorem" "$EXPECTED_CENTRAL_AXIOMS" || exit 3
+#        done
+#      (Same EXPECTED_CENTRAL_AXIOMS as CENTRAL_THEOREMS post-M3.4.)
+#   4. Update `expected_probes` arithmetic on the Step 4 probed_count check
+#      to include `${#M3_4_THEOREMS[@]}`.
+#   5. Update the Step 5 summary echo with "${#M3_4_THEOREMS[@]} M3.4 Phase63".
+#   6. Un-comment the #print axioms directives in probes/check_phase63_axioms.lean.
+#   7. Update expected_axioms.md to reflect the post-M3.4 state (see comment
+#      block in that file for the full activation procedure).
+#
+# Cross-references :
+#   - docs/BIBLE/RISK_REGISTER.md R-10 FORESEEN-M3 and R-M3.H14
+#   - expected_axioms.md Section 1 M3.4 ANTICIPATED UPDATE block
+#   - probes/check_phase63_axioms.lean (dedicated Phase63 probe)
+#   - ProjetCollatz/Phase63DerivedLargeKBoundTheorem.lean module docstring
+#     section "Axiom profile impact (M3.4 central chain expansion)"
+# -----------------------------------------------------------------------------
+
 NATIVE_LEMMAS=(
     "ProjetCollatz.cf_gap_8"
     "ProjetCollatz.cf_gap_13"
@@ -140,7 +213,7 @@ fi
 # H1 mitigation : `|| true` guarantees arithmetic is meaningful ; separately check file non-empty
 probed_count=$(grep -cE "depends on axioms" /tmp/nocycle_axioms.log || true)
 probed_count=${probed_count:-0}
-expected_probes=$(( ${#CENTRAL_THEOREMS[@]} + ${#NATIVE_LEMMAS[@]} ))
+expected_probes=$(( ${#CENTRAL_THEOREMS[@]} + ${#NATIVE_LEMMAS[@]} + ${#M3_THEOREMS[@]} ))
 if [ "$probed_count" -lt "$expected_probes" ]; then
     echo "ERROR: probe reported $probed_count theorems, expected >= $expected_probes" >&2
     echo "  — possible cause : a theorem was renamed or removed ; check probes/check_central_axioms.lean" >&2
@@ -193,6 +266,11 @@ for theorem in "${NATIVE_LEMMAS[@]}"; do
 done
 echo "    ${#NATIVE_LEMMAS[@]}/${#NATIVE_LEMMAS[@]} auxiliary lemmas OK (native_decide, isolated from central chain)"
 
+for theorem in "${M3_THEOREMS[@]}"; do
+    check_axioms_exact "$theorem" "$EXPECTED_CENTRAL_AXIOMS" || exit 3
+done
+echo "    ${#M3_THEOREMS[@]}/${#M3_THEOREMS[@]} M3 Legendre foundational theorems OK (kernel 3 only, not yet in central chain)"
+
 # ----- Step 5 : sorry probe (Lean kernel authoritative) -----------------------
 echo "==> [5/5] Sorry detection via Lean kernel (sorryAx)"
 
@@ -215,7 +293,7 @@ echo "========================================="
 echo "reproduce.sh : ALL CHECKS PASS"
 echo "  - toolchain : $ACTUAL_TOOLCHAIN"
 echo "  - build     : EXIT 0 ($built_jobs jobs)"
-echo "  - axioms    : ${#CENTRAL_THEOREMS[@]} central + ${#NATIVE_LEMMAS[@]} auxiliary match expected_axioms.md"
+echo "  - axioms    : ${#CENTRAL_THEOREMS[@]} central + ${#NATIVE_LEMMAS[@]} auxiliary + ${#M3_THEOREMS[@]} M3 foundational match expected_axioms.md"
 echo "  - sorry     : 0 sorryAx"
 echo "========================================="
 exit 0

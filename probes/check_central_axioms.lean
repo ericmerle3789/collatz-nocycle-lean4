@@ -61,3 +61,32 @@ point before committing the M3 integration.
 #print axioms ProjetCollatz.cf_gap_8
 #print axioms ProjetCollatz.cf_gap_13
 #print axioms ProjetCollatz.cf_nbound_8
+
+-- ============================================================================
+-- Section 3 — M3 Legendre foundational theorems (M3.1+)
+-- Expected : [propext, Classical.choice, Quot.sound] (kernel 3 only)
+-- These theorems are not yet integrated into the central chain ; they will
+-- compose into no_nontrivial_cycle_phase59 at Phase63 (planned).
+-- Tracked separately in reproduce.sh under M3_THEOREMS to make regressions
+-- visible immediately, without waiting for Phase63 integration.
+-- ============================================================================
+
+#print axioms ProjetCollatz.Phase60.log23_irrational
+#print axioms ProjetCollatz.Phase60.two_pow_ne_three_pow
+
+-- Phase61 — CF convergents infrastructure (M3.2)
+#print axioms ProjetCollatz.Phase61.log23_convergent
+#print axioms ProjetCollatz.Phase61.logb23_pos
+#print axioms ProjetCollatz.Phase61.q_n
+#print axioms ProjetCollatz.Phase61.q_n_pos
+#print axioms ProjetCollatz.Phase61.q_n_eq_den
+#print axioms ProjetCollatz.Phase61.InWindow
+#print axioms ProjetCollatz.Phase61.not_convergent_implies_far_approx
+
+-- Phase62 — Best-Approximation Bridge (M3.3)
+#print axioms ProjetCollatz.Phase62.of_convs_eq_log23_convergent
+#print axioms ProjetCollatz.Phase62.log23_never_terminates
+#print axioms ProjetCollatz.Phase62.log23_partDens_some
+#print axioms ProjetCollatz.Phase62.log23_abs_sub_convergent_le
+#print axioms ProjetCollatz.Phase62.log23_dens_mono
+#print axioms ProjetCollatz.Phase62.log23_abs_sub_convergent_le_in_window
