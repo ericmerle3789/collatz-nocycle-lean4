@@ -109,18 +109,3 @@ Phase XI mathnote 0061 documents three substantive technical challenges to a dir
 
 The path forward (Phase XII research program) is one of three options : (a) develop new analytic techniques for composite-modulus exponential sums with increasing-subset constraints ; (b) restrict to admissible `(T, K)` with favourable factorisation of `q` ; or (c) accept a partial bound and identify the specific obstruction to closing the remaining gap. Each option defines a distinct sub-line of investigation outside the present paper's scope.
 
-## Style notes (Worker internal — remove before publication)
-
-- §9.1-§9.5 remain at skeleton prose ; Day-3 polish will elevate phrasing and add missing citations (Hercher 2023 Corollary 29 for §9.5, Tao 2019 arXiv id for §9.6, Session C Phase IX commit hashes for §9.7 if reviewer requests).
-- §9.6 and §9.7 are Session C direct-verified integrations ; do not alter without re-coordination.
-- "Day 3" deliverables checklist removed (internal ; superseded by the RT#1 cycle before Commit).
-- §9.2 numerical claim "~10^5 digits" deferred to §5/§7 Session C import (where window-size arithmetic is authoritative).
-
-## RT#1 checklist (to apply Day 3 polish pass)
-
-- [ ] Every open problem traceable to a §5 / §6 / §7 obstruction.
-- [ ] R-M3.H12 bridge named explicitly and linked to `docs/BIBLE/RISK_REGISTER.md`.
-- [ ] Scope (cycle-only) re-stated in §9.4.
-- [ ] §9.2 numerical claim ("~10^5 digits") cross-verified with §5.2 / §7 Session C values post-import.
-- [ ] §9.5 Hercher corollary reference made concrete (Corollary 29 in Hercher 2023 JIS 26 article 23.6.5).
-- [ ] §9.7 attribution chain preserved (Session C 0042 §9.3 → Session B 0078/0080 → Worker).

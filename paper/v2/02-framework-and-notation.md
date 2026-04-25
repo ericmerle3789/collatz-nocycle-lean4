@@ -139,35 +139,3 @@ documented with line numbers in §8.
 
 All other symbols introduced later are local to their section.
 
----
-
-## Style notes (Worker internal — remove before publication)
-
-- Academic English, JIS / Acta Arithmetica register, same register as §1.
-- Exact `structure` fields quoted verbatim from repository.
-- Every Lean-side reference has a file path + line number.
-- No claim beyond what is proved or cited.
-
-## RT#1 checklist (to apply post-draft)
-
-- [ ] Every symbol introduced is used somewhere in §3-§11.
-- [ ] No symbol used before defined (`T_odd` introduced §2.1 before `nSeq`, etc.).
-- [ ] The exact Phase58 `structure` fields match the repository — line-cited :
-  - `BakerSeparation` L67-69 ✓
-  - `BarinaVerification` L80-81 ✓
-  - `ProductBoundThreshold` L296-297 ✓
-- [ ] `IsOddCycle` verbatim from `Phase50CycleEquation.lean` L27-28 ✓
-- [ ] `nSeq` recursion from `SyracuseDefs.lean` L213 ✓
-- [ ] Steiner's identity sign convention consistent with `Phase52SteinerEquation.lean`.
-- [ ] No hype ("elegant", "trivial", "easy") — scan before Commit #4.
-- [ ] `q_n` numerical values match `Phase59ContinuedFractions.lean` (window constants).
-- [ ] `reaches_one` name consistent with `BarinaVerification.convergence` field.
-
-## Dependencies for finalization
-
-- §3 central theorem statement must match §2.4 forward pointer signature.
-- §4.1/§4.2/§4.3 must expand the three structures of §2.3 (one subsection each).
-- §5 must cite `ProductBoundThreshold` from §2.3.3 by name (not rename).
-- §7 must use the window predicate `InWindow` introduced in §2.5.
-- §8 must re-cite the exact file paths + line numbers of §2.3 structures.
-- §11 references.bib : `Baker1966`, `Barina2025`, `Khinchin1964`, `Lagarias1985`, `SteinerThesis1977` consistent with §4 + §6.

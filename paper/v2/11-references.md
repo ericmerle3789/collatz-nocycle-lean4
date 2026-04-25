@@ -65,9 +65,3 @@ This section is generated from `references.bib` at build time. The list below is
 make references.bib   # regenerates from 11-references.md if authored cross-consistently
 ```
 
-## RT#1 checklist
-
-- [ ] 14+ peer-reviewed entries (count satisfied : 17 above).
-- [ ] No `*[verify]*` flags in final submission version.
-- [ ] Every citation in §1-§10 appears here.
-- [ ] DOIs filled where available.

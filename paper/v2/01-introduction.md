@@ -143,32 +143,3 @@ its axiom profile and its reproducibility contract. Section 9 lists open
 problems and connects with ongoing speculative tracks not integrated here.
 Section 10 concludes. Section 11 is the reference list.
 
----
-
-## Style notes (Worker internal — remove before publication)
-
-- Academic English, Journal of Integer Sequences / Acta Arithmetica register.
-- Concise. Citable. No hype.
-- Each claim backed by a cross-reference to the section, a theorem in the Lean repo, or a direct-verified citation.
-- No fabricated citations (policy mailbox 0065).
-
-## RT#1 checklist (to apply post-draft)
-
-- [ ] Every claim has a citation or a forward cross-reference (§1.4 : 4 citations, all direct-verified).
-- [ ] No `[INDIRECT]` tag outside of Knight handling (§1.4 second bullet flags access block honestly).
-- [ ] Abstract-ready : §1.1-§1.3 distils to one paragraph.
-- [ ] Honest framing : `ProductBoundThreshold` introduced *before* the word "proof" (§1.2 final sentence).
-- [ ] Scope disclosure : cycle-only, divergence excluded (§1.1 last sentence).
-- [ ] No hype ("groundbreaking", "resolves", "final") — manual grep required.
-- [ ] Tenses : present indicative for math facts, first-person plural "we" for paper contributions.
-- [ ] §1.3 five bullets — each has one section cross-reference and no citation drift.
-- [ ] §1.4 Santana wording matches mathnotes 0018 §A.4 (Remark 17 quote) verbatim spirit.
-- [ ] §1.4 Knight wording matches mailbox 0065 §6.5 `[INDIRECT]` formulation.
-- [ ] §1.4 Rozier-Terracol wording matches mailbox 0021 verified content (paradoxical sequences + Rhin).
-
-## Dependencies for finalization
-
-- `02-framework-and-notation.md` §2.3 exact `structure` fields match (forward cross-reference consistency).
-- `05-obstruction-I-product-bound-impossibility.md` §5.1 Lemma statement matches (δ8 phrasing).
-- `06-obstruction-II-state-of-the-art.md` §6.2 Knight + §6.4 Santana/Rozier-Terracol wordings consistent.
-- `11-references.md` BibTeX keys aligned (Baker1966, Khinchin1964, Lagarias1985, Hercher2023, Santana2026, Knight2025, DhimanPandey2026, RozierTerracol2026, Tao2019).

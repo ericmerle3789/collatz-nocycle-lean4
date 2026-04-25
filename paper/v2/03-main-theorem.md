@@ -72,25 +72,3 @@ theorem itself.
 `Lean.ofReduceBool`, `Lean.trustCompiler` (from `native_decide` on
 `k982_bound`). All documented in `expected_axioms.md`.
 
----
-
-## Integration notes (Worker internal — remove before publication)
-
-- Content of §3.1-§3.2 verbatim from Session C mathnotes 0018 §B
-  (mailbox `from_mathlib_prover/0018`, lines 98-123). The sub-section
-  split (§3.1 Statement / §3.2 Proof chain / §3.3 Axiom profile) is
-  Worker-added for paper-style organisation matching §1 / §2 / §8
-  structure. No word of §B substance was dropped.
-- Integration glue (disclosed in Commit #7 preflight 0104) :
-  - Added line-number reference `line 339` after the file path
-    `Phase58PorteDeuxFinal.lean` (consistency with §8.1 table).
-  - Added forward pointers (§2.3, §4, §8.1) in §3.1.
-  - Added the "Editorial note on perspective" in §3.3 to reconcile
-    Session C's instantiated axiom profile with §8.5's parametric
-    profile. This is a substantive editorial addition, not a
-    modification of §B content ; it flags a subtlety that would
-    otherwise create an apparent paper-internal contradiction between
-    §3 and §8.
-- No other modifications. The six proof-chain steps, the Lean code
-  block, the Theorem 3.1 statement, and the citations to Phase50 /
-  Phase56 / Phase58 are all preserved verbatim.

@@ -216,30 +216,5 @@ in the accompanying `docs/BIBLE/` :
 These are enforced per-commit ; the journal `docs/BIBLE/JOURNAL.md`
 records each gate's pass/fail outcome with timestamps.
 
-[`collatz-nocycle-lean4`]: https://github.com/ericmerle/collatz-nocycle-lean4
+[`collatz-nocycle-lean4`]: https://github.com/ericmerle3789/collatz-nocycle-lean4
 
----
-
-## Style notes (Worker internal — remove before publication)
-
-- §8.1 table : seven rows for seven central theorems (one extra for `no_periodic_point_final` unfolded variant, which will be trimmed at RT#1 if redundant).
-- §8.5 and §8.6 may be condensed for journal submission ; current draft is reviewer-facing.
-- Footnote-style references to line numbers throughout.
-
-## RT#1 checklist (to apply post-draft)
-
-- [ ] Every theorem name quoted matches actual source (§8.1 table : 7 theorems verified via grep this cycle).
-- [ ] File paths accurate (`ProjetCollatz/Phase58*`, `Phase59*`, `Phase60*`, `Phase61*`, `Phase62*`, `Phase63*` all present in repository).
-- [ ] Line numbers match current repo state (re-verify at Day 2 polish pass).
-- [ ] §8.5 claim "commented-out M3.4 ANTICIPATED UPDATE block" matches `expected_axioms.md` actual content.
-- [ ] §8.6 exit codes 0/1/2/3/4 match `reproduce.sh` header (line 5-10).
-- [ ] §8.6 "25 theorems (7 + 3 + 15)" matches the current probe arithmetic.
-- [ ] §8.7 claims match `docs/BIBLE/DECISIONS.md` and `docs/BIBLE/RISK_REGISTER.md`.
-- [ ] No hype ("elegant", "trivial").
-- [ ] "Mathlib v4.27.0" consistent across §8.5 and §11 bibliography.
-
-## Dependencies for finalization
-
-- §3 must use `no_nontrivial_cycle_final` as primary name ; §8.1 cross-ref'd.
-- §5 must cite δ8 obstruction as the reason §8.4 Phase63 Sections 2-11 are blocked.
-- §11 references.bib must have `Mathlib4` entry with version `v4.27.0`.

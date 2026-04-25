@@ -91,32 +91,3 @@ prevents promoting it from hypothesis to theorem — together with the
 resulting gap in the unconditional argument — is the subject of §5
 (Obstruction I).
 
----
-
-## Integration notes (Worker internal — remove before publication)
-
-- §4.1, §4.2, §4.3 prose, source citations, scope discussion,
-  effective-constant note, reproducibility note, and Hercher
-  paradox resolution all verbatim from Session C mathnotes 0018 §C
-  (mailbox `from_mathlib_prover/0018`, lines 127-175).
-- The three Lean `structure` blocks are restated here (matching
-  §2.3.1, §2.3.2, §2.3.3 verbatim) so that each subsection presents
-  the formal statement before the bibliographic discussion. This is
-  standard mathematical exposition ; no Lean content was changed.
-- Integration glue (disclosed in Commit #8 preflight) :
-  - Heading-level promotion : §C uses `####` (level-4) for §4.1 / §4.2
-    / §4.3 ; the paper uses `##` (level-2) consistent with §3 / §5 /
-    §6 / §7.
-  - Lean fence : `lean` language tag added to the three code blocks
-    (§C uses generic ``` ; §2.3 uses ```lean ; consistency).
-  - Forward pointers added : §4 intro to §2.3 line numbers ; §4.3
-    closing paragraph to §5 (Obstruction I). The §5 reference is
-    implicit in §C ("even though...is not a direct citation") ; made
-    explicit for the paper.
-  - "non-trivial cycles" hyphenated for paper-style consistency
-    (§C uses "nontrivial").
-  - Hercher exponent `10^{11}` rendered as `10¹¹` for consistency
-    with the project's existing typography (`2⁷¹`, `k⁷ + k`).
-- No other modifications. The formal Lean statements, the source
-  citations, the derivation chain, and the Hercher paradox resolution
-  are all preserved verbatim.
