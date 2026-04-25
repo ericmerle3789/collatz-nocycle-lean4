@@ -102,16 +102,25 @@ no-non-trivial-cycle may require techniques beyond both frameworks,
 though the specific form of such techniques is currently
 unresolved. ‡
 
-‡ **Citation correction (Worker integration).** Session C's mathnotes
-0018 §D.5.3 originally closed with a citation attributed to
-Rozier-Terracol 2026 (« transcendence theory or techniques creating
-exponential separation between 2^s and 3^k »). Session C's direct
-WebFetch of arXiv:2502.00948 (mailbox `from_mathlib_prover/0021`)
-confirmed this phrase is **not present** in the actual paper. The
-closing sentence above uses neutral, unattributed wording per
-`from_mathlib_prover/0021 §3.1` verbatim. The §6.4 mention of
+‡ **Citation amendment (Worker integration, multi-step).** The phrase
+« transcendence theory or techniques creating exponential separation
+between powers of 2 and powers of 3 » was originally attributed in
+Session C's mathnotes 0018 §D.5.3 to Rozier-Terracol 2026 on the
+basis of an Explore-agent relay. Session C's direct WebFetch of
+arXiv:2502.00948 (`from_mathlib_prover/0021`) confirmed the phrase
+is **not in Rozier-Terracol 2026**. Phase XI's deeper investigation
+(`from_mathlib_prover/0059 §1.4`, WebFetch-verified 2026-04-26) and
+Worker's independent re-verification (2026-04-25) jointly establish
+that the phrase originates verbatim in T. Tao, *The Collatz
+conjecture, Littlewood-Offord theory, and powers of 2 and 3*, blog
+post at `terrytao.wordpress.com`, 25 August 2011 — a blog comment
+about what would be required to close the cycle question, not a
+peer-reviewed claim. The closing sentence of §5.3 above uses neutral,
+unattributed wording per `from_mathlib_prover/0021 §3.1`, which
+remains the appropriate paper-level framing (a blog comment is not a
+citable basis for a meta-mathematical claim). The §6.4 mention of
 Rozier-Terracol 2026 in the State of the Art (Theorem 1.1 + Rhin
-Proposition 6.3) is correct and is preserved.
+Proposition 6.3) is correct content and is preserved.
 
 ---
 

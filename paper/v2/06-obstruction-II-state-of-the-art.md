@@ -32,7 +32,7 @@ incidental.
 | Simons-de Weger | 2005 | LFL + CF iterations | `m > 68` minima |
 | Applegate-Lagarias | 1995 | Density bounds | `γ > 0.81` (density) |
 | Hercher-Puchert | 2018 | Refined CF iteration | `k > 7.2 · 10¹⁰` |
-| Barina | 2023 | Computational `X₀ = 704 · 2⁶⁰` | Provides bound for above |
+| Barina | 2025 | Computational `X₀ = 704 · 2⁶⁰` | Provides bound for above |
 | **Hercher** | **2023** | **Iterative refinement (post-SdW)** | ***K > 1.375 · 10¹¹*** (SOTA) |
 
 These are all *lower* bounds on `k` : they assume hypothetical cycles

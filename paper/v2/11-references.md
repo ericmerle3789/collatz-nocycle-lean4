@@ -1,13 +1,13 @@
 ---
 section: "11"
 owner: worker
-status: skeleton
-last_updated: 2026-04-24
+status: draft-section-11-verify-pass-in-progress
+last_updated: 2026-04-25
 ---
 
 # 11. References
 
-*[WIP — Day 3 draft. Also maintained in `references.bib` for pandoc BibTeX build.]*
+*[Draft — §11 References VERIFY pass in progress (Commit #13). Also maintained in `references.bib` for pandoc BibTeX build.]*
 
 This section is generated from `references.bib` at build time. The list below is the normative human-readable view; every entry must correspond to a `@article{...}` / `@book{...}` / `@misc{...}` entry in `references.bib`.
 
@@ -38,16 +38,26 @@ This section is generated from `references.bib` at build time. The list below is
 20. O. Rozier and C. Terracol, *Paradoxical behavior in Collatz sequences*, arXiv:2502.00948 (2026), to appear *Discrete Math.* 349, 115167. (Direct-verified; Theorem 1.1 and Proposition 6.3 used.)
 21. V. Dhiman and A. Pandey, (title placeholder), arXiv:2601.12772 (2026). (Abstract direct-verified.)
 
+## Online and informal sources (cited with disclosure as non-peer-reviewed)
+
+22. T. Tao, *The Collatz conjecture, Littlewood-Offord theory, and powers of 2 and 3*, blog post on `terrytao.wordpress.com`, 25 August 2011. (Direct-verified WebFetch 2026-04-25. Cited in §5.3 footnote ‡ as origin of the « transcendence theory or exponential separation between powers of 2 and 3 » phrase initially misattributed to Rozier-Terracol 2026; verification chain Phase IX 0021 → Phase XI 0059 §1.4 → Worker 2026-04-25.)
+
 ## Software and data
 
-22. The Mathlib Community, *The Lean Mathematical Library*, v4.27.0 (2026). https://leanprover-community.github.io/mathlib4/
-23. E. Merle, *collatz-nocycle-lean4*, repository accompanying this paper (commit : to be filled at submission time).
+23. The Mathlib Community, *The Lean Mathematical Library*, v4.27.0 (2026). https://leanprover-community.github.io/mathlib4/
+24. E. Merle, *collatz-nocycle-lean4*, repository accompanying this paper (commit : to be filled at submission time).
 
 ## Notes
 
 - Every `*[verify]*` entry must be WebFetch/abstract-confirmed before final submission (policy mailbox 0065 §6).
 - Knight 2025 retained with the `[INDIRECT]` handling policy from mailbox 0065 §6.5.
-- Entries 1-5 and 16, 18, 20, 21 are Session-C direct-verified and can be cited without Worker re-verification.
+- Entries 1, 5, 6, 16, 18, 20, 21 are Session-C direct-verified and can be cited without Worker re-verification.
+- Entry 22 (Tao 2011 blog post) is Worker-verified directly via WebFetch on 2026-04-25 ; it is cited only in §5.3 footnote ‡ as the origin of the « transcendence theory or exponential separation » phrase. The phrase was initially misattributed to Rozier-Terracol 2026 in mathnotes 0018 §D.5.3 ; the correction chain runs Phase IX 0021 (NOT in Rozier) → Phase XI 0059 §1.4 (verbatim in Tao 2011) → Worker 2026-04-25 (independent re-verification). The §5.3 closing sentence retains neutral, unattributed wording per `from_mathlib_prover/0021 §3.1` (a blog comment is not a citable basis for a meta-mathematical claim ; the citation is a *disclosure* of provenance, not a load-bearing reference).
+- §11 cycle status (Commit #13 in progress) :
+  - **Resolved this cycle** : Tao 2011 attribution amendment (item 3 of the EXPANDED 7-item forward-flagged list).
+  - **Pending** : items 1 (Yoneda 1985 cite-key), 2 (Barina year inconsistency §6.1 vs §4.2), 6 partial (Rhin 1987 already in `references.bib` ; Kloosterman 1926 / Weil 1948 / Vinogradov 1937 deferred to §9 polish phase per items 4-5-7 deferred).
+  - **Deferred to §9 polish phase (Commit #14+)** : items 4, 5, 7 (§9.X infrastructure additions per Phase XI 0060/0061 — Theorem 0060.1, Conjecture 0060.2, Phase XII research-program framing).
+  - **Awaiting RT#2 explicit** per `to_worker/0096 §10.6` (publication-grade scope decision warrants 4-eyes review).
 
 ## BibTeX build
 
