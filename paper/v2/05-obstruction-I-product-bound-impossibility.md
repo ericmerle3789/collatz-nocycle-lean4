@@ -1,41 +1,168 @@
 ---
 section: "5"
 owner: session_c
-status: placeholder
-source: mathnotes_0018_section_D
-correction_applied: mailbox_0065_rozier_citation_removal
+status: imported-session-c-section-D-with-two-corrections
+contributions:
+  - "§5 content drafted by Session C Mathlib-Prover, mathnotes package 0018 §D (mailbox from_mathlib_prover/0018, lines 179-213). Integrated by Worker per Session B authorization 0083 §5.3 + 0089 §5, with two critical corrections (Brick 2 numerical, Rozier citation removal) and one editorial framing note (meta-mathematical lemma vs Lean theorem distinction)."
+source: mailbox/from_mathlib_prover/0018 §D
+corrections:
+  - "§5.2 Brick 2 numerical : K_max(μ=5.125, Rhin) updated 17 000 → 3695 per Session C Phase VI Brick 2 self-correction (mailbox to_mathlib_prover/0037)"
+  - "§5.3 Rozier-Terracol citation removed per Session C verification (mailbox from_mathlib_prover/0021)"
 last_updated: 2026-04-24
 ---
 
 # 5. Obstruction I: Product-Bound impossibility
 
-**Owner** : Session C Mathlib-Prover, via mathnotes package 0018 §D.
+**Editorial framing note (added by Worker during integration).** The
+"Lemma 5.1" stated in §5.1 below is a **meta-mathematical claim about
+the structural limits of the Baker + continued-fraction framework**.
+It is *not* a formal Lean theorem in this repository. The Lean
+formalization (cf. §3 + §8) is the conditional theorem
+`no_nontrivial_cycle_final`, which takes `ProductBoundThreshold` as a
+hypothesis. The role of §5 is to explain *why* `ProductBoundThreshold`
+cannot be promoted to a theorem via standard Diophantine refinements
+— i.e., why the conditionality is structurally necessary, not merely a
+placeholder pending future work. The "δ8" / "δ8'" labels used below
+correspond to the Phase VI Brick 2 informal framework
+(`ProjetCollatz/Phase63DerivedLargeKBoundTheorem.lean` docstring
+lines 159, 171), not to formal Lean lemmas.
 
-**Status** : awaiting import from mathnotes 0018.
+We identify a meta-mathematical lemma explaining why no uniform
+algebraic refinement of Theorem 3.1 can eliminate the
+`ProductBoundThreshold` hypothesis using standard Diophantine
+techniques (Baker / Rhin / Khinchin).
 
-## Expected content
+## 5.1 The Product-Bound Impossibility Lemma (δ8)
 
-### 5.1 The Product-Bound Impossibility Lemma (δ8)
-Any argument bounding `n` by a product over cycle steps is structurally limited to `k ≲ 10^10` because the irrationality of `log_2 3` (Phase60) forbids the arithmetic gap from being eliminated.
+**Lemma 5.1** (Product-Bound Impossibility) :
 
-### 5.2 Extension δ8'
-δ8 extends to generalised bound families (explicit list in mathnotes 0018 §D.2).
+> *Let `ξ ∈ ℝ \ ℚ` have irrationality measure `μ(ξ) = c` (i.e., for
+> all `p/q` with `q` sufficiently large, `|ξ − p/q| ≥ C/q^c` for some
+> effective `C > 0`). Suppose any Collatz cycle `(n, k)` satisfies the
+> Product Bound derivation yielding `n ≤ (k^{c+1} + k)/3`. Then there
+> exists no uniform algebraic bound `F(k)` with `F(k) < 2⁷¹` for all
+> `k ∈ ℕ` via this derivation chain.*
 
-### 5.3 Implications for current frameworks
-**IMPORTANT — correction per mailbox 0065** :
+**Proof sketch.** Suppose for contradiction that `n ≤ F(k) < 2⁷¹`
+holds uniformly. Then the Product Bound derivation requires
+`(2^s − 3^k)/3^k ≥ 1/F(k)` for all cycles, yielding
+`|k · ξ − s| ≥ ln 2 / (F(k) · ln 2)` for `ξ = log₂ 3`. For `F(k)`
+bounded (i.e., `F(k) ≤ 2⁷¹` uniformly), this would make `ξ`
+approximable within a constant factor, contradicting irrationality
+`μ(ξ) = c > 0`. ∎
 
-The originally drafted paragraph (mathnotes 0018 §D §5.3) contained a fabricated citation attributed to Rozier 2026. This citation does **not** exist in arXiv:2502.00948 (verified directly by Session C via WebFetch + ar5iv).
+## 5.2 Extended Lemma (δ8') — Baker + CF yields LOWER, not UPPER
 
-**Old (to remove)** :
+**Corollary 5.2** :
 
-> Together, these suggest that any successful proof of Collatz no-nontrivial-cycle will require **truly new techniques** (as anticipated by Rozier 2026 : « transcendence theory or techniques creating exponential separation between 2^s and 3^k »).
+> *Let `ξ = log₂ 3`. Any Baker-type inequality
+> `(2^s − 3^k) · k^μ ≥ C · 3^k` combined with Steiner's cycle equation
+> gives only **lower** bounds on `k` (via Crandall-type
+> `k > f(n₀, q_j)` using continued-fraction convergents `q_j` of `ξ`)
+> and cannot yield a uniform **upper** bound on `k` for general
+> cycles.*
 
-**New (to use)** :
+**Numerical corroboration** (window-by-window via Khinchin
+Theorem 4.14 best second-kind) :
 
-> Together, these suggest that a successful proof of Collatz no-nontrivial-cycle may require techniques beyond both frameworks, though the specific form of such techniques is currently unresolved.
+- Baker `μ = 6` → closes `k ≤ 982`.
+- Rhin `μ = 5.125` → closes `k ≤ 3695`. †
+- Khinchin second-kind per-window → closes `k ≤ ~3 · 10¹⁰`.
 
-The rest of §5.3 (Dhiman-Pandey vs Baker+CF complementarity framing) is unchanged.
+All are below Hercher's (2023) Corollary 29 lower bound
+`K > 1.375 · 10¹¹`. No refinement of `μ` within the Baker framework
+bridges this gap.
 
-## Integration note
+† **Numerical correction (Worker integration).** Session C's mathnotes
+0018 §D.5.2 originally listed the Rhin window as `k ≤ ~17 000` (with a
+more precise stale value of `17 380` in the Phase VI initial
+computation). The correct value `k ≤ 3695` is obtained from Session C's
+Phase VI Brick 2 self-correction with the Rhin effective constant
+`μ = 5.125` (mailbox `to_mathlib_prover/0037` §1, where Worker
+acknowledged the correction during the Phase VI ACK cycle). The stale
+`17 000`/`17 380` figure is preserved here only in the audit trail ;
+this paper uses **3695**.
 
-When importing Session C draft, apply §5.3 substitution exactly as above. No other prose in §5 is affected.
+## 5.3 Complementarity with Dhiman-Pandey (2026)
+
+Dhiman-Pandey (2026, arXiv:2601.12772) prove an independent
+impossibility : Collatz cycle equations are **not Presburger-definable**
+due to 2-adic « ghost cycle » obstructions. Their framework (Presburger
+arithmetic + 2-adic) is **orthogonal** to our Baker + CF approach.
+
+**Composite picture.** Two impossibility results cover different
+methodological frameworks :
+
+- Dhiman-Pandey : rules out Presburger / finite-automata-based
+  approaches.
+- Our δ8 / δ8' : rules out Baker + CF + Product Bound approaches.
+
+Together, these suggest that a successful proof of Collatz
+no-non-trivial-cycle may require techniques beyond both frameworks,
+though the specific form of such techniques is currently
+unresolved. ‡
+
+‡ **Citation correction (Worker integration).** Session C's mathnotes
+0018 §D.5.3 originally closed with a citation attributed to
+Rozier-Terracol 2026 (« transcendence theory or techniques creating
+exponential separation between 2^s and 3^k »). Session C's direct
+WebFetch of arXiv:2502.00948 (mailbox `from_mathlib_prover/0021`)
+confirmed this phrase is **not present** in the actual paper. The
+closing sentence above uses neutral, unattributed wording per
+`from_mathlib_prover/0021 §3.1` verbatim. The §6.4 mention of
+Rozier-Terracol 2026 in the State of the Art (Theorem 1.1 + Rhin
+Proposition 6.3) is correct and is preserved.
+
+---
+
+## Integration notes (Worker internal — remove before publication)
+
+- §5 intro, §5.1 Lemma 5.1 + proof sketch, §5.2 Corollary 5.2 statement,
+  §5.3 first two paragraphs (Dhiman-Pandey + composite picture)
+  preserved verbatim from Session C mathnotes 0018 §D (lines 181-211).
+- §5.2 numerical-corroboration list preserved verbatim except for the
+  Rhin entry, which is corrected from `~17 000` to `3695` per Session C
+  Phase VI Brick 2 self-correction. Footnote † added in-band to
+  disclose the correction with audit-trail.
+- §5.3 closing paragraph **rewritten** per `from_mathlib_prover/0021
+  §3.1` to remove the fabricated Rozier-Terracol attribution.
+  Footnote ‡ added in-band to disclose the citation removal.
+- Editorial framing note (§5 opening) added by Worker. It distinguishes
+  the meta-mathematical "Lemma 5.1" / "δ8" labels from any formal Lean
+  theorem (none exists for this claim). Cross-reference to Phase63
+  docstring lines 159/171 (where δ8 is also acknowledged as informal).
+  This disclosure prevents reviewers from confusing the publication
+  argument with the Lean machine-verification.
+- Integration glue (disclosed in Commit #9 preflight) :
+  - Heading-level promotion : §D uses `####` (level-4) for §5.1 / §5.2
+    / §5.3 ; the paper uses `##` (level-2) consistent with §3 / §4 /
+    §6 / §7.
+  - Typography normalization : `2^{71}` → `2⁷¹` ; `10^{11}` → `10¹¹` ;
+    `~3·10^{10}` → `~3 · 10¹⁰` ; `\ln 2` rendered with conventional
+    spacing. Math italics for `μ`, `ξ`, `k` consistent with the project's
+    paper-style convention.
+  - "non-trivial cycles" hyphenated for paper-style consistency
+    (§D uses "nontrivial").
+  - The §D phrase "no uniform algebraic bound `F(k)` with
+    `F(k) < 2^{71}`" uses the conventional `2⁷¹` superscript here.
+  - Explicit forward pointer added : §5 framing note references §3
+    (Theorem 3.1 statement) + §8 (Lean formalization) + Phase63
+    docstring (where δ8 label is also informal).
+- The mathnotes 0018 §D §5.2 list item « Rhin `μ = 5.125` → closes
+  `k ≤ ~17 000` » is the only numerical entry that has been changed.
+  All other numerical values (`982`, `~3 · 10¹⁰`, `1.375 · 10¹¹`,
+  `μ = 6`) are preserved verbatim.
+- Two **Worker-authored substantive editorial paragraphs** are
+  introduced :
+  1. The opening framing note (meta-mathematical vs Lean).
+  2. The §5.2 footnote † (Brick 2 correction).
+  3. The §5.3 footnote ‡ (Rozier removal).
+  All three are *publication-critical disclosures* : without (1),
+  reviewers may assume Lemma 5.1 is Lean-formalized ; without (2),
+  the Rhin window is numerically wrong by a factor of ~5 ; without
+  (3), the closing paragraph attributes a non-existent quote to a
+  named author.
+- No other modifications. The Lemma 5.1 statement, the Corollary 5.2
+  statement, the proof sketch, the Khinchin / Hercher numerical values
+  (other than the corrected Rhin entry), and the Dhiman-Pandey
+  framework description are all preserved verbatim.
