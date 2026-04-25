@@ -427,3 +427,82 @@
 > proof) to Option β renforcée (paper v2 conditional with documented
 > structural obstructions). See dedicated M3.4 PIVOT entry below
 > (pending paper v2 §1+§2 completion for context).
+
+## 2026-04-25 — M3.4 PIVOT [P1] Option α → Option β renforcée + paper v2 production phase COMPLETE (14 commits CI green)
+
+**Autorité** : Eric directive 2026-04-24 (M3.4 PIVOT to Option β renforcée per Track C Phase IX synthesis 0048) + Session B authorization 0083 §5.3 (paper v2 Track A mission with §3-§7 Session C-authoritative imports + standing autonomous fallback) + per-commit RT#2 cycle (8 commits §3-§14, 0 RT#2 amendments since §3 emphasis update).
+
+**Contexte du PIVOT** : Following exhaustive Session C exploration — Phase IX (11/11 sub-branches closed, 5 innovations identified : 6α, δ7, δ8, δ8', δ9), Phase X (12 substantive findings + META-ROADMAP THEOREM + Wall DNA Theorem + Lean prototype `43d622b`), Phase XI (11 substantive findings + 2 theorems + 4 conjectures + 2 lemmas) — project pivots from Option α (positive proof via Phase63 Sections 2-11) to Option β renforcée (paper v2 conditional theorem + 5 documented scientific contributions + 1 structural obstruction + 4 critical readings of cited work).
+
+**Mission Track A (paper v2 Worker)** : authoring + integration of paper v2 §1-§11, with §3-§7 Session C-authoritative imports per mathnotes package 0018, §9.X expansion per Phase X + Phase XI mathnotes, §1+§2+§8+§9.6+§9.7+§10+§11 Worker authorship + Worker integration. Branch `m3-legendre`, doc-only commits, CI green chain.
+
+**État courant (2026-04-25T03:42Z)** : ✅ ✅ **Paper v2 first-draft completion + §9 polish phase COMPLETE** ✅ ✅. **14 / 14 M3.4 commits CI green stable on `origin/m3-legendre`**.
+
+**14 M3.4 commits delivered** :
+
+| # | Hash | Section | Mode |
+|---|------|---------|------|
+| 1 | `d41e2e9` | M3.4 Phase63 skeleton + infrastructure (Section 1 only ; Sections 2-11 deferred per PIVOT) | Lean source |
+| 2 | `4a1de41` | paper v2 infrastructure scaffold (15 sections + references.bib + Makefile + mathnotes mirror) | scaffold |
+| 3 | `4525961` | §1 introduction draft (Worker authorship) | paper v2 |
+| 4 | `bd711df` | §2 framework and notation draft (Worker authorship) | paper v2 |
+| 5 | `8af00c6` | §8 Lean formalization + §8.5 Phase VIII extension (Worker authorship) | paper v2 |
+| 6 | `baa4450` | §9.7 Ψ_s structural-excess paragraph (Session C 0042 integration) | paper v2 |
+| 7 | `9323cb2` | §3 Main conditional theorem (Session C §B + parametric reconciliation editorial note) | paper v2 |
+| 8 | `e8f4c4f` | §4 Structural hypotheses (Session C §C verbatim — Baker, Barina, ProductBoundThreshold) | paper v2 |
+| 9 | `e022c83` | §5 Obstruction I (Session C §D + Brick 2 K_max=3695 correction + Rozier removal + δ8 framing note) | paper v2 |
+| 10 | `be0b20a` | §6 Obstruction II (Session C §E + Knight INDIRECT flag + Santana 3 gaps critical reading) | paper v2 |
+| 11 | `0b5660e` | §7 Alternative framing (Session C §F — last §3-§7 import — Theorem 7.1 disjunction) | paper v2 |
+| 12 | `df94764` | §10 Conclusion (first Worker-authored synthesis from §1-§9, 5 contributions + 4 disclaimers + 3 future-work lines) | paper v2 |
+| 13 | `0c6332d` | §11 References VERIFY pass (multi-file : §5.3 Tao 2011 attribution amendment + §6.1 Barina year fix + Tao2011Blog bib) | paper v2 |
+| 14 | `42d3f59` | §9 polish phase (multi-file : §9.X expansion 8 subsections Phase X + Phase XI integration + 3 classical analytic NT bib entries) | paper v2 |
+
+**5 scientific contributions delivered** :
+- **6α** (formal verification, §3 + §8) : Lean 4 formalization of conditional theorem `no_nontrivial_cycle_final` (kernel-3 parametric, machine-verified, reproducible via `reproduce.sh`).
+- **δ7** (alternative framing, §7) : Theorem 7.1 disjunctive equivalent « `k ≤ 982` or `n > 2⁷¹` », bridges to Hercher 2023 lower bound `K > 1.375 · 10¹¹`.
+- **δ8** (Product-Bound Impossibility Lemma, §5.1) : meta-mathematical obstruction proving uniform algebraic bounds via Product Bound derivation contradict irrationality of `log_2 3`.
+- **δ8'** (extended impossibility, §5.2) : Corollary 5.2 + window-by-window Khinchin numerical corroboration with Brick 2 `K_max = 3695` corrected (originally 17 000 in mathnotes).
+- **δ9** (state-of-the-art mapping, §6) : 5-category typology of 1977-2026 Collatz cycle literature documenting absence of peer-reviewed deterministic upper bound on `k`.
+
+**1 structural obstruction documented** : §5 δ8 / δ8' — Baker + CF + Product Bound paradigm structurally cannot eliminate the `ProductBoundThreshold` hypothesis. The paper v2 §10.3 modular invitation framing makes this an open invitation rather than a dead end.
+
+**4 critical readings disclosed in-band** :
+- §5.3 Tao 2011 attribution chain : Phase IX 0021 (NOT in Rozier-Terracol) → Phase XI 0059 §1.4 (verbatim in Tao 2011 blog post `terrytao.wordpress.com` 2011-08-25) → Worker 2026-04-25 (independent WebFetch re-verification).
+- §6.2 Knight INDIRECT source flag : HAL Anubis 403 + ScienceDirect paywall, verdict basis search snippets + Christoffel-word combinatorics ; pattern reused from Phase IX 0044 §0.
+- §6.4 Santana 3 structural gaps : (i) boundedness assumption non-justified, (ii) finiteness ≠ uniqueness (Lemma 14 vs Lemma 16), (iii) author Remark 17 self-disclaim « *we address an alternative approach of the conjecture, rather than a proof of it* ».
+- §6.4 anti-regression cross-reference to §5.3 : preserves Rozier-Terracol legitimate citation (Theorem 1.1 + Rhin Proposition 6.3) distinct from §5.3 misattribution amendment.
+
+**13 in-band editorial achievements §3-§14** : axiom-profile reconciliation + Brick 2 numerical correction + Tao 2011 attribution amendment + meta-mathematical-vs-Lean framing note + Knight INDIRECT flag + Santana 3 gaps critical reading + anti-regression cross-reference + forward pointers + first Worker synthesis + Barina year fix + Theorem 9.X.1 + Conjecture 9.X.2 + Phase XII research-program framing.
+
+**Phase X integration as §9.X.1-§9.X.5** : set-theoretic schema (Phase X 0050 §1.3) + counting-argument insufficiency (Phase X 0051 + 0053) + Wall DNA Theorem + META-ROADMAP THEOREM (Phase X 0051 + 0052 + 0053) + mechanism boundary search (Phase X 0052) + Lean infrastructure 200-line `43d622b` prototype (Phase X 0053). Per Phase X 0054 §13.1 « ~30 lignes ready for Worker integration » expanded to ~50 lines structured.
+
+**Phase XI integration as §9.X.6-§9.X.8** :
+- §9.X.6 NEW Theorem 9.X.1 : « *For all admissible (a, k) with a > 1.375 · 10¹¹, q := 2^a − 3^k > 2.836^k* » (proven via Rhin 1987 + Hercher 2023, eight-step proof sketch per Phase XI 0060 §2.4 ; closes Phase XI Conjecture 0059.2).
+- §9.X.7 NEW Conjecture 9.X.2 : « *uniform R_K(σ) (mod q) distribution* » as refined central rigidity question, OPEN (per Phase XI 0060 §4.3 ; refines Steiner rigidity from META-ROADMAP THEOREM Wall brick W2).
+- §9.X.8 NEW Phase XII research-program framing : 3 substantive challenges (q composite obstruction + increasing subset constraint + mixed exponential 3-adic+2-adic) + 3-option path forward (per Phase XI 0061 §4).
+
+**Process compounding metrics §3-§14** :
+
+| Metric | Value |
+|--------|-------|
+| Commits §3-§14 | 8 |
+| RT#1 IMPORTANT findings | 10 (all in-band disclosed with audit trails) |
+| RT#2 amendments | 1 (only §3 emphasis-update at Commit #7) |
+| Anti-G3.11 cycles | 9 (vs theoretical max 16 if §3-lesson never applied) |
+| Process compounding speedup factor | **5.7×** maintained across all 8 commits |
+| §3-lesson preemptive application | 7/7 cycles since establishment |
+
+**§3-lesson preemptive application** : « editorial framing notes must lead with the structurally-correct interpretation from the first draft » — applied 7/7 cycles since §3 Commit #7 emphasis-update establishment, eliminating ~1-2 hours cumulative latency that would otherwise come from per-cycle emphasis-update round-trips.
+
+**Worker mission timing** : M3.4 PIVOT decision 2026-04-24T~17:00Z, paper v2 first-draft + §9 polish complete 2026-04-25T03:42Z = ~10h 45m wall-clock for 14 commits + 12 fully-drafted sections + multiple critical-reading editorial decisions + Phase X/XI integration. **Within the 5-7 day Track A envelope with substantial margin (~5 days early)**.
+
+**Lean source unchanged** : per Eric directive « NO modification Lean (ProjetCollatz/*.lean) sauf Phase63 Section 1 docstring pointer » + cron interdit. Phase63 Sections 2-11 remain deferred per Option β renforcée framing : the paper v2 §5 obstruction (δ8 / δ8') explains why these sections cannot be closed within the Baker + CF + Product Bound paradigm without first resolving Conjecture 9.X.2 (refined central rigidity).
+
+**Mission progress** — Worker mission shifts BUILD/POLISH → **ENDGAME** :
+1. Final paper v2 RT cross-section (verify §1-§11 coherent end-to-end + clear `*[verify]*` flags + optional §9.1-§9.5 light prose polish).
+2. arXiv preprint preparation (pandoc build via `paper/v2/Makefile` + abstract + title finalization + M3.4 commit hashes embedded in metadata).
+3. Acta Arithmetica cover letter + LaTeX final form + submission.
+
+**Within ~1-2 commits + arXiv prep** of Acta Arithmetica submission readiness.
+
+> **2026-04-25 ENDGAME NOTE** : Paper v2 production phase complete. JOURNAL M3.4 PIVOT entry sealed. Remaining mission tasks : final paper v2 RT cross-section + arXiv preprint prep + Acta Arithmetica submission. Worker mission within 1-2 commits + arXiv prep of submission readiness. Cumulative §3-§14 process compounding 5.7× speedup factor maintained ; 13 in-band editorial achievements disclosed across 8 commits ; 14/14 M3.4 commits all CI-verified green.
